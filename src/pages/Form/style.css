@@ -7,3 +7,7 @@
 .get-data {
     display: none !important;
 }
+
+.auto-with {
+    width: auto;
+}

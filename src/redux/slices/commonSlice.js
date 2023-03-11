@@ -1,5 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import apis from "redux/apis"
 
+const loginApiAction = createAsyncThunk(
+  'auth/login',
+  async (values) => {
+    const response = await apis.login(values)
+    return response.data
+  }
+)
 
 const commonSlice = createSlice({
     name: 'common',
@@ -8,18 +16,30 @@ const commonSlice = createSlice({
       dir: "ltr",
       isLogged: false,
       userData: null,
+      loader: false,
     },
     reducers: {
-      createPost(state, action) {},
-      updatePost(state, action) {},
-      deletePost(state, action) {},
+
     },
+    extraReducers: {
+      [loginApiAction.pending]: (state)=>{
+        state.loader = true
+      },
+      [loginApiAction.fulfilled]: (state)=>{
+        state.loader = false
+        state.isLogged = true
+      },
+      [loginApiAction.rejected]: (state)=>{
+        state.loader = false
+        state.error = "something went wrong"
+      }
+    }
   })
   
-  // Extract the action creators object and the reducer
-  const { actions, reducer } = commonSlice
-  // Extract and export each action creator by name
-  export const { createPost, updatePost, deletePost } = actions
+
+  export {
+    loginApiAction
+  }
   // Export the reducer, either as a default or named export
   export default commonSlice
 

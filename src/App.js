@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { red } from "@mui/material/colors";
+import { blue, red } from "@mui/material/colors";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import { Provider } from "react-redux";
@@ -9,11 +9,14 @@ import LoginPage from "./pages/Auth/LoginPage";
 import { Dashboard } from "pages/Dashboard/Dashboard.pages";
 import Layout from "components/Layout";
 import FormPage from "pages/Form/Form.page";
+import PageNotFound from "pages/PageNotFound";
+import StationPage from "pages/Station/Station.page";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: red[500],
+      main: blue[500],
+      secondary: blue[200]
     },
   },
 });
@@ -26,13 +29,14 @@ function App() {
           <ThemeProvider theme={theme}>
             <BrowserRouter>
               <Routes>
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="app/" element={<Layout />} >
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
                   <Route path="forms" element={<FormPage />}  ></Route>
-                  <Route path="dashboard" element={<Dashboard />}  ></Route>
+                  <Route path="stations" element={<StationPage />}  ></Route>
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
                 </Route>
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="*" element={<PageNotFound />} />
               </Routes>
             </BrowserRouter>
           </ThemeProvider>

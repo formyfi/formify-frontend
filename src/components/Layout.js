@@ -53,7 +53,7 @@ const navigationList = [
   {
     id: 'station',
     label: "Manage Station",
-    path: "/app/station",
+    path: "/app/stations",
     icon: <EvStation />
   },
   {
