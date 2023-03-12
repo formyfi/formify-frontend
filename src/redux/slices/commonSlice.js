@@ -4,7 +4,7 @@ import apis from "redux/apis"
 const loginApiAction = createAsyncThunk(
   'auth/login',
   async (values) => {
-    const response = await apis.login(values)
+    const response = await apis.login({...values, 'user_name': values.email})
     return response.data
   }
 )
@@ -25,7 +25,8 @@ const commonSlice = createSlice({
       [loginApiAction.pending]: (state)=>{
         state.loader = true
       },
-      [loginApiAction.fulfilled]: (state)=>{
+      [loginApiAction.fulfilled]: (state, payload)=>{
+        console.log(payload);
         state.loader = false
         state.isLogged = true
       },
