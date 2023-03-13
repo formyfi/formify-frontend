@@ -28,6 +28,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { Avatar, Menu, MenuItem } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 
 const drawerWidth = 240;
 
@@ -179,6 +180,7 @@ export default function Layout() {
   const openRightSide = Boolean(anchorEl);
   const navigate = useNavigate();
   const location = useLocation();
+  const commonState = useSelector(state => state.common);
 
   const openRightSideHandler = (event) => {
     setAnchorEl(event.currentTarget);
@@ -196,8 +198,10 @@ export default function Layout() {
   };
 
   useEffect(()=>{
-    console.log(location);
-  },[])
+    if(commonState.isLogged === false) {
+      navigate('/login')
+    }
+  },[]);
 
   return (
     <Box sx={{ display: 'flex' }}>
