@@ -6,7 +6,7 @@ const request =  axios.create({
 
 const apis = {
     login : (values)=>{
-       return axios.post('http://127.0.0.1:8000/api/auth/login',values, {
+       return axios.post('http://159.203.15.162/public/api/auth/login',values, {
         headers: {
             'Accept': 'application/json',
         }

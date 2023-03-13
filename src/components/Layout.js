@@ -198,9 +198,9 @@ export default function Layout() {
   };
 
   useEffect(()=>{
-    if(commonState.isLogged === false) {
-      navigate('/login')
-    }
+    // if(commonState.isLogged === false) {
+    //   navigate('/login')
+    // }
   },[]);
 
   return (

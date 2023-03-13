@@ -20,7 +20,7 @@ import { loginApiAction } from "redux/slices/commonSlice";
 import { redirect, useNavigate } from "react-router-dom";
 
 const schema = yup.object({
-  email: yup.string().required().email(),
+  email: yup.string().required(),
   password: yup.string().min(6).required(),
 }).required();
 

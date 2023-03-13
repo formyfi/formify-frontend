@@ -1,7 +1,14 @@
-import { Box, Button, Drawer, Typography } from "@mui/material";
+import { Box, Button, Drawer, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
 import EnhancedTable from "components/Table";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+
+const schema = yup.object({
+  // email: yup.string().required(),
+}).required();
 
 const headCells = [
   {
@@ -32,8 +39,18 @@ const headCells = [
 
 const StationPage = () => {
   const [drawer, setDrawer] = useState(false);
-
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema)
+  });
   
+  const onSubmit = ()=>{
+
+  }
 
   return (
     <Box>
@@ -86,7 +103,42 @@ const StationPage = () => {
           setDrawer(false);
         }}
       >
-        AAA
+        <Box
+          sx={{
+            p: 2
+          }}
+        >
+          <Typography variant="h4" sx={{ mb: 2 }} component="h2"> Add Station </Typography>
+
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Name"
+              name="name"
+              autoComplete="name"
+              {...register("name")}
+              error={errors.name}
+              helperText={errors?.name?.message}
+              autoFocus
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Submit
+            </Button>
+          </Box>
+        </Box>
       </Drawer>
     </Box>
   );
