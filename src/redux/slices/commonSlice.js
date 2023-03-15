@@ -4,33 +4,65 @@ import apis from "redux/apis"
 const loginApiAction = createAsyncThunk(
   'auth/login',
   async (values) => {
-    const response = await apis.login({...values, 'user_name': values.email})
-    return response.data
+    const response = await apis.login({...values, 'user_name': values.email}).then((response)=>{
+      if(response.status === 200){
+        return response.data
+      }
+    }).catch((err)=>{
+      if(err.response && err.response.status === 401 && err.response.data){
+        return {
+          success: false,
+          message : err.response.data.message
+        }
+      }
+      return {
+        success: false,
+        message : "Something went wrong"
+      }
+    })
+    return response
   }
 )
-
+  
 const commonSlice = createSlice({
     name: 'common',
     initialState: {
       locale: "en",
       dir: "ltr",
-      isLogged: false,
-      userData: null,
+      isLogged: localStorage.getItem('app_token') != null?localStorage.getItem('app_token'):false,
+      user_id: localStorage.getItem('app_user_id'),
+      token: localStorage.getItem('app_token'),
       loader: false,
     },
     reducers: {
-
+      logout: (state)=>{
+        state.isLogged = false
+        state.token = null
+        state.user_id = null
+        localStorage.removeItem('app_token')
+      localStorage.removeItem('app_user_id')
+      }
     },
     extraReducers: {
       [loginApiAction.pending]: (state)=>{
         state.loader = true
       },
-      [loginApiAction.fulfilled]: (state, payload)=>{
-        console.log(payload);
+      [loginApiAction.fulfilled]: (state, { payload })=>{
         state.loader = false
-        state.isLogged = true
+        console.log(payload);
+        debugger
+        if(payload.success) {
+          state.isLogged = true
+          state.token = payload.token
+          state.user_id = payload.user_id
+          localStorage.setItem('app_token', payload.token)
+          localStorage.setItem('app_user_id', payload.user_id)
+        } else {
+          state.error = payload.message
+          state.isLogged = false
+        }
       },
-      [loginApiAction.rejected]: (state)=>{
+      [loginApiAction.rejected]: (state,action)=>{
         state.loader = false
         state.error = "something went wrong"
       }
@@ -39,8 +71,12 @@ const commonSlice = createSlice({
   
 
   export {
-    loginApiAction
+    loginApiAction,
   }
+  
+  export const {
+    logout
+  } = commonSlice.actions
   // Export the reducer, either as a default or named export
   export default commonSlice
 

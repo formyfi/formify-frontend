@@ -18,6 +18,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { loginApiAction } from "redux/slices/commonSlice";
 import { redirect, useNavigate } from "react-router-dom";
+import { Alert, AlertTitle, Backdrop } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const schema = yup.object({
   email: yup.string().required(),
@@ -72,6 +74,13 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={commonState.loader}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -82,6 +91,7 @@ export default function SignIn() {
             alignItems: "center",
           }}
         >
+         
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -94,6 +104,9 @@ export default function SignIn() {
             noValidate
             sx={{ mt: 1 }}
           >
+            {commonState.error && <Alert sx={{ mb:2 }} severity="error">
+              <AlertTitle>{commonState.error}</AlertTitle>
+            </Alert>}
             <TextField
               margin="normal"
               required

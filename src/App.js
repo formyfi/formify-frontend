@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { blue, red } from "@mui/material/colors";
+import { blue, purple, teal } from "@mui/material/colors";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import { Provider } from "react-redux";
@@ -15,8 +15,8 @@ import StationPage from "pages/Station/Station.page";
 const theme = createTheme({
   palette: {
     primary: {
-      main: blue[500],
-      secondary: blue[200]
+      main: teal[500],
+      secondary: teal[200]
     },
   },
 });

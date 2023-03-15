@@ -28,7 +28,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { Avatar, Menu, MenuItem } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from 'redux/slices/commonSlice';
 
 const drawerWidth = 240;
 
@@ -116,7 +117,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   }),
 );
 
-const RightSideMenu = ({ anchorEl,open,handleClick,handleClose })=>{
+const RightSideMenu = ({ anchorEl,open,logout,handleClose })=>{
 
   return (<Menu
     anchorEl={anchorEl}
@@ -163,7 +164,7 @@ const RightSideMenu = ({ anchorEl,open,handleClick,handleClose })=>{
        Settings
     </MenuItem>
     <Divider />
-    <MenuItem onClick={handleClose}>
+    <MenuItem onClick={logout}>
       <ListItemIcon>
         <Logout fontSize="small" />
       </ListItemIcon>
@@ -181,6 +182,7 @@ export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
   const commonState = useSelector(state => state.common);
+  const dispatch = useDispatch();
 
   const openRightSideHandler = (event) => {
     setAnchorEl(event.currentTarget);
@@ -198,9 +200,9 @@ export default function Layout() {
   };
 
   useEffect(()=>{
-    // if(commonState.isLogged === false) {
-    //   navigate('/login')
-    // }
+    if(commonState.isLogged === false) {
+      navigate('/login')
+    }
   },[]);
 
   return (
@@ -265,7 +267,10 @@ export default function Layout() {
           ))}
         </List>
       </Drawer>
-      <RightSideMenu anchorEl={anchorEl} open={openRightSide} handleClose={openRightSideCloseHandler} />
+      <RightSideMenu logout={()=>{
+        dispatch(logout())
+        navigate('/login')
+      }} anchorEl={anchorEl} open={openRightSide} handleClose={openRightSideCloseHandler} />
       <Main open={open}>
         <DrawerHeader />
         <Outlet />
