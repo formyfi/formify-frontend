@@ -129,11 +129,11 @@ export default function EnhancedTable({
                     <TableCell align="left">
                     
 
-                      {editButton && onEdit && <Button variant="outlined" onClick={onEdit} startIcon={<EditIcon />}>
+                      {editButton && onEdit && <Button variant="outlined" onClick={()=>onEdit(row.id, row)} startIcon={<EditIcon />}>
                         Edit
                       </Button>}
                       &nbsp;&nbsp;&nbsp;
-                      {deleteButton && onDelete && <Button variant="outlined" onClick={onDelete} ml='2' color="error" startIcon={<DeleteIcon />}>
+                      {deleteButton && onDelete && <Button variant="outlined" onClick={()=>onDelete(row.id)} ml='2' color="error" startIcon={<DeleteIcon />}>
                         Delete
                       </Button>}
                     </TableCell>

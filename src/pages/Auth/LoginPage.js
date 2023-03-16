@@ -62,7 +62,6 @@ export default function SignIn() {
   const commonState = useSelector(state => state.common);
 
   const onSubmit = (values) => {
-    console.log(values);
     dispatch(loginApiAction(values))
   };
   
