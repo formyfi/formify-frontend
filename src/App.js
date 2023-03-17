@@ -11,6 +11,7 @@ import Layout from "components/Layout";
 import FormPage from "pages/Form/Form.page";
 import PageNotFound from "pages/PageNotFound";
 import StationPage from "pages/Station/Station.page";
+import UserPage from "pages/User/User.page";
 
 const theme = createTheme({
   palette: {
@@ -34,6 +35,7 @@ function App() {
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
                   <Route path="forms" element={<FormPage />}  ></Route>
                   <Route path="stations" element={<StationPage />}  ></Route>
+                  <Route path="users" element={<UserPage />}  ></Route>
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
                 </Route>
                 <Route path="*" element={<PageNotFound />} />

@@ -15,6 +15,7 @@ const apis = {
        })
     },
 
+    //Stations
     stationList : (values)=>{
         return request.get('/api/stations/get_station_list', {
          headers: {
@@ -40,6 +41,38 @@ const apis = {
         })
      },
 
+     //Users APIs
+
+     getUsers : (values)=>{
+        return request.get('/api/users/get_users', {
+         headers: {
+             'Accept': 'application/json',
+         },
+         params: values,
+        })
+     },
+    
+     updateUser : (values)=>{
+        return request.post('/api/users/update_user',values, {
+         headers: {
+             'Accept': 'application/json',
+         }
+        })
+     },
+     createUser : (values)=>{
+        return request.post('/api/users/create_user',values, {
+         headers: {
+             'Accept': 'application/json',
+         }
+        })
+     },
+     deleteUser : (values)=>{
+        return request.post('/api/users/delete_user',values, {
+         headers: {
+             'Accept': 'application/json',
+         }
+        })
+     },
 }
 
 

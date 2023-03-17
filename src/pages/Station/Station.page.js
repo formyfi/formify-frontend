@@ -84,6 +84,7 @@ const onSubmit = ()=>{
         <Box>
           <Button
             variant="outlined"
+            style = {{ marginBottom : 25 }}
             startIcon={<AddIcon />}
             onClick={() => {
               setDrawer(true);
@@ -91,12 +92,13 @@ const onSubmit = ()=>{
               setStationForm({...initialStationForm});
             }}
           >
-            Add
+            Add new station
           </Button>
         </Box>
       </Box>
       <EnhancedTable
         headCells={headCells}
+        station={true}
         rows={stationState.station_list}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
@@ -192,7 +194,7 @@ const onSubmit = ()=>{
                 setDrawer(false)
                 setStationForm({...initialStationForm})
               }}
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, ml:2 }}
             >
               Cancel
             </Button>
