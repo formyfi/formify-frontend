@@ -1,7 +1,8 @@
 import axios from "axios"
 
+console.log(process.env);
 const request =  axios.create({
-    baseURL: "http://127.0.0.1:8000"
+    baseURL: process.env.REACT_APP_API_BASE?process.env.REACT_APP_API_BASE:"http://127.0.0.1:8000"
 });
 // const token = localStorage.getItem('app_token');
 // axios.defaults.header.common['Authorization'] = token;
