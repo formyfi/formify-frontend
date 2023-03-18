@@ -11,3 +11,6 @@
 .auto-with {
     width: auto;
 }
+.access-wrap {
+    display: none !important;
+}

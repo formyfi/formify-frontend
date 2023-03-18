@@ -15,11 +15,19 @@ const FormPage = () => {
 
   useEffect(() => {
     console.log(FormBuildRef.current);
-    $(FormBuildRef.current).formBuilder({
+    var formBuilder = $(FormBuildRef.current).formBuilder({
       formData,
-      fields: [
-        
-      ],
+      actionButtons: [{
+        id: 'smile',
+        className: 'btn btn-success',
+        label: 'Preview',
+        type: 'button',
+        events: {
+        click: function(codes,aaa) {
+          console.log(formBuilder);
+        }
+      }
+      }],
       onSave: (evt, formData) => {
         console.log(formData);
       },
