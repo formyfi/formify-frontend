@@ -5,11 +5,17 @@ import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import {useDispatch, useSelector} from "react-redux";
+import { getStationList, upsertStation, deleteStation } from "redux/slices/stationSlice";
 
 const schema = yup.object({
   // email: yup.string().required(),
 }).required();
-
+const initialStationForm = {
+  id:'',
+  name:'',
+  type: ''
+}
 const headCells = [
   {
     id: "id",
@@ -39,6 +45,8 @@ const headCells = [
 
 const StationPage = () => {
   const [drawer, setDrawer] = useState(false);
+  const [newStation, setNewStation] = useState(false);
+  const [stationForm, setStationForm] = useState(initialStationForm)
   const {
     register,
     handleSubmit,
@@ -48,9 +56,21 @@ const StationPage = () => {
     resolver: yupResolver(schema)
   });
   
-  const onSubmit = ()=>{
+  const dispatch = useDispatch();
+  const stationState = useSelector(state => state.station);
+  const commonState = useSelector(state => state.common);
+  
+  React.useEffect(()=>{
+    dispatch(getStationList(
+      {org_id: commonState.org_id}))
+}, [])
 
-  }
+const onSubmit = ()=>{
+  dispatch(upsertStation(
+    {...stationForm, org_id: commonState.org_id}))
+    setDrawer(false);
+    setStationForm(initialStationForm);
+}
 
   return (
     <Box>
@@ -60,39 +80,43 @@ const StationPage = () => {
         alignItems={"center"}
       >
         <Typography variant="h4" sx={{ mb: 2 }} component="h2">
-          Manage Station
         </Typography>
         <Box>
           <Button
             variant="outlined"
+            style = {{ marginBottom : 25 }}
             startIcon={<AddIcon />}
             onClick={() => {
               setDrawer(true);
+              setNewStation(true);
+              setStationForm({...initialStationForm});
             }}
           >
-            Add
+            Add new station
           </Button>
         </Box>
       </Box>
       <EnhancedTable
         headCells={headCells}
-        rows={[
-          {
-            id: 1,
-            name: "Hello",
-            type: "Test",
-          },
-        ]}
+        station={true}
+        rows={stationState.station_list}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}
         editButton={true}
         deleteButton={true}
         onEdit={(id, row) => {
+          let stationData = {...stationForm}
+          stationData['id'] = row.id;
+          stationData['name'] = row.name;
+          stationData['type'] = row.type;
+          setStationForm(stationData);
           setDrawer(true);
+          setNewStation(false);
         }}
-        onDelete={(id, row) => {
-          setDrawer(true);
+        onDelete={(id) => {
+          dispatch(deleteStation(
+            {id:id, org_id: commonState.org_id}))
         }}
       />
       <Drawer
@@ -101,14 +125,16 @@ const StationPage = () => {
         PaperProps={{ sx: { width: "500px" } }}
         onClose={() => {
           setDrawer(false);
+          setStationForm(initialStationForm);
         }}
+        variant={'temporary'}
       >
         <Box
           sx={{
             p: 2
           }}
         >
-          <Typography variant="h4" sx={{ mb: 2 }} component="h2"> Add Station </Typography>
+          <Typography variant="h5" sx={{ mb: 2 }}> {newStation ? 'Add new' : 'Edit'} station </Typography>
 
           <Box
             component="form"
@@ -120,23 +146,59 @@ const StationPage = () => {
               margin="normal"
               required
               fullWidth
-              id="name"
+              id={stationForm.name}
               label="Name"
+              value={stationForm.name}
+              onChange={(e)=>{
+                let stationData = {...stationForm}
+                stationData['name'] = e.target.value;
+                setStationForm(stationData);
+              }}
               name="name"
               autoComplete="name"
-              {...register("name")}
               error={errors.name}
               helperText={errors?.name?.message}
               autoFocus
             />
+
+            <TextField
+              margin="normal"
+              fullWidth
+              id={stationForm.type}
+              label="Station Type"
+              value={stationForm.type}
+              onChange={(e)=>{
+                let stationData = {...stationForm}
+                stationData['type'] = e.target.value;
+                setStationForm(stationData);
+              }}
+              name="type"
+              autoComplete="type"
+              error={errors.type}
+              helperText={errors?.type?.message}
+              autoFocus
+            />
+            <div>
             <Button
               type="submit"
-              fullWidth
+              
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Submit
+              {newStation ? 'Submit' : 'Update'}
             </Button>
+            <Button
+              type="button"
+              variant="contained"
+              onClick={()=>{
+                setDrawer(false)
+                setStationForm({...initialStationForm})
+              }}
+              sx={{ mt: 3, mb: 2, ml:2 }}
+            >
+              Cancel
+            </Button>
+            </div>
           </Box>
         </Box>
       </Drawer>

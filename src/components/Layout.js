@@ -36,13 +36,13 @@ const drawerWidth = 240;
 const navigationList = [
   {
     id: 'dashboard',
-    label: "Dashboard",
+    label: "Admin Dashboard",
     path: "/app/dashboard",
     icon: <DashboardIcon />
   },
   {
     id: 'users',
-    label: "Manage User",
+    label: "Manage Users",
     path: "/app/users",
     icon: <PeopleIcon />
   },
@@ -54,7 +54,7 @@ const navigationList = [
   },
   {
     id: 'station',
-    label: "Manage Station",
+    label: "Manage Stations",
     path: "/app/stations",
     icon: <EvStation />
   },
@@ -205,6 +205,12 @@ export default function Layout() {
     }
   },[]);
 
+  useEffect(()=>{
+    const currentPage = navigationList.filter((item)=>item.path === location.pathname);
+    if(currentPage) setTitle(currentPage[0].label);
+    console.log(currentPage[0].label);
+  },[location]);
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -225,7 +231,7 @@ export default function Layout() {
             justifyContent='space-between'
           >
             <Typography variant="h6" noWrap component="div">
-              Dashboard
+              {title}
             </Typography>
             <Box  onClick={openRightSideHandler} >
               <Avatar>AD</Avatar>

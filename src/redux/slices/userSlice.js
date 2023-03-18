@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import apis from "redux/apis"
 
 
-const getStationList = createAsyncThunk(
-  'get_station_list',
+const getUsers = createAsyncThunk(
+  'get_users',
   async (values) => {
-    const response = await apis.stationList(values).then((response)=>{
+    const response = await apis.getUsers(values).then((response)=>{
         if(response.status === 200){
             return response.data
           }
@@ -25,10 +25,33 @@ const getStationList = createAsyncThunk(
   }
 )
 
-const upsertStation = createAsyncThunk(
-    'upsert_station',
+const updateUser = createAsyncThunk(
+    'upsert_user',
     async (values) => {
-      const response = await apis.upsertStation(values).then((response)=>{
+      const response = await apis.updateUser(values).then((response)=>{
+          if(response.status === 200){
+              return response.data
+            }
+          }).catch((err)=>{
+            if(err.response && err.response.status === 401 && err.response.data){
+              return {
+                success: false,
+                message : err.response.data.message
+              }
+            }
+            return {
+              success: false,
+              message : "Something went wrong"
+            }
+      })
+      return response
+    }
+  )
+  
+  const createUser = createAsyncThunk(
+    'create_user',
+    async (values) => {
+      const response = await apis.createUser(values).then((response)=>{
           if(response.status === 200){
               return response.data
             }
@@ -48,10 +71,10 @@ const upsertStation = createAsyncThunk(
     }
   )
 
-  const deleteStation = createAsyncThunk(
-    'delete_station',
+  const deleteUser = createAsyncThunk(
+    'delete_user',
     async (values) => {
-      const response = await apis.deleteStation(values).then((response)=>{
+      const response = await apis.deleteUser(values).then((response)=>{
           if(response.status === 200){
               return response.data
             }
@@ -71,40 +94,46 @@ const upsertStation = createAsyncThunk(
     }
   )
 
-const stationSlice = createSlice({
-    name: 'station',
+const userSlice = createSlice({
+    name: 'user',
     initialState: {
       locale: "en",
       dir: "ltr",
-      station_list: [],
+      user_list: [],
       loader: false,
     },
     extraReducers: {
 
-      [getStationList.pending]: (state)=>{
+      [getUsers.pending]: (state)=>{
         state.loader = true
       },
-      [getStationList.fulfilled]: (state, { payload })=>{
+      [getUsers.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.station_list = payload.station_list
+          state.user_list = payload.user_list
         }
       },
-      [getStationList.rejected]: (state,action)=>{
+      [getUsers.rejected]: (state,action)=>{
         state.loader = false
         state.error = "something went wrong"
       },
 
-      [upsertStation.fulfilled]: (state, { payload })=>{
+      [updateUser.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.station_list = payload.station_list
+          state.user_list = payload.user_list
         }
       },
-      [deleteStation.fulfilled]: (state, { payload })=>{
+      [createUser.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.station_list = payload.station_list
+          state.user_list = payload.user_list
+        }
+      },
+      [deleteUser.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.user_list = payload.user_list
         }
       },
     }
@@ -112,11 +141,12 @@ const stationSlice = createSlice({
   
 
   export {
-    getStationList,
-    upsertStation,
-    deleteStation
+    getUsers,
+    updateUser,
+    createUser,
+    deleteUser
   }
 
   // Export the reducer, either as a default or named export
-  export default stationSlice
+  export default userSlice
 

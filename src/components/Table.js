@@ -68,7 +68,9 @@ export default function EnhancedTable({
   editButton,
   deleteButton,
   onEdit,
-  onDelete
+  onDelete,
+  station,
+  user
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -124,16 +126,21 @@ export default function EnhancedTable({
                     <TableCell component="th" id={labelId} scope="row">
                       {row.id}
                     </TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">{row.type}</TableCell>
+                    {station && <TableCell align="left">{row.name}</TableCell>}
+                    {station && <TableCell align="left">{row.type}</TableCell>}
+                    {user && <TableCell align="left">{row.first_name}</TableCell>}
+                    {user && <TableCell align="left">{row.last_name}</TableCell>}
+                    {user && <TableCell align="left">{row.user_name}</TableCell>}
+                    {user && <TableCell align="left">{row.user_type}</TableCell>}
+                    {user && <TableCell align="left">{row.station_name}</TableCell>}
                     <TableCell align="left">
                     
 
-                      {editButton && onEdit && <Button variant="outlined" onClick={onEdit} startIcon={<EditIcon />}>
+                      {editButton && onEdit && <Button variant="outlined" onClick={()=>onEdit(row.id, row)} startIcon={<EditIcon />}>
                         Edit
                       </Button>}
                       &nbsp;&nbsp;&nbsp;
-                      {deleteButton && onDelete && <Button variant="outlined" onClick={onDelete} ml='2' color="error" startIcon={<DeleteIcon />}>
+                      {deleteButton && onDelete && <Button variant="outlined" onClick={()=>onDelete(row.id)} ml='2' color="error" startIcon={<DeleteIcon />}>
                         Delete
                       </Button>}
                     </TableCell>

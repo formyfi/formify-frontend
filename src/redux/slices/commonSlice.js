@@ -23,7 +23,7 @@ const loginApiAction = createAsyncThunk(
     return response
   }
 )
-  
+
 const commonSlice = createSlice({
     name: 'common',
     initialState: {
@@ -32,6 +32,7 @@ const commonSlice = createSlice({
       isLogged: localStorage.getItem('app_token') != null?localStorage.getItem('app_token'):false,
       user_id: localStorage.getItem('app_user_id'),
       token: localStorage.getItem('app_token'),
+      org_id: localStorage.getItem('app_org_id'),
       loader: false,
     },
     reducers: {
@@ -41,22 +42,23 @@ const commonSlice = createSlice({
         state.user_id = null
         localStorage.removeItem('app_token')
       localStorage.removeItem('app_user_id')
+      localStorage.removeItem('app_org_id')
       }
     },
     extraReducers: {
+      //login reducers
       [loginApiAction.pending]: (state)=>{
         state.loader = true
       },
       [loginApiAction.fulfilled]: (state, { payload })=>{
         state.loader = false
-        console.log(payload);
-        debugger
         if(payload.success) {
           state.isLogged = true
           state.token = payload.token
           state.user_id = payload.user_id
           localStorage.setItem('app_token', payload.token)
           localStorage.setItem('app_user_id', payload.user_id)
+          localStorage.setItem('app_org_id', payload.org_id)
         } else {
           state.error = payload.message
           state.isLogged = false
@@ -65,7 +67,8 @@ const commonSlice = createSlice({
       [loginApiAction.rejected]: (state,action)=>{
         state.loader = false
         state.error = "something went wrong"
-      }
+      },
+
     }
   })
   
