@@ -1,5 +1,7 @@
+import { Box, Dialog, DialogContent, DialogTitle, Divider, Typography,  } from "@mui/material";
 import $ from "jquery";
 import React, { useEffect, useRef } from "react";
+import { PreviewCheckbox, PreviewRadio, PreviewSelect } from "./components/previewFormElements";
 import './style.css';
 import { Box, Button, Drawer, FormControlLabel, Grid, TextField, Typography, Autocomplete} from "@mui/material";
 window.jQuery = $;
@@ -12,19 +14,34 @@ const formData = [{"type":"radio-group","required":false,"label":"Radio Group","
 
 const FormPage = () => {
   const FormBuildRef = useRef(null);
+  const [open, setOpen] = React.useState(false);
+  const [previewData, setPreviewData] = React.useState([]);
 
   useEffect(() => {
     console.log(FormBuildRef.current);
-    $(FormBuildRef.current).formBuilder({
-      formData,
-      fields: [
-        
-      ],
-      onSave: (evt, formData) => {
-        console.log(formData);
-      },
-    });
-    console.log('As2d5s')
+    if(formBuilder === null){
+      formBuilder = $(FormBuildRef.current).formBuilder({
+        formData,
+        actionButtons: [{
+          id: 'smile',
+          className: 'btn btn-success',
+          label: 'Preview',
+          type: 'button',
+          events: {
+          click: function(codes,aaa) {
+            setOpen(true)
+            console.log(formBuilder.actions.getData());
+            setPreviewData(formBuilder.actions.getData())
+            return  true;
+          }
+        }
+        }],
+        onSave: (evt, formData) => {
+          console.log(formData);
+        },
+      });
+      console.log('As2d5s')
+    }
   }, []);
 
   const childCOunt = document.getElementById("fb-editor")?.childElementCount;
@@ -40,12 +57,38 @@ const FormPage = () => {
   }, [FormBuildRef.current]);
 
   return ( <div>
-            
             <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
                   Manage Check Lists
             </Typography>
-            <div id="fb-editor" ref={FormBuildRef} /> 
-          </div>)
+          <Dialog open={open} onClose={()=>{
+            setOpen(false)
+          }} >
+              <DialogTitle>Form Preview</DialogTitle>
+              <Divider />
+              <DialogContent>
+                <form>
+                  {
+                    previewData.map((previewObj)=>{
+                      if(["h1","h2","h3","h4","h5","h6", "p"].includes(previewObj.subtype)) {
+                        return <Box my={1} ><Typography variant={previewObj.subtype} component={previewObj.subtype} >{previewObj.label}</Typography></Box>
+                      }
+                      console.log(previewObj.type);
+                      if(previewObj.type === "radio-group") {
+                        return <Box my={2} ><PreviewRadio data={previewObj} /></Box>
+                      }
+                      if(previewObj.type === "checkbox-group") {
+                        return <Box my={2} ><PreviewCheckbox data={previewObj} /></Box>
+                      }
+                      if(previewObj.type === "select") {
+                        return <Box my={2} ><PreviewSelect data={previewObj} /></Box>
+                      }
+                    })
+                  }
+                </form>
+              </DialogContent>
+          </Dialog>
+      <div id="fb-editor" ref={FormBuildRef} />
+  </div>)
 };
 
 export default FormPage;

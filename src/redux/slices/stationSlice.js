@@ -104,7 +104,7 @@ const stationSlice = createSlice({
       [deleteStation.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.station_list = payload.station_list
+          state.station_list = payload.station_list?payload.station_list:[]
         }
       },
     }

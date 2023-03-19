@@ -58,6 +58,7 @@ const commonSlice = createSlice({
           state.isLogged = true
           state.token = payload.token
           state.user_id = payload.user_id
+          state.org_id = payload.org_id
           localStorage.setItem('app_token', payload.token)
           localStorage.setItem('app_user_id', payload.user_id)
           localStorage.setItem('app_org_id', payload.org_id)
