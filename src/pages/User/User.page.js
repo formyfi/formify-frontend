@@ -35,7 +35,7 @@ const headCells = [
     id: "id",
     numeric: true,
     disablePadding: false,
-    label: "Id",
+    label: "ID",
   },
   {
     id: "first_name",
@@ -132,7 +132,8 @@ const openEditUserForm = (id, row) => {
         justifyContent="space-between"
         alignItems={"center"}
       >
-        <Typography variant="h4" sx={{ mb: 2 }} component="h2">
+        <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
+          Manage Users
         </Typography>
         <Box>
           <Button

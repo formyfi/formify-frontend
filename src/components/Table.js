@@ -70,7 +70,8 @@ export default function EnhancedTable({
   onEdit,
   onDelete,
   station,
-  user
+  user,
+  part
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -126,13 +127,14 @@ export default function EnhancedTable({
                     <TableCell component="th" id={labelId} scope="row">
                       {row.id}
                     </TableCell>
-                    {station && <TableCell align="left">{row.name}</TableCell>}
+                    {station || part && <TableCell align="left">{row.name}</TableCell>}
                     {station && <TableCell align="left">{row.type}</TableCell>}
                     {user && <TableCell align="left">{row.first_name}</TableCell>}
                     {user && <TableCell align="left">{row.last_name}</TableCell>}
                     {user && <TableCell align="left">{row.user_name}</TableCell>}
                     {user && <TableCell align="left">{row.user_type}</TableCell>}
                     {user && <TableCell align="left">{row.station_name}</TableCell>}
+                    {part && <TableCell align="left">{row.description}</TableCell>}
                     <TableCell align="left">
                     
 

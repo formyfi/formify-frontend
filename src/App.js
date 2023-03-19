@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { blue, purple, teal } from "@mui/material/colors";
+import { blue, purple, teal, indigo, blueGrey, deepPurple } from "@mui/material/colors";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import { Provider } from "react-redux";
@@ -12,12 +12,12 @@ import FormPage from "pages/Form/Form.page";
 import PageNotFound from "pages/PageNotFound";
 import StationPage from "pages/Station/Station.page";
 import UserPage from "pages/User/User.page";
-
+import PartsPage from "pages/Parts/Parts.page";
 const theme = createTheme({
   palette: {
     primary: {
-      main: teal[500],
-      secondary: teal[200]
+      main: indigo[500],
+      secondary: indigo[200]
     },
   },
 });
@@ -33,8 +33,9 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="app/" element={<Layout />} >
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
-                  <Route path="forms" element={<FormPage />}  ></Route>
+                  <Route path="checklists" element={<FormPage />}  ></Route>
                   <Route path="stations" element={<StationPage />}  ></Route>
+                  <Route path="parts" element={<PartsPage />}  ></Route>
                   <Route path="users" element={<UserPage />}  ></Route>
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
                 </Route>

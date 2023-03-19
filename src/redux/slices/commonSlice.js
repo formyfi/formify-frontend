@@ -33,6 +33,7 @@ const commonSlice = createSlice({
       user_id: localStorage.getItem('app_user_id'),
       token: localStorage.getItem('app_token'),
       org_id: localStorage.getItem('app_org_id'),
+      org_name: localStorage.getItem('app_org_name'),
       loader: false,
     },
     reducers: {
@@ -43,6 +44,7 @@ const commonSlice = createSlice({
         localStorage.removeItem('app_token')
       localStorage.removeItem('app_user_id')
       localStorage.removeItem('app_org_id')
+      localStorage.removeItem('app_org_name')
       }
     },
     extraReducers: {
@@ -59,6 +61,7 @@ const commonSlice = createSlice({
           localStorage.setItem('app_token', payload.token)
           localStorage.setItem('app_user_id', payload.user_id)
           localStorage.setItem('app_org_id', payload.org_id)
+          localStorage.setItem('app_org_name', payload.org_name)
         } else {
           state.error = payload.message
           state.isLogged = false

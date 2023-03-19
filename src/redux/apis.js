@@ -73,6 +73,32 @@ const apis = {
          }
         })
      },
+
+     //Parts
+    partList : (values)=>{
+        return request.get('/api/parts/get_part_list', {
+         headers: {
+             'Accept': 'application/json',
+         },
+         params: values,
+        })
+     },
+    
+     upsertPart : (values)=>{
+        return request.post('/api/parts/upsert_part',values, {
+         headers: {
+             'Accept': 'application/json',
+         }
+        })
+     },
+
+     deletePart : (values)=>{
+        return request.post('/api/parts/delete_part',values, {
+         headers: {
+             'Accept': 'application/json',
+         }
+        })
+     },
 }
 
 

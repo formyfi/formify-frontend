@@ -47,7 +47,7 @@ const navigationList = [
     icon: <PeopleIcon />
   },
   {
-    id: 'users',
+    id: 'parts',
     label: "Manage Parts",
     path: "/app/parts",
     icon: <ConstructionIcon />
@@ -59,9 +59,9 @@ const navigationList = [
     icon: <EvStation />
   },
   {
-    id: 'forms',
-    label: "Manage Forms",
-    path: "/app/forms",
+    id: 'checklists',
+    label: "Manage Checklists",
+    path: "/app/checklists",
     icon: <MenuIcon />
   },
   {
@@ -210,7 +210,7 @@ export default function Layout() {
     if(currentPage) setTitle(currentPage[0].label);
     console.log(currentPage[0].label);
   },[location]);
-
+  console.log(commonState.org_name);
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -231,7 +231,7 @@ export default function Layout() {
             justifyContent='space-between'
           >
             <Typography variant="h6" noWrap component="div">
-              {title}
+              {commonState.org_name || title}
             </Typography>
             <Box  onClick={openRightSideHandler} >
               <Avatar>AD</Avatar>
