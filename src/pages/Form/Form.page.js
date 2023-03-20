@@ -3,7 +3,6 @@ import $ from "jquery";
 import React, { useEffect, useRef } from "react";
 import { PreviewCheckbox, PreviewRadio, PreviewSelect } from "./components/previewFormElements";
 import './style.css';
-import { Box, Button, Drawer, FormControlLabel, Grid, TextField, Typography, Autocomplete} from "@mui/material";
 window.jQuery = $;
 window.$ = $;
 
@@ -11,6 +10,7 @@ require("jquery-ui-sortable");
 require("formBuilder");
 
 const formData = [{"type":"radio-group","required":false,"label":"Radio Group","inline":false,"name":"radio-group-1678485001702-0","access":false,"other":false,"values":[{"label":"Option 1","value":"option-1","selected":false},{"label":"Option 2","value":"option-2","selected":false},{"label":"Option 3","value":"option-3","selected":false}]},{"type":"date","required":false,"label":"Date Field","className":"form-control","name":"date-1678485006202-0","access":false},{"type":"select","required":false,"label":"Select","className":"form-control","name":"select-1678485013169-0","access":false,"multiple":false,"values":[{"label":"Option 1","value":"option-1","selected":true},{"label":"Option 2","value":"option-2","selected":false},{"label":"Option 3","value":"option-3","selected":false}]}];
+let formBuilder = null;
 
 const FormPage = () => {
   const FormBuildRef = useRef(null);
@@ -60,6 +60,7 @@ const FormPage = () => {
             <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
                   Manage Check Lists
             </Typography>
+            <Divider sx={{ mb: 2 }} />
           <Dialog open={open} onClose={()=>{
             setOpen(false)
           }} >
