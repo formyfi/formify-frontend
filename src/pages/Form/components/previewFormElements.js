@@ -76,7 +76,7 @@ const PreviewSelect = ({ data }) => {
   );
 };
 
-const TextField = ({ data })=>{
+const PreviewTextField = ({ data })=>{
 
   return <FormControl>
   <InputLabel htmlFor="my-input">Email address</InputLabel>
@@ -84,4 +84,4 @@ const TextField = ({ data })=>{
   <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
 </FormControl>
 }
-export { PreviewRadio, PreviewCheckbox, PreviewSelect, TextField };
+export { PreviewRadio, PreviewCheckbox, PreviewSelect, PreviewTextField };

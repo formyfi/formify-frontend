@@ -1,6 +1,4 @@
-.form-builder {
-    display: none;
-}
+
 .form-builder:first-child {
     display: block;
 }

@@ -114,11 +114,18 @@ const onSubmit = ()=>{
 const openEditUserForm = (id, row) => {
   let userData = {...userForm}
   userData['id'] = id;
+  debugger
   userData['first_name'] = row.first_name;
   userData['last_name'] = row.last_name;
   userData['user_name'] = row.user_name;
-  userData['user_type'] = row.user_type_value;
-  userData['station'] = row.station_value;
+  userData['user_type_value'] = {
+    label: UserTypeOptions.filter(typeOption => typeOption.value === row.user_type).at(0).label,
+    value: row.user_type
+  };
+  userData['station_value'] = {
+    label: row.station_name,
+    value: row.station_id
+  };
  
   serUserForm(userData);
   setDrawer(true);
