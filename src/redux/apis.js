@@ -100,6 +100,31 @@ const apis = {
          }
         })
      },
+    //  forms
+     getCheckLists : (values)=>{
+        return request.get('/api/checklist/get_checklists', {
+         headers: {
+             'Accept': 'application/json',
+         },
+         params: values,
+        })
+     },
+    
+     upsertCheckLists : (values)=>{
+        return request.post('/api/checklist/upsert_checklist',values, {
+         headers: {
+             'Accept': 'application/json',
+         }
+        })
+     },
+
+     deleteCheckLists : (values)=>{
+        return request.post('/api/checklist/delete_checklist',values, {
+         headers: {
+             'Accept': 'application/json',
+         }
+        })
+     },
 }
 
 

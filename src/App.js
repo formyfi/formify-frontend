@@ -13,6 +13,7 @@ import PageNotFound from "pages/PageNotFound";
 import StationPage from "pages/Station/Station.page";
 import UserPage from "pages/User/User.page";
 import PartsPage from "pages/Parts/Parts.page";
+import ManageForm from "pages/Form/ManageForm.page";
 const theme = createTheme({
   palette: {
     primary: {
@@ -33,7 +34,7 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="app/" element={<Layout />} >
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
-                  <Route path="checklists" element={<FormPage />}  ></Route>
+                  <Route path="checklists" element={<ManageForm />}  ></Route>
                   <Route path="stations" element={<StationPage />}  ></Route>
                   <Route path="parts" element={<PartsPage />}  ></Route>
                   <Route path="users" element={<UserPage />}  ></Route>

@@ -62,7 +62,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function EnhancedTable({
+export default function AdvanceTable({
   headCells,
   rows,
   handleTableChange,
@@ -125,27 +125,14 @@ export default function EnhancedTable({
                     tabIndex={-1}
                     key={row.id}
                   >
-                    <TableCell component="th" id={labelId} scope="row">
-                      {row.id}
-                    </TableCell>
-                    {station || part && <TableCell align="left">{row.name}</TableCell>}
-                    {station && <TableCell align="left">{row.type}</TableCell>}
-                    {user && <TableCell align="left">{row.first_name}</TableCell>}
-                    {user && <TableCell align="left">{row.last_name}</TableCell>}
-                    {user && <TableCell align="left">{row.user_name}</TableCell>}
-                    {user && <TableCell align="left">{row.user_type}</TableCell>}
-                    {user && <TableCell align="left">{row.station_name}</TableCell>}
-                    {part && <TableCell align="left">{row.description}</TableCell>}
-                    {!row.renderButton && <TableCell align="left">
-                      {editButton && onEdit && <Button variant="outlined" onClick={()=>onEdit(row.id, row)} startIcon={<EditIcon />}>
-                        Edit
-                      </Button>}
-                      &nbsp;&nbsp;&nbsp;
-                      {deleteButton && onDelete && <Button variant="outlined" onClick={()=>onDelete(row.id)} ml='2' color="error" startIcon={<DeleteIcon />}>
-                        Delete
-                      </Button>}
-                    </TableCell>}
-                    {row.renderButton}
+                    {
+                      headCells.map((cell)=>{
+                        if(cell.render){
+                          return cell.render(row)
+                        }
+                        return <TableCell align="left">{row[cell.id]?row[cell.id]:"-"}</TableCell>
+                      })
+                    }
                   </TableRow>
                 );
               })}
