@@ -11,6 +11,12 @@ import {
   InputLabel,
   Input,
   FormHelperText,
+  TextField,
+  TextareaAutosize,
+  Autocomplete,
+  Box,
+  Typography,
+  Button,
 } from "@mui/material";
 import React from "react";
 
@@ -23,12 +29,12 @@ const PreviewRadio = ({ data }) => {
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue={selected.length > 0 ? selected[0].value : ""}
-        name="radio-buttons-group"
+       
       >
         {data.values.map((option) => (
           <FormControlLabel
             value={option.value}
-            control={<Radio />}
+            control={<Radio   name={option.name} value={option.value} />}
             label={option.label}
           />
         ))}
@@ -45,7 +51,7 @@ const PreviewCheckbox = ({ data }) => {
         {data.values.map((option) => (
           <FormControlLabel
             control={
-              <Checkbox value={option.value} defaultChecked={option.selected} />
+              <Checkbox name={option.name} value={option.value} defaultChecked={option.selected} />
             }
             label={option.label}
           />
@@ -64,6 +70,7 @@ const PreviewSelect = ({ data }) => {
         id="demo-simple-select"
         fullWidth
         label={data.label}
+        name={data.name}
         // onChange={}
       >
         {data.values.map((option) => (
@@ -76,12 +83,106 @@ const PreviewSelect = ({ data }) => {
   );
 };
 
-const PreviewTextField = ({ data })=>{
+const PreviewTextField = ({ data }) => {
+  return (
+    <FormControl fullWidth>
+      <TextField
+        id={data.label}
+        label={data.label}
+        variant="outlined"
+        fullWidth
+        name={data.name}
+      />
+      <FormHelperText>{data?.description}</FormHelperText>
+    </FormControl>
+  );
+};
 
-  return <FormControl>
-  <InputLabel htmlFor="my-input">Email address</InputLabel>
-  <Input id="my-input" aria-describedby="my-helper-text" />
-  <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
-</FormControl>
-}
-export { PreviewRadio, PreviewCheckbox, PreviewSelect, PreviewTextField };
+const PreviewTextAreaField = ({ data }) => {
+  return (
+    <FormControl fullWidth>
+      <TextField
+        id={data.label}
+        label={data.label}
+        variant="outlined"
+        multiline
+        fullWidth
+        name={data.name}
+        minRows={3}
+      />
+      <FormHelperText>{data?.description}</FormHelperText>
+    </FormControl>
+  );
+};
+
+const PreviewNumberField = ({ data }) => {
+  return (
+    <FormControl >
+      <TextField
+        type={"number"}
+        id={data.label}
+        label={data.label}
+        name={data.name}
+        variant="outlined"
+      />
+      <FormHelperText>{data?.description}</FormHelperText>
+    </FormControl>
+  );
+};
+
+const PreviewAutoCompleteField = ({ data }) => {
+  return (
+    <FormControl fullWidth>
+      <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={data.values}
+        freeSolo={!data.requireValidOption}
+        sx={{ width: 300 }}
+        renderInput={(params) => (
+          <TextField {...params}  name={data.name} type="text" label={data.label} />
+        )}
+      />
+    </FormControl>
+  );
+};
+
+const PreviewDateField = ({ data }) => {
+  return (
+    <FormControl>
+      <TextField type={"date"}  name={data.name} id={data.label} label={data.label} focused />
+      <FormHelperText>{data?.description}</FormHelperText>
+    </FormControl>
+  );
+};
+
+const PreviewTypography = ({ data }) => {
+  return (
+    <Box my={1} className="preview-typo"  >
+      <Typography variant={data.subtype} component={data.subtype}>
+        {data.label}
+      </Typography>
+    </Box>
+  );
+};
+
+const PreviewUploadField = ({ data }) => {
+  return (
+    <FormControl>
+      <Button variant="outlined">Upload</Button>
+    </FormControl>
+  );
+};
+
+export {
+  PreviewRadio,
+  PreviewCheckbox,
+  PreviewSelect,
+  PreviewTextField,
+  PreviewTextAreaField,
+  PreviewNumberField,
+  PreviewAutoCompleteField,
+  PreviewDateField,
+  PreviewTypography,
+  PreviewUploadField
+};

@@ -12,3 +12,28 @@
 .access-wrap {
     display: none !important;
 }
+.formbuilder-icon-hidden {
+    display: none !important;
+}
+
+.preview-typo h1 {
+    font-size: 3rem;
+}
+.preview-typo h2 {
+    font-size: 2.5rem;
+}
+.preview-typo h3 {
+    font-size: 2rem;
+}
+.preview-typo h4 {
+    font-size: 1.8rem;
+}
+.preview-typo h5 {
+    font-size: 1.5rem;
+}
+.preview-typo h6 {
+    font-size: 1.1rem;
+}
+.preview-typo p {
+    font-size: 1.1rem;
+}
