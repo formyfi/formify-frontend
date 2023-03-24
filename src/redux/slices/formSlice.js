@@ -3,7 +3,7 @@ import apis from "redux/apis"
 
 
 const getCheckLists = createAsyncThunk(
-  'get_users',
+  'get_checklists',
   async (values) => {
     const response = await apis.getCheckLists(values).then((response)=>{
         if(response.status === 200){
@@ -26,7 +26,7 @@ const getCheckLists = createAsyncThunk(
 )
 
 const updateCheckListAction = createAsyncThunk(
-    'upsert_user',
+    'upsert_checklist',
     async (values) => {
       const response = await apis.upsertCheckLists(values).then((response)=>{
           if(response.status === 200){
@@ -71,7 +71,7 @@ const updateCheckListAction = createAsyncThunk(
     }
   )
 
-  const deleteAction = createAsyncThunk(
+  const deleteChecklist = createAsyncThunk(
     'deleteAction',
     async (values) => {
       const response = await apis.deleteCheckLists(values).then((response)=>{
@@ -95,7 +95,7 @@ const updateCheckListAction = createAsyncThunk(
   )
 
 const checkListsReducer = createSlice({
-    name: 'user',
+    name: 'checkList',
     initialState: {
       listData: [],
       loader: false,
@@ -120,19 +120,19 @@ const checkListsReducer = createSlice({
       [updateCheckListAction.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.listData = payload.user_list
+          state.listData = payload.checkilists
         }
       },
       [createCheckListAction.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.user_list = payload.user_list
+          state.listData = payload.checkilists
         }
       },
-      [deleteAction.fulfilled]: (state, { payload })=>{
+      [deleteChecklist.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.user_list = payload.user_list
+          state.listData = payload.checkilists
         }
       },
     }
@@ -143,7 +143,7 @@ const checkListsReducer = createSlice({
     getCheckLists,
     updateCheckListAction,
     createCheckListAction,
-    deleteAction,
+    deleteChecklist,
   }
 
   // Export the reducer, either as a default or named export

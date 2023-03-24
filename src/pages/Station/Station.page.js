@@ -7,6 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import { getStationList, upsertStation, deleteStation } from "redux/slices/stationSlice";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const schema = yup.object({
   // email: yup.string().required(),
@@ -66,14 +68,21 @@ const StationPage = () => {
 }, [])
 
 const onSubmit = ()=>{
-  dispatch(upsertStation(
+  const res = dispatch(upsertStation(
     {...stationForm, org_id: commonState.org_id}))
-    setDrawer(false);
-    setStationForm(initialStationForm);
+    
+    res.then((resp) => {
+      if(resp && resp.payload && resp.payload.success){
+        toast.success("Station added successfully.");
+        setDrawer(false);
+        setStationForm(initialStationForm);
+      } else toast.error("There was error adding station, please contact your technical team");
+    });
 }
 
   return (
     <Box>
+      <ToastContainer />
       <Box
         display={"flex"}
         justifyContent="space-between"
@@ -116,8 +125,13 @@ const onSubmit = ()=>{
           setNewStation(false);
         }}
         onDelete={(id) => {
-          dispatch(deleteStation(
+         const res = dispatch(deleteStation(
             {id:id, org_id: commonState.org_id}))
+            res.then((resp) => {
+              if(resp && resp.payload && resp.payload.success){
+                toast.success("Station deleted successfully.");
+              } else toast.error("There was an error deleting station, please contact your technical team");
+            });
         }}
       />
       <Drawer

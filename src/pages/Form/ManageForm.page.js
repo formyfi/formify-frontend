@@ -16,41 +16,25 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getUsers,
-  updateUser,
-  createUser,
-  deleteUser,
-} from "redux/slices/userSlice";
 import { getStationList } from "redux/slices/stationSlice";
-import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FormatAlignCenter from "@mui/icons-material/FormatAlignCenter";
 import AdvanceTable from "components/AdvanceTable";
-import { createCheckListAction, getCheckLists } from "redux/slices/formSlice";
+import { createCheckListAction, getCheckLists, deleteChecklist } from "redux/slices/formSlice";
 import { getPartList } from "redux/slices/partSlice";
+import {useNavigate} from "react-router-dom";
 
 const schema = yup
   .object({
     title: yup.string().required(),
-    station_id: yup.string().required(),
+    station: yup.string().required(),
     part: yup.string().required(),
   })
   .required();
 
-
-const initialUserForm = {
-  id: "",
-  first_name: "",
-  last_name: "",
-  user_name: "",
-  password: "",
-  user_type: "",
-  user_type_value: "",
-  station: "",
-  station_value: "",
-};
 
 const ManageForm = () => {
   const [drawer, setDrawer] = useState(false);
@@ -67,7 +51,7 @@ const ManageForm = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const stationState = useSelector((state) => state.station);
   const partStates = useSelector((state) => state.part);
@@ -81,9 +65,14 @@ const ManageForm = () => {
   }, []);
 
   const onSubmit = (values) => {
-    console.log(values);
-    dispatch(createCheckListAction({ ...values, org_id: commonState.org_id }));
-    setDrawer(false);
+    const res = dispatch(createCheckListAction({ ...values, org_id: commonState.org_id }));
+    res.then((resp) => {
+      if(resp && resp.payload && resp.payload.success){
+        toast.success("Checklist added successfully.");
+        setDrawer(false);
+        reset();
+      } else toast.error("Make sure nothing is empty or reach out to teach team");
+    });
   };
 
   const headCells = [
@@ -122,7 +111,7 @@ const ManageForm = () => {
           <TableCell align="left">
             <Button
               variant="outlined"
-              onClick={onGenerate}
+              onClick={()=>onGenerate(record)}
               startIcon={<FormatAlignCenter />}
             >
               Generate form
@@ -139,7 +128,7 @@ const ManageForm = () => {
             </Button>
             <Button
               variant="outlined"
-              onClick={onGenerate}
+              onClick={()=>onDelete(record)}
               color="error"
               startIcon={<DeleteIcon />}
             >
@@ -162,19 +151,30 @@ const ManageForm = () => {
       setValue('part_name',record?.part_name);
   };
 
-  const onDelete = () => {};
+  const onDelete = (record) => {
+   const res = dispatch(deleteChecklist(
+      {id:record.id, org_id: commonState.org_id}));
+    res.then((resp) => {
+      if(resp && resp.payload && resp.payload.success){
+        toast.success("Checklist deleted successfully.");
+      } else toast.error("There was error deleting this checklist please contact your technical team");
+    });  
+  };
 
-  const onGenerate = () => {};
+  const onGenerate = (record) => {
+    navigate(`/app/formBuilder/${record.id}`);
+  };
 
   return (
     <Box>
+      <ToastContainer />
       <Box
         display={"flex"}
         justifyContent="space-between"
         alignItems={"center"}
       >
         <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
-          Manage CheckLists
+          Manage Checklists
         </Typography>
         <Box>
           <Button
@@ -184,6 +184,7 @@ const ManageForm = () => {
             onClick={() => {
               setDrawer(true);
               setIsEdit(false);
+              reset();
             }}
           >
             Add CheckList
@@ -194,6 +195,7 @@ const ManageForm = () => {
         headCells={headCells}
         user={true}
         rows={checkListState.listData}
+        loading={checkListState.listData && checkListState.listData.length ? false : true}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}
@@ -238,9 +240,9 @@ const ManageForm = () => {
               options={stationState.station_list}
               value={getValues('station_name')}
               fullWidth
-              {...register("station_id")}
+              {...register("station")}
               onChange={(e,selected)=>{
-                setValue('station_id',selected.id,{
+                setValue('station',selected.id,{
                   shouldValidate: true,
                   shouldTouch: true,
                   shouldDirty: true
@@ -300,6 +302,7 @@ const ManageForm = () => {
                 variant="contained"
                 onClick={() => {
                   setDrawer(false);
+                  reset()
                 }}
                 sx={{ mt: 3, mb: 2, ml: 2 }}
               >

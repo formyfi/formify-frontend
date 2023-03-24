@@ -8,7 +8,8 @@ import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import { getUsers, updateUser, createUser, deleteUser } from "redux/slices/userSlice";
 import { getStationList } from "redux/slices/stationSlice";
-import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const schema = yup.object({
 }).required();
@@ -105,16 +106,21 @@ const UserPage = () => {
 const onSubmit = ()=>{
 
   const upsertUser = userForm.id ? updateUser : createUser;
-  dispatch(upsertUser(
-    {user_details: userForm, org_id: commonState.org_id}))
-    setDrawer(false);
-    serUserForm(initialUserForm);
+ const res = dispatch(upsertUser(
+    {user_details: userForm, org_id: commonState.org_id}));
+    res.then((resp) => {
+      if(resp && resp.payload && resp.payload.success){
+        toast.success("User added successfully.");
+        setDrawer(false);
+        serUserForm(initialUserForm);
+      } else toast.error("There was error adding user, please contact your technical team");
+    });
+    
 }
 
 const openEditUserForm = (id, row) => {
   let userData = {...userForm}
   userData['id'] = id;
-  debugger
   userData['first_name'] = row.first_name;
   userData['last_name'] = row.last_name;
   userData['user_name'] = row.user_name;
@@ -134,6 +140,7 @@ const openEditUserForm = (id, row) => {
 
   return (
     <Box>
+      <ToastContainer />
       <Box
         display={"flex"}
         justifyContent="space-between"
@@ -170,8 +177,13 @@ const openEditUserForm = (id, row) => {
           openEditUserForm(id, row);
         }}
         onDelete={(id) => {
-          dispatch(deleteUser(
+         const res =  dispatch(deleteUser(
             {id:id, org_id: commonState.org_id}))
+            res.then((resp) => {
+              if(resp && resp.payload && resp.payload.success){
+                toast.success("User deleted successfully.");
+              } else toast.error("There was error deleting user, please contact your technical team");
+            });
         }}
       />
       <Drawer

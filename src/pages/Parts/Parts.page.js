@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import { getPartList, upsertPart, deletePart } from "redux/slices/partSlice";
@@ -72,15 +74,21 @@ const PartsPage = () => {
 }, [])
 
 const onSubmit = ()=>{
-  dispatch(upsertPart(
+ const res = dispatch(upsertPart(
     {...partForm, org_id: commonState.org_id}))
-    setDrawer(false);
-    setPartForm(initialPartForm);
-    setSelectedImage(null)
+    res.then((resp) => {
+      if(resp && resp.payload && resp.payload.success){
+        toast.success("Part added successfully.");
+        setDrawer(false);
+        setPartForm(initialPartForm);
+        setSelectedImage(null)
+      } else toast.error("There was error adding this part please contact your technical team");
+    });
 }
 
   return (
     <Box>
+       <ToastContainer />
       <Box
         display={"flex"}
         justifyContent="space-between"
@@ -125,8 +133,13 @@ const onSubmit = ()=>{
           setNewPart(false);
         }}
         onDelete={(id) => {
-          dispatch(deletePart(
+         const res = dispatch(deletePart(
             {id:id, org_id: commonState.org_id}))
+            res.then((resp) => {
+              if(resp && resp.payload && resp.payload.success){
+                toast.success("Part deleted successfully.");
+              } else toast.error("There was error deleting this part please contact your technical team");
+            });
         }}
       />
       <Drawer

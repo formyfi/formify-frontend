@@ -66,18 +66,12 @@ export default function AdvanceTable({
   headCells,
   rows,
   handleTableChange,
-  editButton,
-  deleteButton,
-  onEdit,
-  onDelete,
-  station,
-  user,
-  part
+  loading
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   useEffect(()=>{
     handleTableChange({order, orderBy, page, rowsPerPage})
@@ -97,7 +91,7 @@ export default function AdvanceTable({
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  
+
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2, px: 2 }}>
@@ -115,8 +109,8 @@ export default function AdvanceTable({
               rowCount={rows.length}
               headCells={headCells}
             />
-            <TableBody>
-              {rows.map((row, index) => {
+          <TableBody>
+              {rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
@@ -136,7 +130,7 @@ export default function AdvanceTable({
                   </TableRow>
                 );
               })}
-            </TableBody>
+            </TableBody> 
           </Table>
         </TableContainer>
         <TablePagination

@@ -35,6 +35,7 @@ function App() {
                 <Route path="app/" element={<Layout />} >
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
                   <Route path="checklists" element={<ManageForm />}  ></Route>
+                  <Route path="formBuilder/:form_id" element={<FormPage />}  ></Route>
                   <Route path="stations" element={<StationPage />}  ></Route>
                   <Route path="parts" element={<PartsPage />}  ></Route>
                   <Route path="users" element={<UserPage />}  ></Route>

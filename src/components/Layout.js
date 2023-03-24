@@ -175,7 +175,7 @@ const RightSideMenu = ({ anchorEl,open,logout,handleClose })=>{
 
 export default function Layout() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openRightSide = Boolean(anchorEl);
@@ -207,10 +207,8 @@ export default function Layout() {
 
   useEffect(()=>{
     const currentPage = navigationList.filter((item)=>item.path === location.pathname);
-    if(currentPage) setTitle(currentPage[0].label);
-    console.log(currentPage[0].label);
+    if(currentPage && currentPage.length) setTitle(currentPage[0].label);
   },[location]);
-  console.log(commonState.org_name);
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -263,6 +261,7 @@ export default function Layout() {
             <ListItem key={list.id} disablePadding>
               <ListItemButton onClick={()=>{
                 navigate(list.path)
+                setOpen(false)
               }} >
                 <ListItemIcon>
                   {list.icon}

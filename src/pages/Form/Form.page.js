@@ -1,25 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Dialog, DialogContent, DialogTitle, Divider, Typography,  } from "@mui/material";
+import { Box, Dialog,Drawer, DialogContent, DialogTitle, Divider, Typography,  } from "@mui/material";
 import $ from "jquery";
 import React, { useEffect, useRef } from "react";
 import { PreviewCheckbox, PreviewRadio, PreviewSelect, PreviewTextField } from "./components/previewFormElements";
 import './style.css';
+import { useParams } from 'react-router-dom';
+import { ReactFormBuilder } from 'react-form-builder2';
+import 'react-form-builder2/dist/app.css';
 window.jQuery = $;
 window.$ = $;
 
 require("jquery-ui-sortable");
 require("formBuilder");
 
-const formData = [{"type":"radio-group","required":false,"label":"Radio Group","inline":false,"name":"radio-group-1678485001702-0","access":false,"other":false,"values":[{"label":"Option 1","value":"option-1","selected":false},{"label":"Option 2","value":"option-2","selected":false},{"label":"Option 3","value":"option-3","selected":false}]},{"type":"date","required":false,"label":"Date Field","className":"form-control","name":"date-1678485006202-0","access":false},{"type":"select","required":false,"label":"Select","className":"form-control","name":"select-1678485013169-0","access":false,"multiple":false,"values":[{"label":"Option 1","value":"option-1","selected":true},{"label":"Option 2","value":"option-2","selected":false},{"label":"Option 3","value":"option-3","selected":false}]}];
+const formData = [];
 
-const FormPage = () => {
+const FormPage = (props) => {
   const FormBuildRef = useRef(null);
   const [open, setOpen] = React.useState(false);
   const [previewData, setPreviewData] = React.useState([]);
   let formBuilder = null;
 
+  const params = useParams()
+  const form_id = params.form_id; //This form id should be used to store the form json in forms table and should used for fetching saved form json
   useEffect(() => {
-    console.log(FormBuildRef.current);
     if(formBuilder === null){
       formBuilder = $(FormBuildRef.current).formBuilder({
         formData,
@@ -41,21 +45,39 @@ const FormPage = () => {
           console.log(formData);
         },
       });
-      console.log('As2d5s')
     }
   }, []);
-
+  var items = [{
+    key: 'Header',
+    name: 'Header Text',
+    icon: 'fa fa-header',
+    static: true,
+    content: 'Placeholder Text...'
+  },
+  {
+    key: 'Paragraph',
+    name: 'Paragraph',
+    static: true,
+    icon: 'fa fa-paragraph',
+    content: 'Placeholder Text...'
+  }];
   return ( <div>
             <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
-                  Manage Check Lists
+                  Create Form
             </Typography>
             <Divider sx={{ mb: 2 }} />
-          <Dialog open={open} onClose={()=>{
-            setOpen(false)
-          }} >
-              <DialogTitle>Form Preview</DialogTitle>
+            <Drawer
+              open={open} 
+              onClose={()=>{
+                setOpen(false)
+              }}
+              anchor="right"
+              PaperProps={{ sx: { width: "1000px" } }}
+              variant={"temporary"}
+            >
+              <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>Preview Form</Typography>
               <Divider />
-              <DialogContent>
+              <div>
                 <form>
                   {
                     previewData.map((previewObj) => {
@@ -79,9 +101,10 @@ const FormPage = () => {
                     })
                   }
                 </form>
-              </DialogContent>
-          </Dialog>
-      <div id="fb-editor" ref={FormBuildRef} />
+              </div>
+              </Drawer>
+              <ReactFormBuilder url='path/to/GET/initial.json'  saveUrl='path/to/POST/built/form.json' />
+      {/* <div id="fb-editor" ref={FormBuildRef} /> */}
   </div>)
 };
 

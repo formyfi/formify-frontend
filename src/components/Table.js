@@ -77,7 +77,7 @@ export default function EnhancedTable({
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   useEffect(()=>{
     handleTableChange({order, orderBy, page, rowsPerPage})
@@ -116,7 +116,7 @@ export default function EnhancedTable({
               headCells={headCells}
             />
             <TableBody>
-              {rows.map((row, index) => {
+              {rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
@@ -128,7 +128,7 @@ export default function EnhancedTable({
                     <TableCell component="th" id={labelId} scope="row">
                       {row.id}
                     </TableCell>
-                    {station || part && <TableCell align="left">{row.name}</TableCell>}
+                    {(station || part) && <TableCell align="left">{row.name}</TableCell>}
                     {station && <TableCell align="left">{row.type}</TableCell>}
                     {user && <TableCell align="left">{row.first_name}</TableCell>}
                     {user && <TableCell align="left">{row.last_name}</TableCell>}
