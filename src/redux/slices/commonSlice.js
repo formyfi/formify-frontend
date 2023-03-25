@@ -24,6 +24,18 @@ const loginApiAction = createAsyncThunk(
   }
 )
 
+const logoutApiAction = createAsyncThunk(
+  'auth/logout',
+  async () => {
+    const response = await apis.logout().then((response)=>{
+      if(response.status === 200){
+        return response.data
+      }
+    })
+    return response
+  }
+)
+
 const commonSlice = createSlice({
     name: 'common',
     initialState: {
@@ -34,6 +46,7 @@ const commonSlice = createSlice({
       token: localStorage.getItem('app_token'),
       org_id: localStorage.getItem('app_org_id'),
       org_name: localStorage.getItem('app_org_name'),
+      user_type_id: localStorage.getItem('app_user_type_id'),
       loader: false,
     },
     reducers: {
@@ -45,6 +58,7 @@ const commonSlice = createSlice({
       localStorage.removeItem('app_user_id')
       localStorage.removeItem('app_org_id')
       localStorage.removeItem('app_org_name')
+      localStorage.removeItem('app_user_type_id')
       }
     },
     extraReducers: {
@@ -59,10 +73,12 @@ const commonSlice = createSlice({
           state.token = payload.token
           state.user_id = payload.user_id
           state.org_id = payload.org_id
+          state.user_type_id = payload.user_type_id
           localStorage.setItem('app_token', payload.token)
           localStorage.setItem('app_user_id', payload.user_id)
           localStorage.setItem('app_org_id', payload.org_id)
           localStorage.setItem('app_org_name', payload.org_name)
+          localStorage.setItem('app_user_type_id', payload.user_type_id)
         } else {
           state.error = payload.message
           state.isLogged = false
@@ -79,6 +95,7 @@ const commonSlice = createSlice({
 
   export {
     loginApiAction,
+    logoutApiAction
   }
   
   export const {

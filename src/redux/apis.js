@@ -15,6 +15,15 @@ const apis = {
        })
     },
 
+    logout : ()=>{
+        return request.post('/api/auth/logout', {
+         headers: {
+             'Accept': 'application/json',
+             'Authorization': `Bearer ${token}`
+         }
+        })
+     },
+
     //Stations
     stationList : (values)=>{
         return request.get('/api/stations/get_station_list', {

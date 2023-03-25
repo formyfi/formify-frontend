@@ -67,7 +67,7 @@ export default function SignIn() {
   
   React.useEffect(()=>{
       if(commonState.isLogged === true){
-        navigate('/app/dashboard')
+        parseInt(commonState.user_type_id) === 3 ? navigate('/app/tasks') : navigate('/app/dashboard');
       }
   }, [commonState])
 

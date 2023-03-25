@@ -112,11 +112,11 @@ export default function EnhancedTable({
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={rows && rows.length}
               headCells={headCells}
             />
             <TableBody>
-              {rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
+              {rows && rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
@@ -155,7 +155,7 @@ export default function EnhancedTable({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={rows && rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

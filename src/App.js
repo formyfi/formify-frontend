@@ -13,6 +13,7 @@ import PageNotFound from "pages/PageNotFound";
 import StationPage from "pages/Station/Station.page";
 import UserPage from "pages/User/User.page";
 import PartsPage from "pages/Parts/Parts.page";
+import TasksPage from "pages/Tasks/Tasks.page";
 import ManageForm from "pages/Form/ManageForm.page";
 const theme = createTheme({
   palette: {
@@ -38,6 +39,7 @@ function App() {
                   <Route path="formBuilder/:form_id" element={<FormPage />}  ></Route>
                   <Route path="stations" element={<StationPage />}  ></Route>
                   <Route path="parts" element={<PartsPage />}  ></Route>
+                  <Route path="tasks" element={<TasksPage />}  ></Route>
                   <Route path="users" element={<UserPage />}  ></Route>
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
                 </Route>

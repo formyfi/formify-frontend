@@ -29,7 +29,7 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { Avatar, Menu, MenuItem } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from 'redux/slices/commonSlice';
+import { logout, logoutApiAction } from 'redux/slices/commonSlice';
 
 const drawerWidth = 240;
 
@@ -38,36 +38,42 @@ const navigationList = [
     id: 'dashboard',
     label: "Admin Dashboard",
     path: "/app/dashboard",
+    role: 1,
     icon: <DashboardIcon />
   },
   {
     id: 'users',
     label: "Manage Users",
     path: "/app/users",
+    role: 1,
     icon: <PeopleIcon />
   },
   {
     id: 'parts',
     label: "Manage Parts",
     path: "/app/parts",
+    role: 1,
     icon: <ConstructionIcon />
   },
   {
     id: 'station',
     label: "Manage Stations",
     path: "/app/stations",
+    role: 1,
     icon: <EvStation />
   },
   {
     id: 'checklists',
     label: "Manage Checklists",
     path: "/app/checklists",
+    role: 1,
     icon: <MenuIcon />
   },
   {
     id: 'tasks',
     label: "Tasks",
     path: "/app/tasks",
+    role: 3,
     icon: <InsertDriveFileIcon />
   },
 ]
@@ -257,8 +263,8 @@ export default function Layout() {
         </DrawerHeader>
         <Divider />
         <List>
-          {navigationList.map((list, index) => (
-            <ListItem key={list.id} disablePadding>
+          { navigationList.map((list, index) => (
+            (list.role === parseInt(commonState.user_type_id) ? <ListItem key={list.id} disablePadding>
               <ListItemButton onClick={()=>{
                 navigate(list.path)
                 setOpen(false)
@@ -268,12 +274,13 @@ export default function Layout() {
                 </ListItemIcon>
                 <ListItemText primary={list.label} />
               </ListItemButton>
-            </ListItem>
+            </ListItem>:null)
           ))}
         </List>
       </Drawer>
       <RightSideMenu logout={()=>{
-        dispatch(logout())
+          const res = dispatch(logoutApiAction())
+          res.then(()=>dispatch(logout()))
         navigate('/login')
       }} anchorEl={anchorEl} open={openRightSide} handleClose={openRightSideCloseHandler} />
       <Main open={open}>
