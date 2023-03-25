@@ -16,6 +16,15 @@
     display: none !important;
 }
 
+.preview-img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+/* li[type="uploadImage"] a[type="edit"] {
+    display: none !important;
+} */
+
 .preview-typo h1 {
     font-size: 3rem;
 }
