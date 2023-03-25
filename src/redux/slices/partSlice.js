@@ -25,6 +25,52 @@ const getPartList = createAsyncThunk(
   }
 )
 
+const getPartsByStation = createAsyncThunk(
+  'get_parts_by_station',
+  async (values) => {
+    const response = await apis.getPartsByStation(values).then((response)=>{
+        if(response.status === 200){
+            return response.data
+          }
+        }).catch((err)=>{
+          if(err.response && err.response.status === 401 && err.response.data){
+            return {
+              success: false,
+              message : err.response.data.message
+            }
+          }
+          return {
+            success: false,
+            message : "Something went wrong"
+          }
+    })
+    return response
+  }
+)
+
+const getPartVnumbers = createAsyncThunk(
+  'get_part_vnumbers',
+  async (values) => {
+    const response = await apis.getPartVnumbers(values).then((response)=>{
+        if(response.status === 200){
+            return response.data
+          }
+        }).catch((err)=>{
+          if(err.response && err.response.status === 401 && err.response.data){
+            return {
+              success: false,
+              message : err.response.data.message
+            }
+          }
+          return {
+            success: false,
+            message : "Something went wrong"
+          }
+    })
+    return response
+  }
+)
+
 const upsertPart = createAsyncThunk(
     'upsert_part',
     async (values) => {
@@ -114,7 +160,9 @@ const partSlice = createSlice({
   export {
     getPartList,
     upsertPart,
-    deletePart
+    deletePart,
+    getPartVnumbers,
+    getPartsByStation
   }
 
   // Export the reducer, either as a default or named export

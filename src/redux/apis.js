@@ -4,8 +4,7 @@ const request =  axios.create({
     baseURL: process.env.REACT_APP_API_BASE?process.env.REACT_APP_API_BASE:"http://127.0.0.1:8000"
 });
 const token = localStorage.getItem('app_token');
-// axios.defaults.header.common['Authorization'] = token;
-// debugger
+
 const apis = {
     login : (values)=>{
        return request.post('/api/auth/login',values, {
@@ -92,6 +91,26 @@ const apis = {
      //Parts
     partList : (values)=>{
         return request.get('/api/parts/get_part_list', {
+         headers: {
+             'Accept': 'application/json',
+             'Authorization': `Bearer ${token}`
+         },
+         params: values,
+        })
+     },
+
+     getPartsByStation : (values)=>{
+        return request.get('/api/parts/get_parts_by_station', {
+         headers: {
+             'Accept': 'application/json',
+             'Authorization': `Bearer ${token}`
+         },
+         params: values,
+        })
+     },
+
+     getPartVnumbers : (values)=>{
+        return request.get('/api/parts/get_part_vnumbers', {
          headers: {
              'Accept': 'application/json',
              'Authorization': `Bearer ${token}`
