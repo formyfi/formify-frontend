@@ -37,173 +37,7 @@ window.$ = $;
 require("jquery-ui-sortable");
 require("formBuilder");
 
-let form_json = [
-  {
-    "type": "autocomplete",
-    "required": false,
-    "label": "Autocomplete",
-    "className": "form-control",
-    "name": "autocomplete-1679678353678-0",
-    "access": false,
-    "requireValidOption": false,
-    "values": [
-      {
-        "label": "Option 1",
-        "value": "option-1",
-        "selected": true
-      },
-      {
-        "label": "Option 2",
-        "value": "option-2",
-        "selected": false
-      },
-      {
-        "label": "Option 3",
-        "value": "option-3",
-        "selected": false
-      }
-    ]
-  },
-  {
-    "type": "button",
-    "label": "Button",
-    "subtype": "button",
-    "className": "btn-default btn",
-    "name": "button-1679678354148-0",
-    "access": false,
-    "style": "default"
-  },
-  {
-    "type": "checkbox-group",
-    "required": false,
-    "label": "Checkbox Group",
-    "toggle": false,
-    "inline": false,
-    "name": "checkbox-group-1679678360648-0",
-    "access": false,
-    "other": false,
-    "values": [
-      {
-        "label": "Option 1",
-        "value": "option-1",
-        "selected": true
-      }
-    ]
-  },
-  {
-    "type": "date",
-    "required": false,
-    "label": "Date Field",
-    "className": "form-control",
-    "name": "date-1679678361245-0",
-    "access": false
-  },
-  {
-    "type": "file",
-    "required": false,
-    "label": "File Upload",
-    "className": "form-control",
-    "name": "file-1679678361708-0",
-    "access": false,
-    "subtype": "file",
-    "multiple": false
-  },
-  {
-    "type": "header",
-    "subtype": "h1",
-    "label": "Header",
-    "access": false
-  },
-  {
-    "type": "hidden",
-    "name": "hidden-1679678362853-0",
-    "access": false
-  },
-  {
-    "type": "number",
-    "required": false,
-    "label": "Number",
-    "className": "form-control",
-    "name": "number-1679678363498-0",
-    "access": false
-  },
-  {
-    "type": "paragraph",
-    "subtype": "p",
-    "label": "Paragraph",
-    "access": false
-  },
-  {
-    "type": "radio-group",
-    "required": false,
-    "label": "Radio Group",
-    "inline": false,
-    "name": "radio-group-1679678364412-0",
-    "access": false,
-    "other": false,
-    "values": [
-      {
-        "label": "Option 1",
-        "value": "option-1",
-        "selected": false
-      },
-      {
-        "label": "Option 2",
-        "value": "option-2",
-        "selected": false
-      },
-      {
-        "label": "Option 3",
-        "value": "option-3",
-        "selected": false
-      }
-    ]
-  },
-  {
-    "type": "select",
-    "required": false,
-    "label": "Select",
-    "className": "form-control",
-    "name": "select-1679678364985-0",
-    "access": false,
-    "multiple": false,
-    "values": [
-      {
-        "label": "Option 1",
-        "value": "option-1",
-        "selected": true
-      },
-      {
-        "label": "Option 2",
-        "value": "option-2",
-        "selected": false
-      },
-      {
-        "label": "Option 3",
-        "value": "option-3",
-        "selected": false
-      }
-    ]
-  },
-  {
-    "type": "text",
-    "required": false,
-    "label": "Text Field",
-    "className": "form-control",
-    "name": "text-1679678365597-0",
-    "access": false,
-    "subtype": "text"
-  },
-  {
-    "type": "textarea",
-    "required": false,
-    "label": "Text Area",
-    "className": "form-control",
-    "name": "textarea-1679678366349-0",
-    "access": false,
-    "subtype": "textarea"
-  }
-];
+let form_json = "";
 
 const FormPage = (props) => {
   const FormBuildRef = useRef(null);
@@ -218,8 +52,38 @@ const FormPage = (props) => {
   useEffect(() => {
     
     if (formBuilder === null) {
+      let fields = [
+        {
+          label: "Upload Image",
+          attrs: {
+            type: "uploadImage",
+            onclick: ()=>{
+              alert('a')
+            }
+          },
+          icon: "<i class='formbuilder-icon-file input-control input-control-10 ui-sortable-handle' ></i>",
+        },
+      ];
+      let templates = {
+        uploadImage: function (fieldData) {
+          return {
+            field: '<span id="' + fieldData.name + '">',
+            onRender: function () {
+              document.getElementById(fieldData.name).innerHTML = `<div class="wrapper_${fieldData.id}" ><input class="form-control image-upload" name="${fieldData.name}" type="file" id="${fieldData.id}" /></div>`
+  
+              const imageUpload = document.getElementsByClassName('image-upload');
+              if(imageUpload.length > 0){
+                // imageUpload[0].addEventListener('change',()=>{
+                //   // alert('a');
+                // })
+              }
+            },
+          };
+        },
+      };
+
       formBuilder = $(FormBuildRef.current).formBuilder({
-        form_json,
+        form_json: formJson,
         actionButtons: [
           {
             id: "smile",
@@ -238,6 +102,8 @@ const FormPage = (props) => {
         onSave: (evt, formData) => {
           console.log(formData);
         },
+        fields,
+        templates
       });
     }
   }, []);
@@ -250,6 +116,7 @@ const FormPage = (props) => {
       if(resp && resp.payload && resp.payload.data){
         form_json = JSON.parse(resp.payload.data.form_json)
         setFormJson(form_json);
+        formBuilder.actions.setData(form_json)
       } 
     });
   }, []);
