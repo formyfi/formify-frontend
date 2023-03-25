@@ -174,6 +174,15 @@ const PreviewUploadField = ({ data }) => {
   );
 };
 
+const PreviewImage = ({ data }) => {
+  console.log(data)
+  return data.value && (
+    <FormControl>
+      <img src={data.value} class="preview-img" alt="preview-details" />
+    </FormControl>
+  );
+};
+
 export {
   PreviewRadio,
   PreviewCheckbox,
@@ -184,5 +193,6 @@ export {
   PreviewAutoCompleteField,
   PreviewDateField,
   PreviewTypography,
-  PreviewUploadField
+  PreviewUploadField,
+  PreviewImage
 };
