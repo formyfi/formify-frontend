@@ -128,6 +128,15 @@ const apis = {
         })
      },
 
+     upsertCheckListForm : (values)=>{
+        return request.post('/api/checklist/upsert_checklist_form',values, {
+         headers: {
+             'Accept': 'application/json',
+             'Authorization': `Bearer ${token}`
+         }
+        })
+     },
+
      deleteCheckLists : (values)=>{
         return request.post('/api/checklist/delete_checklist',values, {
          headers: {

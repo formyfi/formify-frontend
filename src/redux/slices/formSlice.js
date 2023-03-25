@@ -47,6 +47,29 @@ const updateCheckListAction = createAsyncThunk(
       return response
     }
   )
+
+  const updateCheckListForm = createAsyncThunk(
+    'upsert_checklist_form',
+    async (values) => {
+      const response = await apis.upsertCheckListForm(values).then((response)=>{
+          if(response.status === 200){
+              return response.data
+            }
+          }).catch((err)=>{
+            if(err.response && err.response.status === 401 && err.response.data){
+              return {
+                success: false,
+                message : err.response.data.message
+              }
+            }
+            return {
+              success: false,
+              message : "Something went wrong"
+            }
+      })
+      return response
+    }
+  )
   
   const createCheckListAction = createAsyncThunk(
     'createCheckListAction',
@@ -123,6 +146,12 @@ const checkListsReducer = createSlice({
           state.listData = payload.checkilists
         }
       },
+      [updateCheckListForm.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.listData = payload.checkilists
+        }
+      },
       [createCheckListAction.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
@@ -142,6 +171,7 @@ const checkListsReducer = createSlice({
   export {
     getCheckLists,
     updateCheckListAction,
+    updateCheckListForm,
     createCheckListAction,
     deleteChecklist,
   }

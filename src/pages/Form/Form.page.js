@@ -23,17 +23,21 @@ import {
   PreviewTypography,
   PreviewUploadField,
 } from "./components/previewFormElements";
+import { updateCheckListForm, getCheckLists } from "redux/slices/formSlice";
 import "./style.css";
 import { useParams } from "react-router-dom";
-import { ReactFormBuilder } from "react-form-builder2";
+import { useDispatch, useSelector } from "react-redux";
 import "react-form-builder2/dist/app.css";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+
 window.jQuery = $;
 window.$ = $;
 
 require("jquery-ui-sortable");
 require("formBuilder");
 
-const formData = [
+let form_json = [
   {
     "type": "autocomplete",
     "required": false,
@@ -205,6 +209,7 @@ const FormPage = (props) => {
   const FormBuildRef = useRef(null);
   const [open, setOpen] = React.useState(false);
   const [previewData, setPreviewData] = React.useState([]);
+  const [formJson, setFormJson] = React.useState({});
   
   const { form_id } = useParams();  //This form id should be used to store the form json in forms table and should used for fetching saved form json
   
@@ -214,7 +219,7 @@ const FormPage = (props) => {
     
     if (formBuilder === null) {
       formBuilder = $(FormBuildRef.current).formBuilder({
-        formData,
+        form_json,
         actionButtons: [
           {
             id: "smile",
@@ -236,16 +241,35 @@ const FormPage = (props) => {
       });
     }
   }, []);
+  const dispatch = useDispatch();
+  const commonState = useSelector((state) => state.common);
+
+  React.useEffect(() => {
+    const res = dispatch(getCheckLists({ id: form_id, slug: 'form_only' }));
+    res.then((resp) => {
+      if(resp && resp.payload && resp.payload.data){
+        form_json = JSON.parse(resp.payload.data.form_json)
+        setFormJson(form_json);
+      } 
+    });
+  }, []);
   
   const onSubmit = ()=>{
-    const formData = formBuilder.actions.getData();
-    
-    console.log({formData});
-
+    const formData = previewData;
+    if(formData){
+      const res = dispatch(updateCheckListForm({ form_json: formData, id: form_id , org_id: commonState.org_id }));
+      res.then((resp) => {
+        if(resp && resp.payload && resp.payload.success){
+          toast.success("Form added successfully.");
+        } else toast.error("Somthing is wrong please contact teach team");
+        setOpen(false);
+      });
+    }
   }
 
   return (
     <div>
+        <ToastContainer />
       <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
         Create Form
       </Typography>
@@ -345,7 +369,7 @@ const FormPage = (props) => {
             })}
           </Box>
           <Box sx={{ mb:5 }}  >
-              <Button variant="contained" > Submit </Button>
+              <Button variant="contained" onClick={()=>onSubmit()}> Submit </Button>
               <Button variant="contained" sx={{ mx:2 }}  > Cancel </Button>
           </Box>
         </Box>
