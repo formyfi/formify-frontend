@@ -26,6 +26,8 @@ jobs:
       with:
         server: ftp.sru.jdh.mybluehost.me
         username: git@sru.jdh.mybluehost.me
+        local-dir: build/
+        server-dir: /
         password: hello@123456
         exclude: |
           **/.git*
