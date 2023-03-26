@@ -1,34 +1,41 @@
-name: Node.js CI
+name: PHP Composer
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ develop ]
+    branches: [ "main" ]
+
+permissions:
+  contents: read
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.19.0]
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - uses: actions/checkout@v3
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ftp.sru.jdh.mybluehost.me
         username: git@sru.jdh.mybluehost.me
-        local-dir: build/
-        server-dir: /
         password: hello@123456
+        server-dir: server/
         exclude: |
           **/.git*
           **/.git*/**
