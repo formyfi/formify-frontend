@@ -42,7 +42,6 @@ const commonSlice = createSlice({
       locale: "en",
       dir: "ltr",
       user_details: {},
-      user_stations:[],
       isLogged: localStorage.getItem('app_token') != null?localStorage.getItem('app_token'):false,
       user_id: localStorage.getItem('app_user_id'),
       token: localStorage.getItem('app_token'),
