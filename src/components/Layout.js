@@ -160,16 +160,6 @@ const RightSideMenu = ({ anchorEl,open,logout,handleClose })=>{
     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
   >
-    <MenuItem onClick={handleClose}>
-      <Avatar /> Profile
-    </MenuItem>
-    <MenuItem onClick={handleClose}>
-      <ListItemIcon>
-        <Settings fontSize="small" />
-      </ListItemIcon>
-       Settings
-    </MenuItem>
-    <Divider />
     <MenuItem onClick={logout}>
       <ListItemIcon>
         <Logout fontSize="small" />
@@ -279,9 +269,11 @@ export default function Layout() {
         </List>
       </Drawer>
       <RightSideMenu logout={()=>{
-          const res = dispatch(logoutApiAction())
-          res.then(()=>dispatch(logout()))
         navigate('/login')
+          dispatch(logoutApiAction())
+          dispatch(logout())
+            localStorage.removeItem('persist:root')
+        
       }} anchorEl={anchorEl} open={openRightSide} handleClose={openRightSideCloseHandler} />
       <Main open={open}>
         <DrawerHeader />

@@ -2,9 +2,9 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { blue, purple, teal, indigo, blueGrey, deepPurple } from "@mui/material/colors";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
+import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import { persistor, store } from "./redux/store";
 import LoginPage from "./pages/Auth/LoginPage";
 import { Dashboard } from "pages/Dashboard/Dashboard.pages";
 import Layout from "components/Layout";
@@ -29,6 +29,7 @@ function App() {
     <div className="App">
       <React.StrictMode>
         <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider theme={theme}>
             <BrowserRouter>
               <Routes>
@@ -47,6 +48,7 @@ function App() {
               </Routes>
             </BrowserRouter>
           </ThemeProvider>
+          </PersistGate>
         </Provider>
       </React.StrictMode>
     </div>

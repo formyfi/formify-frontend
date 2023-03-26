@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import apis from "redux/apis"
+import storage from 'redux-persist/lib/storage'
 
 const loginApiAction = createAsyncThunk(
   'auth/login',
@@ -42,13 +43,13 @@ const commonSlice = createSlice({
       locale: "en",
       dir: "ltr",
       user_details: {},
-      isLogged: localStorage.getItem('app_token') != null?localStorage.getItem('app_token'):false,
-      user_id: localStorage.getItem('app_user_id'),
-      token: localStorage.getItem('app_token'),
-      org_id: localStorage.getItem('app_org_id'),
-      org_name: localStorage.getItem('app_org_name'),
-      user_type_id: localStorage.getItem('app_user_type_id'),
-      user_stations: JSON.parse(localStorage.getItem('app_user_stations')) || [],
+      isLogged: false,
+      user_id: null,
+      token: '',
+      org_id: null,
+      org_name: '',
+      user_type_id: null,
+      user_stations: [],
       loader: false,
     },
     reducers: {
@@ -56,12 +57,8 @@ const commonSlice = createSlice({
         state.isLogged = false
         state.token = null
         state.user_id = null
+        storage.removeItem('persist:root')
         localStorage.removeItem('app_token')
-      localStorage.removeItem('app_user_id')
-      localStorage.removeItem('app_org_id')
-      localStorage.removeItem('app_org_name')
-      localStorage.removeItem('app_user_type_id')
-      localStorage.removeItem('app_user_stations')
       }
     },
     extraReducers: {
@@ -80,11 +77,6 @@ const commonSlice = createSlice({
           state.user_details = payload.user_details
           state.user_stations = payload.stations
           localStorage.setItem('app_token', payload.token)
-          localStorage.setItem('app_user_id', payload.user_id)
-          localStorage.setItem('app_org_id', payload.org_id)
-          localStorage.setItem('app_org_name', payload.org_name)
-          localStorage.setItem('app_user_type_id', payload.user_type_id)
-          localStorage.setItem('app_user_stations', JSON.stringify(payload.stations))
         } else {
           state.error = payload.message
           state.isLogged = false
