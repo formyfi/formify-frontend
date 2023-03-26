@@ -176,9 +176,9 @@ const PreviewUploadField = ({ data }) => {
 
 const PreviewImage = ({ data }) => {
   console.log(data)
-  return data.value && (
+  return data.value && data.value?.success && (
     <FormControl>
-      <img src={data.value} class="preview-img" alt="preview-details" />
+      <img src={process.env.REACT_APP_API_BASE +'/'+ data.value?.file_path} class="preview-img" alt="preview-details" />
     </FormControl>
   );
 };
