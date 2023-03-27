@@ -1,25 +1,12 @@
 import {
   Box,
-  Button,
-  Drawer,
-  FormControlLabel,
-  Grid,
-  TextField,
-  Typography,
-  Autocomplete,
-  Divider,
   Container,
 } from "@mui/material";
-import EnhancedTable from "components/Table";
-import React, { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import React from "react";
+
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
-import * as yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { getPartsByStation, getPartVnumbers } from "redux/slices/partSlice";
+
+
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
@@ -27,13 +14,23 @@ import SelectInfo from "./components/SelectInfo";
 import FormSubmission from "./components/FormSubmission";
 import FormPreview from "./components/FormReview";
 
-const steps = ["Select Info", "Form Submission", "Validate Form"];
+const steps = ["Select Info", "Fill out checklist"];
 
 const TasksPage = () => {
-  const dispatch = useDispatch();
-  const commonState = useSelector((state) => state.common);
 
+  const [stationValue, setStationValue] = React.useState('');
+  const [partValue, setPartValue] = React.useState('');
+  const [vnumberValue, setVnumberValue] = React.useState('');
   const [activeStep, setActiveStep] = React.useState(0);
+  const [partList, setPartList] = React.useState([]);
+  const [partVnum, setPartVnum] = React.useState([]);
+
+  const handleChange = (name, value) => {
+    if(name === 'station') setStationValue(value);
+    else if(name === 'part') setPartValue(value);
+    else setVnumberValue(value);
+  }
+
 
   const handleNext = () => {
     if((activeStep +  1 )< steps.length){
@@ -61,11 +58,11 @@ const TasksPage = () => {
         </Stepper>
         {/* step 1- Select  */}
         {activeStep === 0 && (
-          <SelectInfo handleNext={handleNext} handleBack={handleBack} />
+          <SelectInfo stationValue={stationValue}  partValue={partValue}  vnumberValue={vnumberValue} partList={partList} partVnum={partVnum} setPartList={setPartList} setPartVnum={setPartVnum} handleChange={handleChange} handleNext={handleNext} handleBack={handleBack} />
         )}
 
         {/* step 2- form  */}
-        {activeStep === 1 && <FormSubmission  handleNext={handleNext} handleBack={handleBack}  />}
+        {activeStep === 1 && <FormSubmission stationValue={stationValue} partValue={partValue} vnumberValue={vnumberValue} handleNext={handleNext} handleBack={handleBack}  />}
 
         {/* step 3- submit form  */}
         {activeStep === 2 && <FormPreview  handleNext={handleNext} handleBack={handleBack}  />}

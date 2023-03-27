@@ -229,6 +229,16 @@ const ManageForm = () => {
               margin="normal"
               required
               fullWidth
+              {...register("id")}
+              label="ID"
+              error={errors.title?.message}
+              helperText={errors.title?.message}
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               {...register("title")}
               label="Title"
               error={errors.title?.message}

@@ -146,7 +146,17 @@ const apis = {
          params: values,
         })
      },
-    
+     
+     getTaskForm : (values)=>{
+        return request.get('/api/tasks/get_task_form', {
+         headers: {
+             'Accept': 'application/json',
+             'Authorization': `Bearer ${token}`
+         },
+         params: values,
+        })
+     }, 
+
      upsertCheckLists : (values)=>{
         return request.post('/api/checklist/upsert_checklist',values, {
          headers: {

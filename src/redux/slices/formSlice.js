@@ -25,6 +25,29 @@ const getCheckLists = createAsyncThunk(
   }
 )
 
+const getTaskForm = createAsyncThunk(
+  'get_task_form',
+  async (values) => {
+    const response = await apis.getTaskForm(values).then((response)=>{
+        if(response.status === 200){
+            return response.data
+          }
+        }).catch((err)=>{
+          if(err.response && err.response.status === 401 && err.response.data){
+            return {
+              success: false,
+              message : err.response.data.message
+            }
+          }
+          return {
+            success: false,
+            message : "Something went wrong"
+          }
+    })
+    return response
+  }
+)
+
 const updateCheckListAction = createAsyncThunk(
     'upsert_checklist',
     async (values) => {
@@ -121,6 +144,7 @@ const checkListsReducer = createSlice({
     name: 'checkList',
     initialState: {
       listData: [],
+      form_data:[],
       loader: false,
     },
     extraReducers: {
@@ -139,7 +163,20 @@ const checkListsReducer = createSlice({
         state.loader = false
         state.error = "something went wrong"
       },
-
+      [getTaskForm.pending]: (state)=>{
+        state.loader = true
+        state.listData = []
+      },
+      [getTaskForm.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.form_data = payload.form_data
+        }
+      },
+      [getTaskForm.rejected]: (state,action)=>{
+        state.loader = false
+        state.error = "something went wrong"
+      },
       [updateCheckListAction.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
@@ -174,6 +211,7 @@ const checkListsReducer = createSlice({
     updateCheckListForm,
     createCheckListAction,
     deleteChecklist,
+    getTaskForm
   }
 
   // Export the reducer, either as a default or named export
