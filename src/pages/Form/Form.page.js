@@ -195,10 +195,20 @@ const FormPage = (props) => {
 
             fieldsRecords.push({  ...fObject, value : process.env.REACT_APP_API_BASE + '/' + fObject.value?.file_path });
           } else {
+            if (fObject.type === "checkbox-group" || fObject.type === "radio-group") {
+              for (let i = 0; i < fObject.values.length; i++) {
+                const element = fObject.values[i];
+                if(element.value == null || (!element.value)){
+                  element.value = ''
+                }
+              }
+            }
             fieldsRecords.push(fObject);
           }
+          
+          
         }
-        console.log(form_json);
+        
         formBuilder.actions.setData(fieldsRecords);
       }
     });
