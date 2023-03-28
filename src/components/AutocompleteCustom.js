@@ -26,14 +26,14 @@ const AutocompleteCustom = ({ options, value,onChange, id, ...props })=>{
 
 const AutocompleteCustomMulti = ({ options,value,placeholder,onChange, id, ...props })=>{
 
-    let selectedValue = options.filter(item => item.value === value)
     debugger
     return <div>
         <Autocomplete
             {...props}
-            value={selectedValue.length > 0?selectedValue:''}
+            value={typeof value === "object"?value:[]}
             onChange={(event, newValue) => {
-              onChange(newValue.value);
+                debugger
+              onChange(newValue);
             }}
             id={id}
             multiple={true}

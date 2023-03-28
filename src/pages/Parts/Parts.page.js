@@ -10,7 +10,7 @@ import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import { getPartList, upsertPart, deletePart } from "redux/slices/partSlice";
 import { getStationList } from "redux/slices/stationSlice";
-import { AutocompleteCustom } from "components/AutocompleteCustom";
+import { AutocompleteCustom, AutocompleteCustomMulti } from "components/AutocompleteCustom";
 
 const schema = yup.object({
   // email: yup.string().required(),
@@ -227,12 +227,11 @@ const onSubmit = ()=>{
               helperText={errors?.v_numbers?.message}
               autoFocus
             />
-            <AutocompleteCustom
+            <AutocompleteCustomMulti
               value={partForm?.station_value}
               style = {{ marginTop : 25 }}
               onChange={(newValue) => {
                 let partData = {...partForm}
-
                 partData['station_value'] = newValue;
                 setPartForm(partData);
               }}
