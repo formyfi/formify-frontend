@@ -25,6 +25,10 @@
     display: none !important;
 } */
 
+.save-template {
+    display: none !important;
+}
+
 .preview-typo h1 {
     font-size: 3rem;
 }
@@ -46,3 +50,4 @@
 .preview-typo p {
     font-size: 1.1rem;
 }
+
