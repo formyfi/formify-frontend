@@ -10,6 +10,7 @@ import * as yup from "yup";
 import {useDispatch, useSelector} from "react-redux";
 import { getPartList, upsertPart, deletePart } from "redux/slices/partSlice";
 import { getStationList } from "redux/slices/stationSlice";
+import AutocompleteCustom from "components/AutocompleteCustom";
 
 const schema = yup.object({
   // email: yup.string().required(),
@@ -127,7 +128,8 @@ const onSubmit = ()=>{
           partData['name'] = row.name;
           partData['description'] = row.description;
           partData['v_numbers'] = row.v_numbers;
-          
+          partData['station_value'] = row.station_id;
+
           setPartForm(partData);
           setDrawer(true);
           setNewPart(false);
@@ -225,26 +227,22 @@ const onSubmit = ()=>{
               helperText={errors?.v_numbers?.message}
               autoFocus
             />
-
-            <Autocomplete
+            <AutocompleteCustom
               value={partForm?.station_value}
-              getOptionSelected={(option, value) => option.value === value}
               style = {{ marginTop : 25 }}
-              onChange={(event, newValue) => {
+              onChange={(newValue) => {
                 let partData = {...partForm}
-                console.log(newValue.value)
-                partData['station_value'] = newValue.value;
+
+                partData['station_value'] = newValue;
                 setPartForm(partData);
               }}
-              inputValue={stationInputValue}
-              onInputChange={(event, newInputValue) => {
-                setStationInputValue(newInputValue);
-              }}
-              id={partForm.station}
+              id={'station'}
               options={stationState.station_list}
               fullWidth
               renderInput={(params) => <TextField {...params} label="Station" />}
             />
+
+
             {selectedImage ? (
               <div style={{ marginTop: '10' }}>
               <Button sx={{ mt: 3, mb: 2}} onClick={() => setSelectedImage(null)} variant="contained" component="label">
