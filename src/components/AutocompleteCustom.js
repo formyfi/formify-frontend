@@ -3,43 +3,41 @@ import React from "react";
 
 
 
-const AutocompleteCustom = ({ options, value,onChange, id, ...props })=>{
+const AutocompleteCustom = ({ options, value, textLabel, onChange, id, ...props })=>{
 
     let selectedValue = options.filter(item => item.value === value)
-    debugger
+    
     return <div>
         <Autocomplete
             {...props}
-            value={selectedValue.length > 0?selectedValue[0]:''}
+            value={selectedValue.length > 0 ? selectedValue[0] : ''}
             onChange={(event, newValue) => {
               onChange(newValue.value);
             }}
             id={id}
             options={options}
             fullWidth
-            renderInput={(params) => <TextField {...params} label="Station" />}
+            renderInput={(params) => <TextField {...params} label={textLabel} />}
         />
     </div>
 }
 
 
 
-const AutocompleteCustomMulti = ({ options,value,placeholder,onChange, id, ...props })=>{
+const AutocompleteCustomMulti = ({ options, value, textLabel, onChange, id, ...props })=>{
 
-    debugger
     return <div>
         <Autocomplete
             {...props}
-            value={typeof value === "object"?value:[]}
+            value={typeof value === "object" ? value : []}
             onChange={(event, newValue) => {
-                debugger
               onChange(newValue);
             }}
             id={id}
             multiple={true}
             options={options}
             fullWidth
-            renderInput={(params) => <TextField {...params} label={placeholder} />}
+            renderInput={(params) => <TextField {...params} label={textLabel} />}
         />
     </div>
 }

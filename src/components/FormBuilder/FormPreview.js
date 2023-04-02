@@ -116,7 +116,7 @@ import {
             </Box>
             <Box sx={{ mb: 5 }}>
               <Button variant="contained" onClick={() => onSubmit()}>
-                Submit
+                Save Form
               </Button>
               <Button variant="contained" onClick={() => onCancel()} sx={{ mx: 2 }}>
                 Cancel

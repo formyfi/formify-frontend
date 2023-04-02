@@ -128,8 +128,12 @@ const onSubmit = ()=>{
           partData['name'] = row.name;
           partData['description'] = row.description;
           partData['v_numbers'] = row.v_numbers;
-          partData['station_value'] = row.station_id;
-
+          if(stationState.station_list && stationState.station_list.length && row.station_id){
+             partData['station_value'] = stationState.station_list.filter((st)=>{
+              let temp = row.station_id.split(',').map((t)=>parseInt(t));
+              return temp.includes(st.id);
+            })
+          } else partData['station_value'] = [];
           setPartForm(partData);
           setDrawer(true);
           setNewPart(false);
@@ -237,8 +241,7 @@ const onSubmit = ()=>{
               }}
               id={'station'}
               options={stationState.station_list}
-              fullWidth
-              renderInput={(params) => <TextField {...params} label="Station" />}
+              textLabel={"Station"}
             />
 
 

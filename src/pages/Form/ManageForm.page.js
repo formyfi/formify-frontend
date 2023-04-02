@@ -26,6 +26,7 @@ import AdvanceTable from "components/AdvanceTable";
 import { createCheckListAction, getCheckLists, deleteChecklist } from "redux/slices/formSlice";
 import { getPartList } from "redux/slices/partSlice";
 import {useNavigate} from "react-router-dom";
+import { getPartsByStation } from "redux/slices/partSlice";
 
 const schema = yup
   .object({
@@ -39,6 +40,7 @@ const schema = yup
 const ManageForm = () => {
   const [drawer, setDrawer] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [partList, setPartList] = React.useState([]);
 
   const {
     register,
@@ -65,13 +67,15 @@ const ManageForm = () => {
   }, []);
 
   const onSubmit = (values) => {
-    const res = dispatch(createCheckListAction({ ...values, org_id: commonState.org_id }));
+    const res = dispatch(createCheckListAction({ ...values, org_id: commonState.org_id, unique_id: values.station +'_'+values.part  }));
     res.then((resp) => {
       if(resp && resp.payload && resp.payload.success){
         toast.success("Checklist added successfully.");
         setDrawer(false);
         reset();
-      } else toast.error("Make sure nothing is empty or reach out to teach team");
+      } else if(resp && resp.payload && resp.payload.message) {
+        toast.error(resp.payload.message);
+      }else toast.error("Make sure nothing is empty or reach out to teach team");
     });
   };
 
@@ -262,6 +266,13 @@ const ManageForm = () => {
                   shouldTouch: true,
                   shouldDirty: true
                 })
+                const res = dispatch(getPartsByStation(
+                  {station_id: selected.id}))
+                  res.then((resp)=>{
+                    if(resp && resp.payload && resp.payload.success){
+                      setPartList(resp.payload.part_list)
+                    }
+                  })
               }}
               option
               renderInput={(params) => (
@@ -276,7 +287,7 @@ const ManageForm = () => {
             <Autocomplete
               style={{ marginTop: 25 }}
               id="controllable-states-demo"
-              options={partStates.part_list}
+              options={partList}
               value={getValues('part_name')}
               {...register("part")}
               onChange={(e,selected)=>{

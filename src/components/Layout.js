@@ -254,7 +254,7 @@ export default function Layout() {
         <Divider />
         <List>
           { navigationList.map((list, index) => (
-            (list.role === parseInt(commonState.user_type_id) ? <ListItem key={list.id} disablePadding>
+            ((parseInt(commonState.user_type_id) === 3 && list.role === 3) || (parseInt(commonState.user_type_id) === 1 ) ? <ListItem key={list.id} disablePadding>
               <ListItemButton onClick={()=>{
                 navigate(list.path)
                 setOpen(false)

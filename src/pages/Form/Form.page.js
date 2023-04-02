@@ -306,7 +306,7 @@ const FormPage = (props) => {
         variant={"temporary"}
       >
         <Box sx={{ ml:3 }} >
-        <FormPreview onSubmit={onSubmit} title="Form Preview" previewData={previewData} />
+        <FormPreview onSubmit={onSubmit} onCancel={()=>{setOpen(false)}}title="Form Preview" previewData={previewData} />
         </Box>
       </Drawer>
       <div id="fb-editor" ref={FormBuildRef} />

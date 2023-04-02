@@ -24,7 +24,7 @@ import { visuallyHidden } from "@mui/utils";
 import { Button } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import FormatAlignCenter from '@mui/icons-material/FormatAlignCenter';
-
+import Skeleton from '@mui/material/Skeleton';
 
 function EnhancedTableHead(props) {
   const { order, orderBy, onRequestSort,headCells } = props;
@@ -116,7 +116,7 @@ export default function EnhancedTable({
               headCells={headCells}
             />
             <TableBody>
-              {rows && rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
+              {rows && rows.length && rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
