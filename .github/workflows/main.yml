@@ -22,6 +22,7 @@ jobs:
         username: git@sru.jdh.mybluehost.me
         password: hello@123456
         server_dir: /public_html
+        local_dir: /build
         exclude: |
           **/.git*
           **/.git*/**
