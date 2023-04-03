@@ -10,6 +10,7 @@ import { getUsers, updateUser, createUser, deleteUser } from "redux/slices/userS
 import { getStationList } from "redux/slices/stationSlice";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import { AutocompleteCustom, AutocompleteCustomMulti } from "components/AutocompleteCustom";
 
 const schema = yup.object({
 }).required();
@@ -128,10 +129,12 @@ const openEditUserForm = (id, row) => {
     label: UserTypeOptions.filter(typeOption => typeOption.value === row.user_type).at(0).label,
     value: row.user_type
   };
-  userData['station_value'] = {
-    label: row.station_name,
-    value: row.station_id
-  };
+  if(stationState.station_list && stationState.station_list.length && row.station_id){
+    userData['station_value'] = stationState.station_list.filter((st)=>{
+     let temp = row.station_id.split(',').map((t)=>parseInt(t));
+     return temp.includes(st.id);
+   })
+ } else userData['station_value'] = [];
  
   serUserForm(userData);
   setDrawer(true);
@@ -296,23 +299,17 @@ const openEditUserForm = (id, row) => {
               fullWidth
               renderInput={(params) => <TextField {...params} label="User Type" />}
             />
-
-            <Autocomplete
-              value={userForm.station_value}
+            <AutocompleteCustomMulti
+              value={userForm?.station_value}
               style = {{ marginTop : 25 }}
-              onChange={(event, newValue) => {
+              onChange={(newValue) => {
                 let userData = {...userForm}
                 userData['station_value'] = newValue;
                 serUserForm(userData);
               }}
-              inputValue={stationInputValue}
-              onInputChange={(event, newInputValue) => {
-                setStationInputValue(newInputValue);
-              }}
-              id={userForm.station}
+              id={'station'}
               options={stationState.station_list}
-              fullWidth
-              renderInput={(params) => <TextField {...params} label="Station" />}
+              textLabel={"Station"}
             />
             <div>
             <Button

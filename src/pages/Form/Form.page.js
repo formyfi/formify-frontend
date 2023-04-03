@@ -185,7 +185,7 @@ const FormPage = (props) => {
     window.previewImages = {};
     res.then((resp) => {
       if (resp && resp.payload && resp.payload.data) {
-        form_json = JSON.parse(resp.payload.data.form_json);
+        form_json = JSON.parse(resp.payload.data);
         const fieldsRecords = []
         for (let i = 0; i < form_json.length; i++) {
           const fObject = form_json[i];
