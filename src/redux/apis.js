@@ -4,11 +4,25 @@ const request =  axios.create({
     baseURL: process.env.REACT_APP_API_BASE?process.env.REACT_APP_API_BASE:"http://127.0.0.1:8000"
 });
 
+
+request.interceptors.response.use((res)=>{
+    return res
+},(res)=>{
+    debugger
+    let response = res.response;
+    if(response.status === 401){
+        // refresh page 
+        window.location.reload()
+    }
+    return response
+})
+
 const getToken = ()=>{
     const token = localStorage.getItem('app_token');
     
     return token
 }
+
 
 const apis = {
     login : (values)=>{
@@ -20,7 +34,7 @@ const apis = {
     },
 
     logout : ()=>{
-        return request.post('/api/auth/logout', {
+        return request.post('/api/auth/logout', {},{
          headers: {
              'Accept': 'application/json',
              'Authorization': `Bearer ${getToken()}`
