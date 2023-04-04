@@ -194,6 +194,15 @@ const apis = {
         })
      },
 
+     updateTaskForm : (values)=>{
+        return request.post('/api/tasks/update_task_form',values, {
+         headers: {
+             'Accept': 'application/json',
+             'Authorization': `Bearer ${getToken()}`
+         }
+        })
+     },
+
      deleteCheckLists : (values)=>{
         return request.post('/api/checklist/delete_checklist',values, {
          headers: {

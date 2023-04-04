@@ -37,7 +37,6 @@ import {
                 ) {
                   return <PreviewTypography data={previewObj} />;
                 }
-                console.log(previewObj.type);
                 if (previewObj.type === "radio-group") {
                   return (
                     <Box my={2}>
