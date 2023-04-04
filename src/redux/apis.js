@@ -8,10 +8,10 @@ const request =  axios.create({
 request.interceptors.response.use((res)=>{
     return res
 },(res)=>{
-    debugger
     let response = res.response;
     if(response.status === 401){
         // refresh page 
+        localStorage.clear()
         window.location.reload()
     }
     return response
