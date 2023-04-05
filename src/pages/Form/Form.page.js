@@ -11,19 +11,6 @@ import {
 } from "@mui/material";
 import $ from "jquery";
 import React, { useEffect, useRef } from "react";
-import {
-  PreviewAutoCompleteField,
-  PreviewCheckbox,
-  PreviewDateField,
-  PreviewImage,
-  PreviewNumberField,
-  PreviewRadio,
-  PreviewSelect,
-  PreviewTextAreaField,
-  PreviewTextField,
-  PreviewTypography,
-  PreviewUploadField,
-} from "../../components/FormBuilder/previewFormElements";
 import { updateCheckListForm, getCheckLists } from "redux/slices/formSlice";
 import "./style.css";
 import { useParams } from "react-router-dom";
@@ -31,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import "react-form-builder2/dist/app.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
-import { Upload } from "@mui/icons-material";
 import FormPreview from "../../components/FormBuilder/FormPreview";
 
 window.jQuery = $;

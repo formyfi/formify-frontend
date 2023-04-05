@@ -20,7 +20,7 @@ import {
     PreviewUploadField,
   } from "./previewFormElements";
   
-  const FormPreview = ({ title, previewData,onSubmit, onCancel }) => {
+  const FormPreview = ({ title, previewData,onSubmit,isSubmitable, onCancel }) => {
       
     return (<Box>
         <Typography component="h2" variant="h6" color="primary" sx={{ m: 2 }}>
@@ -28,7 +28,9 @@ import {
           </Typography>
           <Divider />
           <Box sx={{ mt: 3, width: 700 }}>
-            <Box component={"form"}>
+            <Box component={"form"} onSubmit={(e)=>{
+              console.log(e)
+            }} >
               {previewData.map((previewObj) => {
                 if (
                   ["h1", "h2", "h3", "h4", "h5", "h6", "p"].includes(
@@ -114,9 +116,12 @@ import {
               })}
             </Box>
             <Box sx={{ mb: 5 }}>
-              <Button variant="contained" onClick={() => onSubmit()}>
+              {!isSubmitable && <Button variant="contained" onClick={() => onSubmit()}>
                 Save Form
-              </Button>
+              </Button>}
+              {isSubmitable && <Button variant="contained" type="submit" >
+                Save Form
+              </Button>}
               <Button variant="contained" onClick={() => onCancel()} sx={{ mx: 2 }}>
                 Cancel
               </Button>

@@ -1,0 +1,331 @@
+import {
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  FormGroup,
+  Checkbox,
+  Select,
+  MenuItem,
+  InputLabel,
+  Input,
+  FormHelperText,
+  TextField,
+  TextareaAutosize,
+  Autocomplete,
+  Box,
+  Typography,
+  Button,
+} from "@mui/material";
+import { Field } from "formik";
+import React from "react";
+
+const PreviewRadio = ({ data, error, field }) => {
+  const selected = data.values.filter((itm) => itm.selected === true);
+
+  return (
+    <Field name={data.name}>
+      {({
+        field, // { name, value, onChange, onBlur }
+        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+        meta,
+      }) => (
+        <FormControl error={meta.touched && meta.error}>
+          <FormLabel id="demo-radio-buttons-group-label">
+            {data.label}
+          </FormLabel>
+          <RadioGroup
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue={selected.length > 0 ? selected[0].value : ""}
+            name={data.name}
+            {...field}
+          >
+            {data.values.map((option) => (
+              <FormControlLabel
+                value={option.value}
+                control={<Radio name={option.name} value={option.value} />}
+                label={option.label}
+              />
+            ))}
+          </RadioGroup>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
+      )}
+    </Field>
+  );
+};
+
+const PreviewCheckbox = ({ data, filledFormValue }) => {
+  return (
+    <Field name={data.name}>
+      {({
+        field, // { name, value, onChange, onBlur }
+        form: { touched, values, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+        meta,
+      }) => (
+        <FormControl error={meta.touched && meta.error}>
+          <FormLabel id="demo-radio-buttons-group-label">
+            {data.label}
+          </FormLabel>
+          <FormGroup>
+            {data.values.map((option) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name={option.name}
+                    value={option.value}
+                    defaultChecked={filledFormValue ? "" : option.selected}
+                    checked={
+                      values[option.name] &&
+                      typeof values[option.name] === "object" &&
+                      values[option.name].includes(option.value)
+                    }
+                  />
+                }
+                {...field}
+                label={option.label}
+              />
+            ))}
+          </FormGroup>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
+      )}
+    </Field>
+  );
+};
+
+const PreviewSelect = ({ data }) => {
+  return (
+    <Field name={data.name}>
+      {({
+        field, // { name, value, onChange, onBlur }
+        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+        meta,
+      }) => (
+        <FormControl error={meta.touched && meta.error} fullWidth>
+          <InputLabel id="demo-simple-select-label">{data.label}</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            fullWidth
+            label={data.label}
+            {...field}
+          >
+            {data.values.map((option) => (
+              <MenuItem value={option.value} selected={option.selected}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
+      )}
+    </Field>
+  );
+};
+
+const PreviewTextField = ({ data }) => {
+  return (
+    <Field name={data.name}>
+      {({
+        field, // { name, value, onChange, onBlur }
+        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+        meta,
+      }) => (
+        <FormControl error={meta.touched && meta.error}>
+          <TextField
+            id={data.label}
+            label={data.label}
+            variant="outlined"
+            fullWidth
+            error={meta.touched && meta.error}
+            {...field}
+          />
+          <FormHelperText>{data?.description}</FormHelperText>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
+      )}
+    </Field>
+  );
+};
+
+const PreviewTextAreaField = ({ data }) => {
+  return (
+    <Field name={data.name}>
+      {({
+        field, // { name, value, onChange, onBlur }
+        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+        meta,
+      }) => (
+        <FormControl error={meta.touched && meta.error}>
+          <TextField
+            id={data.label}
+            label={data.label}
+            variant="outlined"
+            multiline
+            fullWidth
+            name={data.name}
+            minRows={3}
+            error={meta.touched && meta.error}
+            {...field}
+          />
+          <FormHelperText>{data?.description}</FormHelperText>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
+      )}
+    </Field>
+  );
+};
+
+const PreviewNumberField = ({ data }) => {
+  return (
+    <Field name={data.name}>
+      {({
+        field, // { name, value, onChange, onBlur }
+        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+        meta,
+      }) => (
+        <FormControl error={meta.touched && meta.error}>
+          <TextField
+            type={"number"}
+            id={data.label}
+            label={data.label}
+            name={data.name}
+            variant="outlined"
+            error={meta.touched && meta.error}
+            {...field}
+          />
+          <FormHelperText>{data?.description}</FormHelperText>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
+      )}
+    </Field>
+  );
+};
+
+const PreviewAutoCompleteField = ({ data }) => {
+  return (
+    <Field name={data.name}>
+      {({
+        field, // { name, value, onChange, onBlur }
+        form: { touched, errors, values }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+        meta,
+      }) => (
+        <FormControl error={meta.touched && meta.error}>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={data.values}
+            freeSolo={!data.requireValidOption}
+            sx={{ width: 300 }}
+            value={values[data.name]}
+            onSelect={field.onChange}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name={data.name}
+                type="text"
+                error={meta.touched && meta.error}
+                label={data.label}
+                {...field}
+              />
+            )}
+          />
+          <FormHelperText>{data?.description}</FormHelperText>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
+      )}
+    </Field>
+  );
+};
+
+const PreviewDateField = ({ data }) => {
+  return (
+    <Field name={data.name}>
+      {({
+        field, // { name, value, onChange, onBlur }
+        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+        meta,
+      }) => (
+        <FormControl error={meta.touched && meta.error}>
+          <TextField
+            type={"date"}
+            name={data.name}
+            id={data.label}
+            label={data.label}
+            focused
+            error={meta.touched && meta.error}
+            {...field}
+          />
+          <FormHelperText>{data?.description}</FormHelperText>
+          {meta.touched && meta.error && (
+            <FormHelperText>{meta.error}</FormHelperText>
+          )}
+        </FormControl>
+      )}
+    </Field>
+  );
+};
+
+const PreviewTypography = ({ data }) => {
+  return (
+    <Box my={1} className="preview-typo">
+      <Typography variant={data.subtype} component={data.subtype}>
+        {data.label}
+      </Typography>
+    </Box>
+  );
+};
+
+const PreviewUploadField = ({ data }) => {
+  return (
+    <FormControl>
+      <Button variant="outlined">Upload</Button>
+    </FormControl>
+  );
+};
+
+const PreviewImage = ({ data }) => {
+  console.log(data);
+  return (
+    data.value &&
+    data.value?.success && (
+      <FormControl>
+        <img
+          src={process.env.REACT_APP_API_BASE + "/" + data.value?.file_path}
+          class="preview-img"
+          alt="preview-details"
+        />
+      </FormControl>
+    )
+  );
+};
+
+export {
+  PreviewRadio,
+  PreviewCheckbox,
+  PreviewSelect,
+  PreviewTextField,
+  PreviewTextAreaField,
+  PreviewNumberField,
+  PreviewAutoCompleteField,
+  PreviewDateField,
+  PreviewTypography,
+  PreviewUploadField,
+  PreviewImage,
+};

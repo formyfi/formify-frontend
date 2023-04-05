@@ -29,6 +29,7 @@ const PreviewRadio = ({ data }) => {
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue={selected.length > 0 ? selected[0].value : ""}
+        name={data.name}
        
       >
         {data.values.map((option) => (
@@ -53,6 +54,7 @@ const PreviewCheckbox = ({ data }) => {
             control={
               <Checkbox name={option.name} value={option.value} defaultChecked={option.selected} />
             }
+            name={data.name}
             label={option.label}
           />
         ))}
@@ -71,7 +73,6 @@ const PreviewSelect = ({ data }) => {
         fullWidth
         label={data.label}
         name={data.name}
-        // onChange={}
       >
         {data.values.map((option) => (
           <MenuItem value={option.value} selected={option.selected}>
