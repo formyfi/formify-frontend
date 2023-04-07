@@ -39,7 +39,6 @@ var drawerWidth = 50;
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   position: 'fixed',
-  zIndex: theme.zIndex.drawer + 1,
 }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -241,6 +240,7 @@ export default function Layout() {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
+          zIndex: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
@@ -250,13 +250,13 @@ export default function Layout() {
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
+        {/* <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
-        </DrawerHeader>
+        </DrawerHeader> */}
         <Divider />
-        <List>
+        <List  sx={{ mt: 7 }} >
           { navigationList.map((list, index) => (
             ((parseInt(commonState.user_type_id) === 3 && list.role === 3) || (parseInt(commonState.user_type_id) === 1 ) 
             ?
