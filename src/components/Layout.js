@@ -31,59 +31,9 @@ import { Logout, Settings } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, logoutApiAction } from 'redux/slices/commonSlice';
 
-const drawerWidth = 240;
+var drawerWidth = 240;
 
-const navigationList = [
-  {
-    id: 'dashboard',
-    label: "Admin Dashboard",
-    path: "/app/dashboard",
-    role: 1,
-    icon: <DashboardIcon />
-  },
-  {
-    id: 'users',
-    label: "Manage Users",
-    path: "/app/users",
-    role: 1,
-    icon: <PeopleIcon />
-  },
-  {
-    id: 'parts',
-    label: "Manage Parts",
-    path: "/app/parts",
-    role: 1,
-    icon: <ConstructionIcon />
-  },
-  {
-    id: 'station',
-    label: "Manage Departments",
-    path: "/app/stations",
-    role: 1,
-    icon: <EvStation />
-  },
-  {
-    id: 'checklists',
-    label: "Manage Checklists",
-    path: "/app/checklists",
-    role: 1,
-    icon: <MenuIcon />
-  },
-  {
-    id: 'form_builder',
-    label: "Form Builder",
-    path: "/app/formBuilder/0",
-    role: 1,
-    icon: <MenuIcon />
-  },
-  {
-    id: 'tasks',
-    label: "Tasks",
-    path: "/app/tasks",
-    role: 3,
-    icon: <InsertDriveFileIcon />
-  },
-]
+
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -178,7 +128,7 @@ const RightSideMenu = ({ anchorEl,open,logout,handleClose })=>{
 
 export default function Layout() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [title, setTitle] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openRightSide = Boolean(anchorEl);
@@ -186,6 +136,58 @@ export default function Layout() {
   const location = useLocation();
   const commonState = useSelector(state => state.common);
   const dispatch = useDispatch();
+
+  const navigationList = [
+    {
+      id: 'dashboard',
+      label: "Admin Dashboard",
+      path: "/app/dashboard",
+      role: 1,
+      icon: <DashboardIcon />
+    },
+    {
+      id: 'users',
+      label: "Manage Users",
+      path: "/app/users",
+      role: 1,
+      icon: <PeopleIcon />
+    },
+    {
+      id: 'parts',
+      label: "Manage Parts",
+      path: "/app/parts",
+      role: 1,
+      icon: <ConstructionIcon />
+    },
+    {
+      id: 'station',
+      label: "Manage Departments",
+      path: "/app/stations",
+      role: 1,
+      icon: <EvStation />
+    },
+    {
+      id: 'checklists',
+      label: "Manage Checklists",
+      path: "/app/checklists",
+      role: 1,
+      icon: <MenuIcon />
+    },
+    {
+      id: 'form_builder',
+      label: "Form Builder",
+      path: "/app/formBuilder/0",
+      role: 1,
+      icon: <MenuIcon />
+    },
+    {
+      id: 'tasks',
+      label: "Tasks",
+      path: "/app/tasks",
+      role: 3,
+      icon: <InsertDriveFileIcon />
+    },
+  ]
 
   const openRightSideHandler = (event) => {
     setAnchorEl(event.currentTarget);
@@ -264,9 +266,9 @@ export default function Layout() {
             ((parseInt(commonState.user_type_id) === 3 && list.role === 3) || (parseInt(commonState.user_type_id) === 1 ) ? <ListItem key={list.id} disablePadding>
               <ListItemButton onClick={()=>{
                 navigate(list.path)
-                setOpen(false)
+                drawerWidth = 50;
               }} >
-                <ListItemIcon>
+                <ListItemIcon sx={{ color: "primary.main" }}>
                   {list.icon}
                 </ListItemIcon>
                 <ListItemText primary={list.label} />

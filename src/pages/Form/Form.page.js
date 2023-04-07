@@ -176,7 +176,7 @@ const FormPage = (props) => {
         
         scrollToFieldOnAdd: true,
         editOnAdd: true,
-        showActionButtons: true,
+        showActionButtons: false,
         typeUserDisabledAttrs: {
           'checkbox-group': [
             'inline',
@@ -507,9 +507,14 @@ const FormPage = (props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={()=>{
+             handleClose();
+             setTemplateName('');
+            }}>Cancel</Button>
           <Button onClick={()=>{
             onSaveTemplet();
+            handleClose();
+            setTemplateName('');
           }}>Save</Button>
         </DialogActions>
       </Dialog>
