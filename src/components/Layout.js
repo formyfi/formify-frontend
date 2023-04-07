@@ -16,40 +16,30 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import VerifiedUser from '@mui/icons-material/VerifiedUser';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import EvStation from '@mui/icons-material/EvStation';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ShutterSpeedIcon from '@mui/icons-material/ShutterSpeed';
 import { Outlet, useLocation, useMatch, useNavigate } from 'react-router-dom';
+import HolidayVillageIcon from '@mui/icons-material/HolidayVillage';
 import PeopleIcon from '@mui/icons-material/People';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import AddTaskIcon from '@mui/icons-material/AddTask';
-import LogoutIcon from '@mui/icons-material/Logout';
+import RttIcon from '@mui/icons-material/Rtt';
+import TaskIcon from '@mui/icons-material/Task';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { Avatar, Menu, MenuItem } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, logoutApiAction } from 'redux/slices/commonSlice';
 
-var drawerWidth = 240;
+var drawerWidth = 50;
 
 
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
+const AppBar = styled(MuiAppBar)(({ theme }) => ({
+  position: 'fixed',
+  zIndex: theme.zIndex.drawer + 1,
 }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -65,20 +55,14 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  }),
+    marginLeft: `50px`,
+    marginRight: `50px`,
+    transition: 'margin-left 0.3s ease-in-out, width 0.3s ease-in-out',
+    width: `${open ? `calc(100% - 240px)` : `calc(100% - 50px)`}`,
+    zIndex: theme.zIndex.drawer - 1,
+  })
 );
+
 
 const RightSideMenu = ({ anchorEl,open,logout,handleClose })=>{
 
@@ -131,6 +115,7 @@ export default function Layout() {
   const [open, setOpen] = React.useState(true);
   const [title, setTitle] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isHovering, setIsHovering] =  React.useState(false);
   const openRightSide = Boolean(anchorEl);
   const navigate = useNavigate();
   const location = useLocation();
@@ -157,37 +142,47 @@ export default function Layout() {
       label: "Manage Parts",
       path: "/app/parts",
       role: 1,
-      icon: <ConstructionIcon />
+      icon: <ShutterSpeedIcon />
     },
     {
       id: 'station',
       label: "Manage Departments",
       path: "/app/stations",
       role: 1,
-      icon: <EvStation />
+      icon: <HolidayVillageIcon />
     },
     {
       id: 'checklists',
       label: "Manage Checklists",
       path: "/app/checklists",
       role: 1,
-      icon: <MenuIcon />
+      icon: <MenuBookIcon />
     },
     {
       id: 'form_builder',
       label: "Form Builder",
       path: "/app/formBuilder/0",
       role: 1,
-      icon: <MenuIcon />
+      icon: <RttIcon />
     },
     {
       id: 'tasks',
       label: "Tasks",
       path: "/app/tasks",
       role: 3,
-      icon: <InsertDriveFileIcon />
+      icon: <TaskIcon />
     },
   ]
+
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+    drawerWidth = 240;
+  };
+  
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    drawerWidth = 50;
+  };
 
   const openRightSideHandler = (event) => {
     setAnchorEl(event.currentTarget);
@@ -263,15 +258,21 @@ export default function Layout() {
         <Divider />
         <List>
           { navigationList.map((list, index) => (
-            ((parseInt(commonState.user_type_id) === 3 && list.role === 3) || (parseInt(commonState.user_type_id) === 1 ) ? <ListItem key={list.id} disablePadding>
+            ((parseInt(commonState.user_type_id) === 3 && list.role === 3) || (parseInt(commonState.user_type_id) === 1 ) 
+            ?
+            <ListItem key={list.id} disablePadding  
+              onMouseEnter={() => handleMouseEnter()}
+              onMouseLeave={() => handleMouseLeave()}
+              sx={{ height: "50px" }}>
               <ListItemButton onClick={()=>{
                 navigate(list.path)
-                drawerWidth = 50;
               }} >
                 <ListItemIcon sx={{ color: "primary.main" }}>
                   {list.icon}
                 </ListItemIcon>
+                {isHovering ? (
                 <ListItemText primary={list.label} />
+              ) : null}
               </ListItemButton>
             </ListItem>:null)
           ))}
