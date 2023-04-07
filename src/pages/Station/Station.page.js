@@ -73,10 +73,10 @@ const onSubmit = ()=>{
     
     res.then((resp) => {
       if(resp && resp.payload && resp.payload.success){
-        toast.success("Station added successfully.");
+        toast.success("Department added successfully.");
         setDrawer(false);
         setStationForm(initialStationForm);
-      } else toast.error("There was error adding station, please contact your technical team");
+      } else toast.error("There was error adding this department, please contact your technical team");
     });
 }
 
@@ -102,7 +102,7 @@ const onSubmit = ()=>{
               setStationForm({...initialStationForm});
             }}
           >
-            Add new station
+            Add new department
           </Button>
         </Box>
       </Box>
@@ -129,8 +129,8 @@ const onSubmit = ()=>{
             {id:id, org_id: commonState.org_id}))
             res.then((resp) => {
               if(resp && resp.payload && resp.payload.success){
-                toast.success("Station deleted successfully.");
-              } else toast.error("There was an error deleting station, please contact your technical team");
+                toast.success("Department deleted successfully.");
+              } else toast.error("There was an error deleting department, please contact your technical team");
             });
         }}
       />
@@ -149,7 +149,7 @@ const onSubmit = ()=>{
             p: 2
           }}
         >
-          <Typography variant="h5" sx={{ mb: 2 }}> {newStation ? 'Add new' : 'Edit'} station </Typography>
+          <Typography variant="h5" sx={{ mb: 2 }}> {newStation ? 'Add new' : 'Edit'} departments </Typography>
 
           <Box
             component="form"

@@ -57,7 +57,7 @@ const navigationList = [
   },
   {
     id: 'station',
-    label: "Manage Stations",
+    label: "Manage Departments",
     path: "/app/stations",
     role: 1,
     icon: <EvStation />
@@ -66,6 +66,13 @@ const navigationList = [
     id: 'checklists',
     label: "Manage Checklists",
     path: "/app/checklists",
+    role: 1,
+    icon: <MenuIcon />
+  },
+  {
+    id: 'form_builder',
+    label: "Form Builder",
+    path: "/app/formBuilder/0",
     role: 1,
     icon: <MenuIcon />
   },

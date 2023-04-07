@@ -24,6 +24,7 @@ const FormPreviewWithSubmit = ({
   isSubmitable,
   filledFormValue,
   onCancel,
+  form_id
 }) => {
   const [initVals, setInitVals] = useState(null);
 
@@ -48,10 +49,6 @@ const FormPreviewWithSubmit = ({
 
   return (
     <Box>
-      <Typography component="h2" variant="h6" color="primary" sx={{ m: 2 }}>
-        {title}
-      </Typography>
-      <Divider />
       <Box sx={{ mt: 3, width: 700 }}>
         <Formik
           initialValues={filledFormValue?filledFormValue:(initVals?initVals:{})}
@@ -67,14 +64,12 @@ const FormPreviewWithSubmit = ({
           }}
           enableReinitialize
           onSubmit={(values, { setSubmitting }) => {
-            alert(JSON.stringify(initVals, null, 2));
-
             setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
               setSubmitting(false);
               onSubmit(JSON.stringify(values, null, 2))
             }, 400);
           }}
+          sx={{ width: "100%", maxWidth: 700 }}
         >
           {({
             values,
@@ -172,8 +167,8 @@ const FormPreviewWithSubmit = ({
 
                 return false;
               })}
-              <Box sx={{ mb: 5 }}>
-                <Button variant="contained" onClick={() => handleSubmit()}>
+              <Box sx={{ my: 5, mx:10, display: "flex", justifyContent: "flex-end" }}>
+                <Button variant="contained" disabled={form_id == 0 ? true : false} onClick={() => handleSubmit()}>
                   Save Form
                 </Button>
                 <Button

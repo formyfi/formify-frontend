@@ -31,7 +31,7 @@ const PreviewRadio = ({ data, error, field }) => {
         form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
         meta,
       }) => (
-        <FormControl error={meta.touched && meta.error}>
+        <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <FormLabel id="demo-radio-buttons-group-label">
             {data.label}
           </FormLabel>
@@ -40,6 +40,7 @@ const PreviewRadio = ({ data, error, field }) => {
             defaultValue={selected.length > 0 ? selected[0].value : ""}
             name={data.name}
             {...field}
+            row
           >
             {data.values.map((option) => (
               <FormControlLabel
@@ -66,7 +67,7 @@ const PreviewCheckbox = ({ data, filledFormValue }) => {
         form: { touched, values, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
         meta,
       }) => (
-        <FormControl error={meta.touched && meta.error}>
+        <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <FormLabel id="demo-radio-buttons-group-label">
             {data.label}
           </FormLabel>
@@ -78,6 +79,7 @@ const PreviewCheckbox = ({ data, filledFormValue }) => {
                     name={option.name}
                     value={option.value}
                     defaultChecked={filledFormValue ? "" : option.selected}
+                    row
                     checked={
                       values[option.name] &&
                       typeof values[option.name] === "object" &&
@@ -107,7 +109,7 @@ const PreviewSelect = ({ data }) => {
         form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
         meta,
       }) => (
-        <FormControl error={meta.touched && meta.error} fullWidth>
+        <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <InputLabel id="demo-simple-select-label">{data.label}</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -139,7 +141,7 @@ const PreviewTextField = ({ data }) => {
         form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
         meta,
       }) => (
-        <FormControl error={meta.touched && meta.error}>
+        <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <TextField
             id={data.label}
             label={data.label}
@@ -166,7 +168,7 @@ const PreviewTextAreaField = ({ data }) => {
         form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
         meta,
       }) => (
-        <FormControl error={meta.touched && meta.error}>
+        <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <TextField
             id={data.label}
             label={data.label}
@@ -196,7 +198,7 @@ const PreviewNumberField = ({ data }) => {
         form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
         meta,
       }) => (
-        <FormControl error={meta.touched && meta.error}>
+        <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <TextField
             type={"number"}
             id={data.label}
@@ -224,7 +226,7 @@ const PreviewAutoCompleteField = ({ data }) => {
         form: { touched, errors, values }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
         meta,
       }) => (
-        <FormControl error={meta.touched && meta.error}>
+        <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <Autocomplete
             disablePortal
             id="combo-box-demo"
@@ -262,7 +264,7 @@ const PreviewDateField = ({ data }) => {
         form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
         meta,
       }) => (
-        <FormControl error={meta.touched && meta.error}>
+        <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <TextField
             type={"date"}
             name={data.name}
@@ -284,7 +286,7 @@ const PreviewDateField = ({ data }) => {
 
 const PreviewTypography = ({ data }) => {
   return (
-    <Box my={1} className="preview-typo">
+    <Box my={1} className="preview-typo" sx={{ width: "100%", maxWidth: 600 }}>
       <Typography variant={data.subtype} component={data.subtype}>
         {data.label}
       </Typography>

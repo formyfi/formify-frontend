@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { blue, purple, teal, indigo, blueGrey, deepPurple } from "@mui/material/colors";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from "react-redux";
@@ -18,8 +17,8 @@ import ManageForm from "pages/Form/ManageForm.page";
 const theme = createTheme({
   palette: {
     primary: {
-      main: indigo[500],
-      secondary: indigo[200]
+      main: '#000080',
+      secondary: '#000080'
     },
   },
 });

@@ -94,7 +94,7 @@ const ManageForm = () => {
       id: "station_name",
       numeric: false,
       disablePadding: true,
-      label: "Station",
+      label: "Department",
     },
     {
       id: "part_name",
@@ -278,7 +278,7 @@ const ManageForm = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Station"
+                  label="Department"
                   error={errors.station?.message}
                   helperText={errors.station?.message}
                 />

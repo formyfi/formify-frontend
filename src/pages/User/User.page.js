@@ -67,7 +67,7 @@ const headCells = [
     id: "station",
     numeric: false,
     disablePadding: true,
-    label: "Station",
+    label: "Departments",
   },
   {
     id: "action",
@@ -309,7 +309,7 @@ const openEditUserForm = (id, row) => {
               }}
               id={'station'}
               options={stationState.station_list}
-              textLabel={"Station"}
+              textLabel={"Departments"}
             />
             <div>
             <Button

@@ -1,9 +1,11 @@
-import FormPreview from "components/FormBuilder/FormPreview";
 import React, { useState } from "react";
 import { getTaskForm, updateTaskForm } from "redux/slices/formSlice";
 import { useDispatch, useSelector } from "react-redux";
 import FormPreviewWithSubmit from "components/FormBuilder/SubmitForm/FormPreviewWithSubmit";
-const { Box, Typography } = require("@mui/material");
+import { ToastContainer, toast } from 'react-toastify';
+
+const { Box, Typography, Paper, Divider } = require("@mui/material");
+
 
 const FormSubmission = ({
   handleNext,
@@ -14,7 +16,9 @@ const FormSubmission = ({
 }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState([]);
-
+  const [formValue, setFormValue] = useState([]);
+  const [formID, setFormID] = useState('');
+  const commonState = useSelector((state) => state.common);  
   React.useEffect(() => {
     const res = dispatch(
       getTaskForm({
@@ -24,49 +28,60 @@ const FormSubmission = ({
       })
     );
     res.then((resp) => {
-      if (resp && resp.payload.form_data) {
-        setFormData(JSON.parse(resp.payload.form_data));
+      if (resp && resp.payload.form_data && resp.payload.form_data.form_json) {
+        setFormData(JSON.parse(resp.payload.form_data.form_json));
+        setFormID(resp.payload.form_data.form_id);
       }
+      if (resp && resp.payload.form_data && resp.payload.form_data.form_value) {
+        setFormValue(JSON.parse(resp.payload.form_data.form_value));
+      }
+      
     });
   }, []);
-
-  // const res = dispatch(
-  //     updateTaskForm({
-  //         form_json: formData,
-  //         form_id: form_id,
-  //         org_id: commonState.org_id,
-  //         part_id: partValue,
-  //         station_id: stationValue,
-  //         part_vnum: vnumberValue
-  //     })
-  //     );
-  //     res.then((resp) => {
-  //     if (resp && resp.payload && resp.payload.success) {
-  //         toast.success("Form added successfully.");
-  //     } else toast.error("Somthing is wrong please contact teach team");
-  //     });
-
-  let formValue = {
-    "checkbox-group-1680705849182-0": [],
-    "radio-group-1680493555566-0": "option-3",
-    "select-1680493556915-0": "option-3",
-    "text-1680709363679-0": "Omnis dolor ad sit ",
-    "textarea-1680709598015-0": "Voluptatibus eos du",
-    "number-1680709599555-0": 72,
-    "date-1680709600939-0": "2001-04-03",
-    "autocomplete-1680709609930-0": "Option 2",
-  };
+  const submit = (formResponses) => {
+    const res = dispatch(
+        updateTaskForm({
+            form_json: formResponses,
+            form_id: formID,
+            org_id: commonState.org_id,
+            part_id: partValue,
+            station_id: stationValue,
+            part_vnum: vnumberValue
+        })
+        );
+        res.then((resp) => {
+        if (resp && resp.payload && resp.payload.success) {
+            toast.success("Form added successfully.");
+        } else toast.error("Somthing is wrong please contact teach team");
+        });
+  }
+ 
   return (
     <Box sx={{ mt: 5 }} component="form">
-      <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
-        Part name: XYZ VNumber: 0001254887{" "}
-      </Typography>
-      <Box sx={{ width: 300, my: 2 }}>
+    
+    <Paper elevation={3} sx={{ p: 2, boxShadow: 3, width: '100%', maxWidth: 900, overflowY: 'auto', '&::-webkit-scrollbar': {
+        display: 'none'
+        } }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: 900, mb: 2 }}>
+            <Typography component="h2" variant="h6" color="primary">
+                Part vnumber:&nbsp;
+                <Typography color="black" sx={{ display: 'inline-block' }}>
+                {vnumberValue}
+                </Typography>
+            </Typography>
+            <Typography component="h2" variant="h6" color="primary">
+                Form number:&nbsp;
+                <Typography color="black" sx={{ display: 'inline-block' }}>
+                {formID}
+                </Typography>
+            </Typography>
+            </Box>
+            <Divider />
+            <Box sx={{ mx:5 }}>
         <FormPreviewWithSubmit
           filledFormValue={formValue}
-          onSubmit={(formData) => {
-            console.log(formData);
-            debugger;
+          onSubmit={(formResponses) => {
+            submit(formResponses);
           }}
           isSubmitable
           onCancel={() => {
@@ -74,9 +89,11 @@ const FormSubmission = ({
           }}
           title=""
           previewData={formData}
+          sx={{ maxHeight: 'inherit' }}
         />
-      </Box>
-    </Box>
+        </Box>
+    </Paper>
+  </Box>
   );
 };
 

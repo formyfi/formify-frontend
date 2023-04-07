@@ -13,10 +13,10 @@ const SelectInfo = ({ handleNext, stationValue,  partValue, setPartList, partLis
   return (
     <Box sx={{ mt: 5 }} component="form">
       <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
-        Select Station and Part
+        Select Department and Part
       </Typography>
       <Box sx={{ width: 300, my: 2 }}>
-      <InputLabel id='station_label'>Select Station</InputLabel>
+      <InputLabel id='station_label'>Select Department</InputLabel>
         <Select
           id={'station'}
           value={stationValue}

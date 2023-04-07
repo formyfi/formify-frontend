@@ -1,11 +1,14 @@
 import { Box, Button,   Typography } from "@mui/material";
-import React from "react";
+import React, {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
  
 
   function PageNotFound() {
 
     const navigate = useNavigate()
+    useEffect(()=>{
+      navigate('/app/dashboard');
+    },[])
   
     return (
       <Box

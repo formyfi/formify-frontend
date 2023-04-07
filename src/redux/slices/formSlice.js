@@ -25,6 +25,29 @@ const getCheckLists = createAsyncThunk(
   }
 )
 
+const getTemplates = createAsyncThunk(
+  'get_templates',
+  async (values) => {
+    const response = await apis.getTemplates(values).then((response)=>{
+        if(response.status === 200){
+            return response.data
+          }
+        }).catch((err)=>{
+          if(err.response && err.response.status === 401 && err.response.data){
+            return {
+              success: false,
+              message : err.response.data.message
+            }
+          }
+          return {
+            success: false,
+            message : "Something went wrong"
+          }
+    })
+    return response
+  }
+)
+
 const getTaskForm = createAsyncThunk(
   'get_task_form',
   async (values) => {
@@ -75,6 +98,29 @@ const updateCheckListAction = createAsyncThunk(
     'upsert_checklist_form',
     async (values) => {
       const response = await apis.upsertCheckListForm(values).then((response)=>{
+          if(response.status === 200){
+              return response.data
+            }
+          }).catch((err)=>{
+            if(err.response && err.response.status === 401 && err.response.data){
+              return {
+                success: false,
+                message : err.response.data.message
+              }
+            }
+            return {
+              success: false,
+              message : "Something went wrong"
+            }
+      })
+      return response
+    }
+  )
+  
+  const updateCheckListFormAsTemplate = createAsyncThunk(
+    'upsert_checklist_form_template',
+    async (values) => {
+      const response = await apis.updateCheckListFormAsTemplate(values).then((response)=>{
           if(response.status === 200){
               return response.data
             }
@@ -168,6 +214,7 @@ const checkListsReducer = createSlice({
     initialState: {
       listData: [],
       form_data:[],
+      templates:[],
       loader: false,
     },
     extraReducers: {
@@ -183,6 +230,20 @@ const checkListsReducer = createSlice({
         }
       },
       [getCheckLists.rejected]: (state,action)=>{
+        state.loader = false
+        state.error = "something went wrong"
+      },
+      [getTemplates.pending]: (state)=>{
+        state.loader = true
+        state.listData = []
+      },
+      [getTemplates.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.templates = payload.templates
+        }
+      },
+      [getTemplates.rejected]: (state,action)=>{
         state.loader = false
         state.error = "something went wrong"
       },
@@ -212,6 +273,12 @@ const checkListsReducer = createSlice({
           state.listData = payload.checkilists
         }
       },
+      [updateCheckListFormAsTemplate.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.templates = payload.templates
+        }
+      },
       [createCheckListAction.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
@@ -236,12 +303,14 @@ const checkListsReducer = createSlice({
 
   export {
     getCheckLists,
+    getTemplates,
     updateCheckListAction,
     updateCheckListForm,
     createCheckListAction,
     deleteChecklist,
     getTaskForm,
-    updateTaskForm
+    updateTaskForm,
+    updateCheckListFormAsTemplate
   }
 
   // Export the reducer, either as a default or named export

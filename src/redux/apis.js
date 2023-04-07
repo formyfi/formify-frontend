@@ -165,6 +165,16 @@ const apis = {
          params: values,
         })
      },
+
+     getTemplates : (values)=>{
+        return request.get('/api/checklist/get_templates', {
+         headers: {
+             'Accept': 'application/json',
+             'Authorization': `Bearer ${getToken()}`
+         },
+         params: values,
+        })
+     },
      
      getTaskForm : (values)=>{
         return request.get('/api/tasks/get_task_form', {
@@ -194,14 +204,15 @@ const apis = {
         })
      },
 
-     updateTaskForm : (values)=>{
-        return request.post('/api/tasks/update_task_form',values, {
+     updateCheckListFormAsTemplate : (values)=>{
+        return request.post('/api/checklist/upsert_checklist_form_template',values, {
          headers: {
              'Accept': 'application/json',
              'Authorization': `Bearer ${getToken()}`
          }
         })
      },
+
 
      deleteCheckLists : (values)=>{
         return request.post('/api/checklist/delete_checklist',values, {
