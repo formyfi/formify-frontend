@@ -36,6 +36,7 @@ require("jquery-ui-sortable");
 require("formBuilder");
 
 let form_json = "";
+var formBuilder = null;
 
 const FormPage = (props) => {
   const FormBuildRef = useRef(null);
@@ -48,7 +49,6 @@ const FormPage = (props) => {
   const [template, setTemplate] = React.useState('');
   
   const { form_id } = useParams(); //This form id should be used to store the form json in forms table and should used for fetching saved form json
-  var formBuilder = null;
 
   useEffect(() => {
     if (formBuilder === null) {
@@ -222,6 +222,11 @@ const FormPage = (props) => {
           ],
         },
       });
+    }
+
+    return ()=>{
+      formBuilder = null
+      FormBuildRef.current = null
     }
   }, []);
   
@@ -549,6 +554,7 @@ const FormPage = (props) => {
               let tempForm = checkListState.templates.filter((t)=>t.id===templateValue);
               if(tempForm && tempForm.length && tempForm[0].form_json){
                 setTemplate(tempForm[0].form_json);
+                setImportDialogue(false);
               } 
             }
           }}>Import</Button>
