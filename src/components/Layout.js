@@ -263,7 +263,7 @@ export default function Layout() {
             <ListItem key={list.id} disablePadding  
               onMouseEnter={() => handleMouseEnter()}
               onMouseLeave={() => handleMouseLeave()}
-              sx={{ height: "50px" }}>
+              sx={{ height: "70px" }}>
               <ListItemButton onClick={()=>{
                 navigate(list.path)
               }} >

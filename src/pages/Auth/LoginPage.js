@@ -20,7 +20,7 @@ import { loginApiAction } from "redux/slices/commonSlice";
 import { redirect, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, Backdrop } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import backgroundImage from './login_back.jpg';
+import backgroundImage from './login_back1.jpg';
 
 const schema = yup
   .object({
@@ -29,25 +29,14 @@ const schema = yup
   })
   .required();
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#000080',
+      secondary: '#000080'
+    },
+  },
+});
 
 export default function SignIn() {
   const {
@@ -99,13 +88,13 @@ export default function SignIn() {
                 alignItems: "flex-start",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
+              <Avatar sx={{ m: 1, bgcolor: "#ffffff", border: "4px solid #000080" }}>
+                <LockOutlinedIcon sx={{ fontSize: 25, color: "#000080" }} />
               </Avatar>
-              <Typography component="h2" variant="h3">
-                Welcome Back...
+              <Typography component="h2" variant="h3" style={{ fontFamily: 'sans-serif' }}>
+                Welcome Back
               </Typography>
-              <Typography component="p" variant="p">
+              <Typography component="p" variant="p" style={{ fontFamily: 'sans-serif' }}>
                 Please enter your email and password
               </Typography>
               <Box
@@ -146,10 +135,6 @@ export default function SignIn() {
                   helperText={errors?.password?.message}
                   autoComplete="current-password"
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
                 <Button
                   type="submit"
                   fullWidth
@@ -158,13 +143,6 @@ export default function SignIn() {
                 >
                   Sign In
                 </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                </Grid>
               </Box>
             </Box>
           </Container>
