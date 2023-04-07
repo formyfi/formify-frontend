@@ -14,18 +14,20 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { loginApiAction } from "redux/slices/commonSlice";
 import { redirect, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, Backdrop } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
+import backgroundImage from './login_back.jpg';
 
-const schema = yup.object({
-  email: yup.string().required(),
-  password: yup.string().min(6).required(),
-}).required();
-
+const schema = yup
+  .object({
+    email: yup.string().required(),
+    password: yup.string().min(6).required(),
+  })
+  .required();
 
 function Copyright(props) {
   return (
@@ -54,108 +56,130 @@ export default function SignIn() {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const commonState = useSelector(state => state.common);
+  const navigate = useNavigate();
+  const commonState = useSelector((state) => state.common);
 
   const onSubmit = (values) => {
-    dispatch(loginApiAction(values))
+    dispatch(loginApiAction(values));
   };
-  
-  React.useEffect(()=>{
-      if(commonState.isLogged === true){
-        parseInt(commonState.user_type_id) === 3 ? navigate('/app/tasks') : navigate('/app/dashboard');
-      }
-  }, [commonState])
+
+  React.useEffect(() => {
+    if (commonState.isLogged === true) {
+      parseInt(commonState.user_type_id) === 3
+        ? navigate("/app/tasks")
+        : navigate("/app/dashboard");
+    }
+  }, [commonState]);
 
   return (
     <ThemeProvider theme={theme}>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={commonState.loader}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
-      
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-         
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            noValidate
-            sx={{ mt: 1 }}
+
+      {/* <Container component="main" > */}
+      {/* <CssBaseline /> */}
+      <Grid container flexDirection="row" >
+        <Grid item md={6}>
+          <Container
+            maxWidth="xs"
           >
-            {commonState.error && <Alert sx={{ mb:2 }} severity="error">
-              <AlertTitle>{commonState.error}</AlertTitle>
-            </Alert>}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              {...register("email")}
-              error={errors.email}
-              helperText={errors?.email?.message}
-              autoFocus
-            />
-            {console.log(errors)}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              {...register("password")}
-              id="password"
-              error={errors.password}
-              helperText={errors?.password?.message}
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
             >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h2" variant="h3">
+                Welcome Back...
+              </Typography>
+              <Typography component="p" variant="p">
+                Please enter your email and password
+              </Typography>
+              <Box
+                component="form"
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+                sx={{ mt: 7 }}
+              >
+                {commonState.error && (
+                  <Alert sx={{ mb: 2 }} severity="error">
+                    <AlertTitle>{commonState.error}</AlertTitle>
+                  </Alert>
+                )}
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  {...register("email")}
+                  error={errors.email}
+                  helperText={errors?.email?.message}
+                  autoFocus
+                />
+                {console.log(errors)}
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  {...register("password")}
+                  id="password"
+                  error={errors.password}
+                  helperText={errors?.password?.message}
+                  autoComplete="current-password"
+                />
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link href="#" variant="body2">
+                      Forgot password?
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          </Container>
+        </Grid>
+        <Grid item md={6} sx={{
+          backgroundImage: `url('${backgroundImage}')`,
+          height: "97.5vh",
+          backgroundSize: "cover",
+          display: { xs: 'none', md: 'block', lg: 'block'  } 
+        }} >
+          
+        </Grid>
+      </Grid>
+      {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
+      {/* </Container> */}
     </ThemeProvider>
   );
 }
