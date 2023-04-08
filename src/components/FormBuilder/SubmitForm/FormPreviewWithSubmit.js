@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {Box, Divider, Typography, Button} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import { Box, Divider, Typography, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import {
   PreviewAutoCompleteField,
   PreviewCheckbox,
@@ -14,8 +14,8 @@ import {
   PreviewTypography,
   PreviewUploadField,
 } from "./previewFormElements";
-import {useForm} from "react-hook-form";
-import {Field, Form, Formik} from "formik";
+import { useForm } from "react-hook-form";
+import { Field, Form, Formik } from "formik";
 
 const FormPreviewWithSubmit = ({
   title,
@@ -24,16 +24,15 @@ const FormPreviewWithSubmit = ({
   isSubmitable,
   filledFormValue,
   onCancel,
-  form_id
+  form_id,
 }) => {
   const [initVals, setInitVals] = useState(null);
 
   useEffect(() => {
-    let initialValues = {}
+    let initialValues = {};
     previewData.forEach((prev) => {
       if (prev.name) {
-
-        if (prev.type === 'checkbox-group') {
+        if (prev.type === "checkbox-group") {
           initialValues[prev.name] = [];
         } else {
           initialValues[prev.name] = "";
@@ -44,32 +43,35 @@ const FormPreviewWithSubmit = ({
   }, [previewData]);
 
   if (initVals === null) {
-    return <Box>loading</Box>
+    return <Box>loading</Box>;
   }
 
   return (
     <Box>
-      <Box sx={{mt: 3, width: 700}}>
+      <Box sx={{ mt: 3, width: 700 }}>
         <Formik
-          initialValues={filledFormValue ? filledFormValue : (initVals ? initVals : {})}
+          initialValues={{
+            ...initVals,
+            ...filledFormValue,
+          }}
           validate={(values) => {
             // loop and check which have required text
             const errors = {};
             previewData.forEach((prev) => {
-              if (prev.required === true && values[prev.name] === '') {
-                errors[prev.name] = "required"
+              if (prev.required === true && values[prev.name] === "") {
+                errors[prev.name] = "required";
               }
-            })
+            });
             return errors;
           }}
           enableReinitialize
-          onSubmit={(values, {setSubmitting}) => {
+          onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
               setSubmitting(false);
-              onSubmit(JSON.stringify(values, null, 2))
+              onSubmit(JSON.stringify(values, null, 2));
             }, 400);
           }}
-          sx={{width: "100%", maxWidth: 700}}
+          sx={{ width: "100%", maxWidth: 700 }}
         >
           {({
             values,
@@ -93,16 +95,17 @@ const FormPreviewWithSubmit = ({
                 if (previewObj.type === "radio-group") {
                   return (
                     <Box my={2}>
-                      <PreviewRadio
-                        data={previewObj}
-                      />
+                      <PreviewRadio data={previewObj} />
                     </Box>
                   );
                 }
                 if (previewObj.type === "checkbox-group") {
                   return (
                     <Box my={2}>
-                      <PreviewCheckbox data={previewObj} filledFormValue={filledFormValue} />
+                      <PreviewCheckbox
+                        data={previewObj}
+                        filledFormValue={filledFormValue}
+                      />
                     </Box>
                   );
                 }
@@ -167,14 +170,25 @@ const FormPreviewWithSubmit = ({
 
                 return false;
               })}
-              <Box sx={{my: 5, mx: 10, display: "flex", justifyContent: "flex-end"}}>
-                <Button variant="contained" disabled={form_id == 0 ? true : false} onClick={() => handleSubmit()}>
+              <Box
+                sx={{
+                  my: 5,
+                  mx: 10,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  disabled={form_id == 0 ? true : false}
+                  onClick={() => handleSubmit()}
+                >
                   Save Form
                 </Button>
                 <Button
                   variant="contained"
                   onClick={() => onCancel()}
-                  sx={{mx: 2}}
+                  sx={{ mx: 2 }}
                 >
                   Cancel
                 </Button>
