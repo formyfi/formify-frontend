@@ -125,6 +125,7 @@ const PreviewNumberField = ({ data }) => {
         label={data.label}
         name={data.name}
         variant="outlined"
+        fullWidth
       />
       <FormHelperText>{data?.description}</FormHelperText>
     </FormControl>
@@ -151,7 +152,7 @@ const PreviewAutoCompleteField = ({ data }) => {
 const PreviewDateField = ({ data }) => {
   return (
     <FormControl>
-      <TextField type={"date"}  name={data.name} id={data.label} label={data.label} focused />
+      <TextField type={"date"} fullWidth  name={data.name} id={data.label} label={data.label} focused />
       <FormHelperText>{data?.description}</FormHelperText>
     </FormControl>
   );

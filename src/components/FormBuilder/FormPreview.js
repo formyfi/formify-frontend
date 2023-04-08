@@ -23,15 +23,13 @@ import {
   const FormPreview = ({ title, previewData,onSubmit,isSubmitable, onCancel }) => {
       
     return (<Box>
-        <Typography component="h2" variant="h6" color="primary" sx={{ m: 2 }}>
-            {title}
-          </Typography>
           <Divider />
-          <Box sx={{ mt: 3, width: 700 }}>
+          <Box sx={{ mt: 3, maxWidth: 700 }}>
             <Box component={"form"} onSubmit={(e)=>{
               console.log(e)
             }} >
               {previewData.map((previewObj) => {
+                debugger
                 if (
                   ["h1", "h2", "h3", "h4", "h5", "h6", "p"].includes(
                     previewObj.subtype
@@ -103,7 +101,7 @@ import {
                     </Box>
                   );
                 }
-  
+                
                 if (previewObj.type === "uploadImage") {
                   return (
                     <Box my={2}>
@@ -116,12 +114,9 @@ import {
               })}
             </Box>
             <Box sx={{ mb: 5 }}>
-              {!isSubmitable && <Button variant="contained" onClick={() => onSubmit()}>
+              <Button variant="contained" onClick={() => onSubmit()}>
                 Save Form
-              </Button>}
-              {isSubmitable && <Button variant="contained" type="submit" >
-                Save Form
-              </Button>}
+              </Button>
               <Button variant="contained" onClick={() => onCancel()} sx={{ mx: 2 }}>
                 Cancel
               </Button>

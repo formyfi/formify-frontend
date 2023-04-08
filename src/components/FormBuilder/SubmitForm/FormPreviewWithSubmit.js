@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Divider, Typography, Button } from "@mui/material";
+import { Box, Divider, Typography, Button, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   PreviewAutoCompleteField,
@@ -16,6 +16,7 @@ import {
 } from "./previewFormElements";
 import { useForm } from "react-hook-form";
 import { Field, Form, Formik } from "formik";
+import HistoryTimeLine from "./HistoryTimeLine";
 
 const FormPreviewWithSubmit = ({
   title,
@@ -27,6 +28,7 @@ const FormPreviewWithSubmit = ({
   form_id,
 }) => {
   const [initVals, setInitVals] = useState(null);
+  const [historyModel, setHistoryModel] = useState(false);
 
   useEffect(() => {
     let initialValues = {};
@@ -42,9 +44,14 @@ const FormPreviewWithSubmit = ({
     setInitVals(initialValues);
   }, [previewData]);
 
+  const openJourney = ()=> {
+    setHistoryModel(!historyModel)
+  }
+
   if (initVals === null) {
     return <Box>loading</Box>;
   }
+  
 
   return (
     <Box>
@@ -173,29 +180,34 @@ const FormPreviewWithSubmit = ({
               <Box
                 sx={{
                   my: 5,
-                  mx: 10,
+                  maxWidth: 600,
                   display: "flex",
-                  justifyContent: "flex-end",
+                  justifyContent: "space-between",
                 }}
               >
-                <Button
-                  variant="contained"
-                  disabled={form_id == 0 ? true : false}
-                  onClick={() => handleSubmit()}
-                >
-                  Save Form
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => onCancel()}
-                  sx={{ mx: 2 }}
-                >
-                  Cancel
-                </Button>
+                <Stack direction="row" spacing={2}>
+                  <Button
+                    variant="contained"
+                    disabled={form_id == 0 ? true : false}
+                    onClick={() => handleSubmit()}
+                  >
+                    Save Form
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => onCancel()}
+                    sx={{ mx: 2 }}
+                  >
+                    Cancel
+                  </Button>
+
+                </Stack>
+                  <Button variant="outlined" onClick={openJourney} >Form Journey</Button>
               </Box>
             </Form>
           )}
         </Formik>
+        <HistoryTimeLine open={historyModel} closeHandler={openJourney} />
       </Box>
     </Box>
   );

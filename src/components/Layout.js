@@ -39,6 +39,7 @@ var drawerWidth = 50;
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   position: 'fixed',
+  zIndex: theme.zIndex.drawer - 1,
 }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -58,7 +59,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     marginRight: `50px`,
     transition: 'margin-left 0.3s ease-in-out, width 0.3s ease-in-out',
     width: `${open ? `calc(100% - 240px)` : `calc(100% - 50px)`}`,
-    zIndex: theme.zIndex.drawer - 1,
   })
 );
 

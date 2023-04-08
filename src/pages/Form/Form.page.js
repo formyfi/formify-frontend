@@ -27,6 +27,7 @@ import "react-form-builder2/dist/app.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import FormPreviewWithSubmit from "components/FormBuilder/SubmitForm/FormPreviewWithSubmit";
+import FormPreview from "components/FormBuilder/FormPreview";
 
 window.jQuery = $;
 window.$ = $;
@@ -471,7 +472,7 @@ const FormPage = (props) => {
           Form Preview
         </Typography>
         <Divider />
-        <FormPreviewWithSubmit
+        <FormPreview
           onSubmit={onSubmit}
           form_id={form_id}
           isSubmitable
