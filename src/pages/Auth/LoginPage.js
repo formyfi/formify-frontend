@@ -32,8 +32,8 @@ const schema = yup
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#000080',
-      secondary: '#000080'
+      main: '#05386B',
+      secondary: '#05CDB95'
     },
   },
 });
@@ -76,7 +76,7 @@ export default function SignIn() {
       {/* <Container component="main" > */}
       {/* <CssBaseline /> */}
       <Grid container flexDirection="row" >
-        <Grid item md={6}>
+        <Grid sx={{my:20}}item md={6}>
           <Container
             maxWidth="xs"
           >
@@ -88,9 +88,7 @@ export default function SignIn() {
                 alignItems: "flex-start",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "#ffffff", border: "4px solid #000080" }}>
-                <LockOutlinedIcon sx={{ fontSize: 25, color: "#000080" }} />
-              </Avatar>
+              
               <Typography component="h2" variant="h3" style={{ fontFamily: 'sans-serif' }}>
                 Welcome Back
               </Typography>
