@@ -25,6 +25,29 @@ const getCheckLists = createAsyncThunk(
   }
 )
 
+const getTaskLists = createAsyncThunk(
+  'get_tasklists',
+  async (values) => {
+    const response = await apis.getTaskLists(values).then((response)=>{
+        if(response.status === 200){
+            return response.data
+          }
+        }).catch((err)=>{
+          if(err.response && err.response.status === 401 && err.response.data){
+            return {
+              success: false,
+              message : err.response.data.message
+            }
+          }
+          return {
+            success: false,
+            message : "Something went wrong"
+          }
+    })
+    return response
+  }
+)
+
 const getTemplates = createAsyncThunk(
   'get_templates',
   async (values) => {
@@ -215,6 +238,7 @@ const checkListsReducer = createSlice({
       listData: [],
       form_data:[],
       templates:[],
+      taskLists:[],
       loader: false,
     },
     extraReducers: {
@@ -244,6 +268,20 @@ const checkListsReducer = createSlice({
         }
       },
       [getTemplates.rejected]: (state,action)=>{
+        state.loader = false
+        state.error = "something went wrong"
+      },
+      [getTaskLists.pending]: (state)=>{
+        state.loader = true
+        state.listData = []
+      },
+      [getTaskLists.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.taskLists = payload.task_lists
+        }
+      },
+      [getTaskLists.rejected]: (state,action)=>{
         state.loader = false
         state.error = "something went wrong"
       },
@@ -310,6 +348,7 @@ const checkListsReducer = createSlice({
     deleteChecklist,
     getTaskForm,
     updateTaskForm,
+    getTaskLists,
     updateCheckListFormAsTemplate
   }
 

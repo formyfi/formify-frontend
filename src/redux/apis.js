@@ -175,7 +175,18 @@ const apis = {
          params: values,
         })
      },
+  
      
+     getTaskLists : (values)=>{
+        return request.get('/api/tasks/get_tasklists', {
+         headers: {
+             'Accept': 'application/json',
+             'Authorization': `Bearer ${getToken()}`
+         },
+         params: values,
+        })
+     }, 
+
      getTaskForm : (values)=>{
         return request.get('/api/tasks/get_task_form', {
          headers: {
@@ -197,6 +208,15 @@ const apis = {
 
      upsertCheckListForm : (values)=>{
         return request.post('/api/checklist/upsert_checklist_form',values, {
+         headers: {
+             'Accept': 'application/json',
+             'Authorization': `Bearer ${getToken()}`
+         }
+        })
+     },
+
+     updateTaskForm : (values)=>{
+        return request.post('/api/tasks/update_task_form',values, {
          headers: {
              'Accept': 'application/json',
              'Authorization': `Bearer ${getToken()}`

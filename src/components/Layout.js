@@ -166,10 +166,17 @@ export default function Layout() {
     },
     {
       id: 'tasks',
-      label: "Tasks",
+      label: "Inspection",
       path: "/app/tasks",
       role: 3,
       icon: <TaskIcon />
+    },
+    {
+      id: 'task_list',
+      label: "Inspection List",
+      path: "/app/taskslist",
+      role: 3,
+      icon: <ListAltIcon />
     },
   ]
 

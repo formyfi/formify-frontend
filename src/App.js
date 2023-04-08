@@ -14,11 +14,12 @@ import UserPage from "pages/User/User.page";
 import PartsPage from "pages/Parts/Parts.page";
 import TasksPage from "pages/Tasks/Tasks.page";
 import ManageForm from "pages/Form/ManageForm.page";
+import ManageTask from "pages/Tasks/ManageTask.page";
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#000080',
-      secondary: '#000080'
+      main: '#05386B',
+      secondary: '#05CDB95'
     },
   },
 });
@@ -42,6 +43,7 @@ function App() {
                   <Route path="tasks" element={<TasksPage />}  ></Route>
                   <Route path="users" element={<UserPage />}  ></Route>
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
+                  <Route path="taskslist" element={<ManageTask />}  ></Route>
                 </Route>
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
