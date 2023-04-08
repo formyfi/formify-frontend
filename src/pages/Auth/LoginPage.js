@@ -20,7 +20,7 @@ import { loginApiAction } from "redux/slices/commonSlice";
 import { redirect, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, Backdrop } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import backgroundImage from './login_back1.jpg';
+import backgroundImage from './login_back2.jpg';
 
 const schema = yup
   .object({
