@@ -104,7 +104,7 @@ export default function HistoryTimeLine({ open, closeHandler, vnumberValue }) {
         <Divider sx={{ mb: 3 }} />
         {!addNew && (
           <Box>
-            <CustomTimeLine records={formState.formTimeline.data} />
+            <CustomTimeLine records={formState.formTimeline?.data} />
           </Box>
         )}
         {addNew && <ChatInput vnumberValue={vnumberValue} closeAddNew={addNewHandler} />}
