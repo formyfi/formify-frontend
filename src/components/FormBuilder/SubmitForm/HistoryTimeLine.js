@@ -81,12 +81,11 @@ export default function HistoryTimeLine({ open, closeHandler, vnumberValue }) {
 
   React.useEffect(() => {
     dispatch(getFormTimeLine(vnumberValue));
-  }, []);
+  }, [addNew]);
 
   const addNewHandler = () => {
     setAddNew(!addNew);
   };
-  const submitHistory = () => {};
 
   return (
     <SwipeableDrawer anchor={"bottom"} open={open} onClose={closeHandler}>
@@ -97,6 +96,9 @@ export default function HistoryTimeLine({ open, closeHandler, vnumberValue }) {
           </Typography>
           <Button variant="contained" onClick={addNewHandler}>
             {!addNew ? "Add" : "View All"}
+          </Button>
+          <Button variant="outlined" onClick={closeHandler} >
+            Close
           </Button>
         </Box>
         <Divider sx={{ mb: 3 }} />
