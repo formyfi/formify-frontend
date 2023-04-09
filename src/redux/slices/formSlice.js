@@ -388,12 +388,6 @@ const checkListsReducer = createSlice({
       [getFormTimeLine.fulfilled]: (state, { payload  }) => {
         state.formTimeline = payload
       },
-      [setFormTimeLine.pending]: (state, { payload  }) => {
-        state.loader = false
-      },
-      [setFormTimeLine.fulfilled]: (state, { payload  }) => {
-        state.formTimeline = payload
-      }
     }
   })
   
