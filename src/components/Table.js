@@ -125,9 +125,9 @@ export default function EnhancedTable({
                     tabIndex={-1}
                     key={row.id}
                   >
-                    <TableCell component="th" id={labelId} scope="row">
+                   {(!station && !part) && <TableCell component="th" id={labelId} scope="row">
                       {row.id}
-                    </TableCell>
+                    </TableCell>}
                     {(station || part) && <TableCell align="left">{row.name}</TableCell>}
                     {station && <TableCell align="left">{row.type}</TableCell>}
                     {user && <TableCell align="left">{row.first_name}</TableCell>}

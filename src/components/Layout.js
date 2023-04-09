@@ -130,11 +130,11 @@ export default function Layout() {
       icon: <DashboardIcon />
     },
     {
-      id: 'users',
-      label: "Manage Users",
-      path: "/app/users",
+      id: 'station',
+      label: "Manage Departments",
+      path: "/app/stations",
       role: 1,
-      icon: <PeopleIcon />
+      icon: <HolidayVillageIcon />
     },
     {
       id: 'parts',
@@ -144,11 +144,11 @@ export default function Layout() {
       icon: <ShutterSpeedIcon />
     },
     {
-      id: 'station',
-      label: "Manage Departments",
-      path: "/app/stations",
+      id: 'users',
+      label: "Manage Users",
+      path: "/app/users",
       role: 1,
-      icon: <HolidayVillageIcon />
+      icon: <PeopleIcon />
     },
     {
       id: 'checklists',

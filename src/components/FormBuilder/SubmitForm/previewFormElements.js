@@ -45,7 +45,7 @@ const PreviewRadio = ({ data, error, field }) => {
             {data.values.map((option) => (
               <FormControlLabel
                 value={option.value}
-                control={<Radio name={option.name} value={option.value} />}
+                control={<Radio name={option.name} color={option.value === "pass" ? "success" : option.value === "fail" ? "error" : "primary" } value={option.value} />}
                 label={option.label}
               />
             ))}

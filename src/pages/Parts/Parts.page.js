@@ -22,12 +22,6 @@ const initialPartForm = {
 }
 const headCells = [
   {
-    id: "id",
-    numeric: true,
-    disablePadding: false,
-    label: "ID",
-  },
-  {
     id: "name",
     numeric: false,
     disablePadding: true,
@@ -245,7 +239,7 @@ const onSubmit = ()=>{
             />
 
 
-            {selectedImage ? (
+            {/* {selectedImage ? (
               <div style={{ marginTop: '10' }}>
               <Button sx={{ mt: 3, mb: 2}} onClick={() => setSelectedImage(null)} variant="contained" component="label">
                  Remove Picture
@@ -265,7 +259,7 @@ const onSubmit = ()=>{
                   console.log(event.target.files[0]);
                   setSelectedImage(event.target.files[0]);
                 }} />
-              </Button>)}
+              </Button>)} */}
 
             
             <div>

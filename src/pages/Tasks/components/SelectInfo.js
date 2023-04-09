@@ -59,7 +59,7 @@ const SelectInfo = ({ handleNext, stationValue,  partValue, setPartList, partLis
             } = e;
             handleChange('part', value);
             const res = dispatch(getPartVnumbers(
-              {part_id: value}))
+              {part_id: value, station_id: stationValue, org_id: commonState.org_id}))
               res.then((resp)=>{
                 if(resp && resp.payload && resp.payload.success){
                   setPartVnum(resp.payload.v_numbers)
@@ -94,7 +94,7 @@ const SelectInfo = ({ handleNext, stationValue,  partValue, setPartList, partLis
               key={ut.v_num}
               value={ut.v_num}
             >
-              {ut.v_num}
+              {ut.v_num_label}
             </MenuItem>
           ))}
         </Select>

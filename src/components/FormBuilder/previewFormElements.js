@@ -22,7 +22,6 @@ import React from "react";
 
 const PreviewRadio = ({ data }) => {
   const selected = data.values.filter((itm) => itm.selected === true);
-
   return (
     <FormControl>
       <FormLabel id="demo-radio-buttons-group-label">{data.label}</FormLabel>
@@ -30,12 +29,12 @@ const PreviewRadio = ({ data }) => {
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue={selected.length > 0 ? selected[0].value : ""}
         name={data.name}
-       
+        row
       >
         {data.values.map((option) => (
           <FormControlLabel
             value={option.value}
-            control={<Radio   name={option.name} value={option.value} />}
+            control={<Radio   color={option.value === "pass" ? "success" : option.value === "fail" ? "error" : "primary" } name={option.name} value={option.value} />}
             label={option.label}
           />
         ))}

@@ -20,12 +20,6 @@ const initialStationForm = {
 }
 const headCells = [
   {
-    id: "id",
-    numeric: true,
-    disablePadding: false,
-    label: "ID",
-  },
-  {
     id: "name",
     numeric: false,
     disablePadding: true,
@@ -35,7 +29,7 @@ const headCells = [
     id: "type",
     numeric: false,
     disablePadding: true,
-    label: "Type",
+    label: "Description",
   },
   {
     id: "action",
@@ -89,7 +83,7 @@ const onSubmit = ()=>{
         alignItems={"center"}
       >
         <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
-          Manage Stations
+          Manage Departments
         </Typography>
         <Box>
           <Button
@@ -180,7 +174,7 @@ const onSubmit = ()=>{
               margin="normal"
               fullWidth
               id={stationForm.type}
-              label="Station Type"
+              label="Description"
               value={stationForm.type}
               onChange={(e)=>{
                 let stationData = {...stationForm}

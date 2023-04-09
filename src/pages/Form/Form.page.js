@@ -178,6 +178,32 @@ const FormPage = (props) => {
         scrollToFieldOnAdd: true,
         editOnAdd: true,
         showActionButtons: false,
+        inputSets: [
+          {
+            label: 'Pass Fail Radio',
+            name: 'pass_fail_radio',
+            fields: [
+                {
+                  type: 'radio-group',
+                  label: 'Pass Fail Radio question',
+                  className: 'pass_fail',
+                  required: true,
+                  values: [
+                    {
+                      label: 'Pass',
+                      value: 'pass',
+                      selected: false
+                    },
+                    {
+                      label: 'Fail',
+                      value: 'fail',
+                      selected: false
+                    }
+                  ]
+                },
+              ]
+          },
+        ],
         typeUserDisabledAttrs: {
           'checkbox-group': [
             'inline',
