@@ -232,6 +232,52 @@ const updateCheckListAction = createAsyncThunk(
     }
   )
 
+  const getFormTimeLine = createAsyncThunk(
+    'getFormTimeLine',
+    async (values) => {
+      const response = await apis.getAllTimelines(values).then((response)=>{
+          if(response.status === 200){
+              return response.data
+            }
+          }).catch((err)=>{
+            if(err.response && err.response.status === 401 && err.response.data){
+              return {
+                success: false,
+                message : err.response.data.message
+              }
+            }
+            return {
+              success: false,
+              message : "Something went wrong"
+            }
+      })
+      return response
+    }
+  )
+
+  const setFormTimeLine = createAsyncThunk(
+    'setFormTimeLine',
+    async (values) => {
+      const response = await apis.setFormTimeLine(values).then((response)=>{
+          if(response.status === 200){
+              return response.data
+            }
+          }).catch((err)=>{
+            if(err.response && err.response.status === 401 && err.response.data){
+              return {
+                success: false,
+                message : err.response.data.message
+              }
+            }
+            return {
+              success: false,
+              message : "Something went wrong"
+            }
+      })
+      return response
+    }
+  )
+
 const checkListsReducer = createSlice({
     name: 'checkList',
     initialState: {
@@ -240,6 +286,7 @@ const checkListsReducer = createSlice({
       templates:[],
       taskLists:[],
       loader: false,
+      formTimeline: []
     },
     extraReducers: {
 
@@ -334,6 +381,18 @@ const checkListsReducer = createSlice({
         if(payload && payload.success) {
           state.listData = payload.checkilists
         }
+      },
+      [getFormTimeLine.pending]: (state, { payload  }) => {
+        state.loader = false
+      },
+      [getFormTimeLine.fulfilled]: (state, { payload  }) => {
+        state.formTimeline = payload
+      },
+      [setFormTimeLine.pending]: (state, { payload  }) => {
+        state.loader = false
+      },
+      [setFormTimeLine.fulfilled]: (state, { payload  }) => {
+        state.formTimeline = payload
       }
     }
   })
@@ -349,7 +408,9 @@ const checkListsReducer = createSlice({
     getTaskForm,
     updateTaskForm,
     getTaskLists,
-    updateCheckListFormAsTemplate
+    updateCheckListFormAsTemplate,
+    getFormTimeLine,
+    setFormTimeLine
   }
 
   // Export the reducer, either as a default or named export

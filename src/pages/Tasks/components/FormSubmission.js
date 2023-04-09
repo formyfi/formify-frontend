@@ -101,6 +101,7 @@ const FormSubmission = ({
             title=""
             previewData={formData}
             sx={{maxHeight: 'inherit'}}
+            vnumberValue={vnumberValue}
           />
         </Box>
       </Paper>

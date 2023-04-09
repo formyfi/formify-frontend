@@ -24,6 +24,7 @@ const FormPreviewWithSubmit = ({
   onSubmit,
   isSubmitable,
   filledFormValue,
+  vnumberValue,
   onCancel,
   form_id,
 }) => {
@@ -207,7 +208,7 @@ const FormPreviewWithSubmit = ({
             </Form>
           )}
         </Formik>
-        <HistoryTimeLine open={historyModel} closeHandler={openJourney} />
+        <HistoryTimeLine open={historyModel} vnumberValue={vnumberValue} closeHandler={openJourney} />
       </Box>
     </Box>
   );
