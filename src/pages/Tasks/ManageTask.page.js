@@ -44,7 +44,7 @@ const ManageTask = () => {
     {
       id: "station_name",
       numeric: false,
-      label: "Department",
+      label: "Operation",
     },
     {
       id: "form_id",

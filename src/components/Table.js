@@ -116,7 +116,7 @@ export default function EnhancedTable({
               headCells={headCells}
             />
             <TableBody>
-              {rows && rows.length && rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
+              {rows && rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
