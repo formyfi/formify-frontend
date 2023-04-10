@@ -124,42 +124,42 @@ export default function Layout() {
   const navigationList = [
     {
       id: 'dashboard',
-      label: "Admin Dashboard",
+      label: "Dashboard",
       path: "/app/dashboard",
       role: 1,
       icon: <DashboardIcon />
     },
     {
       id: 'station',
-      label: "Manage Departments",
+      label: "Departments",
       path: "/app/stations",
       role: 1,
       icon: <HolidayVillageIcon />
     },
     {
       id: 'parts',
-      label: "Manage Parts",
+      label: "Parts",
       path: "/app/parts",
       role: 1,
       icon: <ShutterSpeedIcon />
     },
     {
       id: 'users',
-      label: "Manage Users",
+      label: "Users",
       path: "/app/users",
       role: 1,
       icon: <PeopleIcon />
     },
     {
       id: 'checklists',
-      label: "Manage Checklists",
+      label: "Checklists",
       path: "/app/checklists",
       role: 1,
       icon: <MenuBookIcon />
     },
     {
       id: 'form_builder',
-      label: "Form Builder",
+      label: "Template Builder",
       path: "/app/formBuilder/0",
       role: 1,
       icon: <RttIcon />

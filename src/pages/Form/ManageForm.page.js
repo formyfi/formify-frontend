@@ -2,12 +2,11 @@ import {
   Box,
   Button,
   Drawer,
-  FormControlLabel,
-  Grid,
   TextField,
   Typography,
   Autocomplete,
   TableCell,
+  Chip
 } from "@mui/material";
 import EnhancedTable from "components/Table";
 import React, { useState } from "react";
@@ -105,6 +104,14 @@ const ManageForm = () => {
       id: "form",
       numeric: false,
       label: "Form Generated",
+      render: (record) => {
+        return (
+          <TableCell align="left">
+            {!record.form_json ? <Chip label='No' color='error'  />
+            : <Chip label='Yes' color='success' />}
+          </TableCell>
+        );
+      },
     },
     {
       id: "action",
