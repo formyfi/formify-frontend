@@ -23,7 +23,6 @@ import React from "react";
 
 const PreviewRadio = ({ data, error, field }) => {
   const selected = data.values.filter((itm) => itm.selected === true);
-
   return (
     <Field name={data.name}>
       {({
@@ -37,7 +36,7 @@ const PreviewRadio = ({ data, error, field }) => {
           </FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue={selected.length > 0 ? selected[0].value : ""}
+            defaultValue={selected.length > 0 ? selected[0]?.value : ""}
             name={data.name}
             {...field}
             row
@@ -45,7 +44,7 @@ const PreviewRadio = ({ data, error, field }) => {
             {data.values.map((option) => (
               <FormControlLabel
                 value={option.value}
-                control={<Radio name={option.name} color={option.value === "pass" ? "success" : option.value === "fail" ? "error" : "primary" } value={option.value} />}
+                control={<Radio name={option.name} checked={field.value === option.value} color={option.value === "pass" ? "success" : option.value === "fail" ? "error" : "primary" } value={option.value} />}
                 label={option.label}
               />
             ))}
@@ -78,7 +77,7 @@ const PreviewCheckbox = ({ data, filledFormValue }) => {
                   <Checkbox
                     name={option.name}
                     value={option.value}
-                    defaultChecked={filledFormValue ? "" : option.selected}
+                    defaultChecked={filledFormValue ? false : option.selected}
                     row
                     checked={
                       values[option.name] &&
@@ -119,7 +118,7 @@ const PreviewSelect = ({ data }) => {
             {...field}
           >
             {data.values.map((option) => (
-              <MenuItem value={option.value} selected={option.selected}>
+              <MenuItem value={option.value} selected={option.selected === true}>
                 {option.label}
               </MenuItem>
             ))}
@@ -147,7 +146,7 @@ const PreviewTextField = ({ data }) => {
             label={data.label}
             variant="outlined"
             fullWidth
-            error={meta.touched && meta.error}
+            error={meta.touched && !!meta.error}
             {...field}
           />
           <FormHelperText>{data?.description}</FormHelperText>
@@ -177,7 +176,7 @@ const PreviewTextAreaField = ({ data }) => {
             fullWidth
             name={data.name}
             minRows={3}
-            error={meta.touched && meta.error}
+            error={meta.touched && !!meta.error}
             {...field}
           />
           <FormHelperText>{data?.description}</FormHelperText>

@@ -16,6 +16,7 @@ const FormSubmission = ({
   form_json,
   form_value,
   form_id,
+  setFetchVnumbers
 }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(form_json ? form_json : []);
@@ -59,6 +60,7 @@ const FormSubmission = ({
 
       if (resp && resp.payload && resp.payload.success) {
         toast.success("Form added successfully.");
+        setFetchVnumbers(true);
       } else toast.error("Somthing is wrong please contact teach team");
       handleBack();
     });
@@ -102,6 +104,7 @@ const FormSubmission = ({
             previewData={formData}
             sx={{maxHeight: 'inherit'}}
             vnumberValue={vnumberValue}
+            stationValue={stationValue}
           />
         </Box>
       </Paper>

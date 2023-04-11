@@ -286,7 +286,7 @@ const checkListsReducer = createSlice({
       templates:[],
       taskLists:[],
       loader: false,
-      formTimeline: []
+      partTimeline: []
     },
     extraReducers: {
 
@@ -386,7 +386,7 @@ const checkListsReducer = createSlice({
         state.loader = false
       },
       [getFormTimeLine.fulfilled]: (state, { payload  }) => {
-        state.formTimeline = payload
+        state.partTimeline = payload
       },
     }
   })

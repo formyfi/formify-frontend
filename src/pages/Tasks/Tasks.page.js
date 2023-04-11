@@ -24,7 +24,7 @@ const TasksPage = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [partList, setPartList] = React.useState([]);
   const [partVnum, setPartVnum] = React.useState([]);
-
+  const [fetchVnumbers, setFetchVnumbers] = React.useState(false);
   const handleChange = (name, value) => {
     if(name === 'station') setStationValue(value);
     else if(name === 'part') setPartValue(value);
@@ -59,11 +59,11 @@ const TasksPage = () => {
       </Stepper>
       {/* step 1- Select  */}
       {activeStep === 0 && (
-        <SelectInfo stationValue={stationValue}  partValue={partValue}  vnumberValue={vnumberValue} partList={partList} partVnum={partVnum} setPartList={setPartList} setPartVnum={setPartVnum} handleChange={handleChange} handleNext={handleNext} handleBack={handleBack} />
+        <SelectInfo stationValue={stationValue}  partValue={partValue}  fetchVnumbers={fetchVnumbers} setFetchVnumbers={(value)=>setFetchVnumbers(value)} vnumberValue={vnumberValue} partList={partList} partVnum={partVnum} setPartList={setPartList} setPartVnum={setPartVnum} handleChange={handleChange} handleNext={handleNext} handleBack={handleBack} />
       )}
 
       {/* step 2- form  */}
-      {activeStep === 1 && <FormSubmission stationValue={stationValue} partValue={partValue} vnumberValue={vnumberValue} handleNext={handleNext} handleBack={handleBack}  />}
+      {activeStep === 1 && <FormSubmission stationValue={stationValue} partValue={partValue} vnumberValue={vnumberValue} handleNext={handleNext} handleBack={handleBack} setFetchVnumbers={(value)=>setFetchVnumbers(value)} />}
 
       {/* step 3- submit form  */}
       {activeStep === 2 && <FormPreview  handleNext={handleNext} handleBack={handleBack}  />}

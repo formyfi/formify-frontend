@@ -103,7 +103,7 @@ const ManageForm = () => {
     {
       id: "form",
       numeric: false,
-      label: "Form Generated",
+      label: "Form Created",
       render: (record) => {
         return (
           <TableCell align="left">
@@ -125,7 +125,7 @@ const ManageForm = () => {
               onClick={()=>onGenerate(record)}
               startIcon={<FormatAlignCenter />}
             >
-              Generate form
+              Create/Edit form
             </Button>
             <Button
               variant="outlined"

@@ -252,11 +252,12 @@ const apis = {
     });
   },
   getAllTimelines: (values) => {
-    return request.get("/api/timelines/"+ values, {
+    return request.get("/api/timelines/get_vnum_timline", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
+      params: values,
     });
   },
   setFormTimeLine: (values) => {

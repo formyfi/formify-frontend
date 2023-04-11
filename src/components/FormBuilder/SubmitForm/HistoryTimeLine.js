@@ -23,8 +23,38 @@ import ChatInput from "./ChatInput";
 import { useDispatch, useSelector } from "react-redux";
 import { getFormTimeLine } from "redux/slices/formSlice";
 import moment from "moment";
+import {common} from "@mui/material/colors";
 
 const TimeLineItem = ({ record }) => {
+
+  const stringToColor = (string) => {
+    let hash = 0;
+    let i;
+  
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+  
+    let color = '#';
+  
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.slice(-2);
+    }
+    /* eslint-enable no-bitwise */
+  
+    return color;
+  }
+
+  const stringAvatar = (name) => {
+    return {
+      sx: {
+        bgcolor: stringToColor(name),
+      },
+      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    };
+  }
   return (
     <TimelineItem>
       <TimelineOppositeContent
@@ -41,14 +71,14 @@ const TimeLineItem = ({ record }) => {
         {/* <TimelineDot> */}
         {/* heaer Food Icon replace with icon or avtar */}
         <Avatar
-          alt={record?.first_name?(record?.first_name + " " + record?.last_name):'system'}
+          {...stringAvatar(record?.first_name?(record?.first_name + " " + record?.last_name):'System Message')}
         />
         {/* </TimelineDot> */}
         <TimelineConnector />
       </TimelineSeparator>
       <TimelineContent sx={{ py: "12px", px: 2 }}>
         <Typography variant="h6" component="span">
-          {record?.first_name?(record?.first_name + " " + record?.last_name):'system'}
+          {record?.first_name?(record?.first_name + " " + record?.last_name+" ["+record?.name+"]"):'System'}
         </Typography>
           <Typography>{record.text}</Typography>
         <Box>
@@ -74,14 +104,15 @@ export function CustomTimeLine({ records }) {
   );
 }
 
-export default function HistoryTimeLine({ open, closeHandler, vnumberValue }) {
+export default function HistoryTimeLine({ open, closeHandler, vnumberValue, stationValue }) {
   const formState = useSelector((state) => state.checkList);
+  const commonState = useSelector(state => state.common);
   const dispatch = useDispatch();
   const [addNew, setAddNew] = React.useState(false);
 
   React.useEffect(() => {
-    dispatch(getFormTimeLine(vnumberValue));
-  }, [addNew]);
+   if(open) dispatch(getFormTimeLine({v_num: vnumberValue, org_id: commonState.org_id}));
+  }, [addNew, open]);
 
   const addNewHandler = () => {
     setAddNew(!addNew);
@@ -92,7 +123,7 @@ export default function HistoryTimeLine({ open, closeHandler, vnumberValue }) {
       <Box sx={{ p: 5 }}>
         <Box sx={{ pb: 3, display: "flex", gap: "15px" }}>
           <Typography component="h2" variant="h6" color="primary">
-            Form Journey
+            Part Traveller
           </Typography>
           <Button variant="contained" onClick={addNewHandler}>
             {!addNew ? "Add" : "View All"}
@@ -104,10 +135,10 @@ export default function HistoryTimeLine({ open, closeHandler, vnumberValue }) {
         <Divider sx={{ mb: 3 }} />
         {!addNew && (
           <Box>
-            <CustomTimeLine records={formState.formTimeline?.data} />
+            <CustomTimeLine records={formState.partTimeline?.data} />
           </Box>
         )}
-        {addNew && <ChatInput vnumberValue={vnumberValue} closeAddNew={addNewHandler} />}
+        {addNew && <ChatInput vnumberValue={vnumberValue} stationValue={stationValue} closeAddNew={addNewHandler} />}
       </Box>
     </SwipeableDrawer>
   );

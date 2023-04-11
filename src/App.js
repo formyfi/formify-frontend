@@ -15,6 +15,7 @@ import PartsPage from "pages/Parts/Parts.page";
 import TasksPage from "pages/Tasks/Tasks.page";
 import ManageForm from "pages/Form/ManageForm.page";
 import ManageTask from "pages/Tasks/ManageTask.page";
+import {ToastContainer, toast} from 'react-toastify';
 const theme = createTheme({
   palette: {
     primary: {
@@ -31,6 +32,7 @@ function App() {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
           <ThemeProvider theme={theme}>
+           <ToastContainer />
             <BrowserRouter>
               <Routes>
                 <Route path="/login" element={<LoginPage />} />

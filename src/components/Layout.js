@@ -166,7 +166,7 @@ export default function Layout() {
     },
     {
       id: 'tasks',
-      label: "Inspection",
+      label: "Start Inspection",
       path: "/app/tasks",
       role: 3,
       icon: <TaskIcon />

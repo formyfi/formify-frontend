@@ -7,9 +7,9 @@ import React, { useRef, useState } from "react";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import SendIcon from "@mui/icons-material/Send";
 import { setFormTimeLine } from "redux/slices/formSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const ChatInput = ({ vnumberValue, closeAddNew }) => {
+const ChatInput = ({ vnumberValue, closeAddNew, stationValue }) => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
   
@@ -18,7 +18,7 @@ const ChatInput = ({ vnumberValue, closeAddNew }) => {
 
   const inputRef = useRef(null);
   const dispatch = useDispatch();
-
+  const commonState = useSelector((state) => state.common);
 
   const handleInputChange = (event) => {
     setMessage(event.target.value);
@@ -84,7 +84,9 @@ const ChatInput = ({ vnumberValue, closeAddNew }) => {
     dispatch(setFormTimeLine({
       form_vnumber_id: vnumberValue,
       text: message,
-      type: "admin",
+      type: "user_message",
+      station_id: stationValue,
+      org_id: commonState.org_id,
       user_id: 15,
       images: imagesNames.join(',')
     })).then((runAfter)=>{

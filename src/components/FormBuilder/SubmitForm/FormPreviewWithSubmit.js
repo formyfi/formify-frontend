@@ -14,7 +14,6 @@ import {
   PreviewTypography,
   PreviewUploadField,
 } from "./previewFormElements";
-import { useForm } from "react-hook-form";
 import { Field, Form, Formik } from "formik";
 import HistoryTimeLine from "./HistoryTimeLine";
 
@@ -27,10 +26,10 @@ const FormPreviewWithSubmit = ({
   vnumberValue,
   onCancel,
   form_id,
+  stationValue,
 }) => {
   const [initVals, setInitVals] = useState(null);
   const [historyModel, setHistoryModel] = useState(false);
-
   useEffect(() => {
     let initialValues = {};
     previewData.forEach((prev) => {
@@ -203,12 +202,12 @@ const FormPreviewWithSubmit = ({
                   </Button>
 
                 </Stack>
-                  <Button variant="outlined" onClick={openJourney} >Form Journey</Button>
+                  <Button variant="outlined" onClick={openJourney} >Part Traveller</Button>
               </Box>
             </Form>
           )}
         </Formik>
-        <HistoryTimeLine open={historyModel} vnumberValue={vnumberValue} closeHandler={openJourney} />
+        <HistoryTimeLine open={historyModel} vnumberValue={vnumberValue} stationValue={stationValue} closeHandler={openJourney} />
       </Box>
     </Box>
   );

@@ -5,11 +5,21 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Box, Button, Typography, Select} from "@mui/material";
 
-const SelectInfo = ({ handleNext, stationValue,  partValue, setPartList, partList, partVnum, setPartVnum, vnumberValue, handleChange, }) => {
-  
-
+const SelectInfo = ({ handleNext, stationValue,  partValue, setPartList, partList, partVnum, setPartVnum, vnumberValue, handleChange, setFetchVnumbers, fetchVnumbers}) => {
   const dispatch = useDispatch();
   const commonState = useSelector((state) => state.common);
+  React.useEffect(() => {
+    if (fetchVnumbers) {
+      const res = dispatch(getPartVnumbers(
+        {part_id: partValue, station_id: stationValue, org_id: commonState.org_id}))
+        res.then((resp)=>{
+          if(resp && resp.payload && resp.payload.success){
+            setPartVnum(resp.payload.v_numbers)
+          }
+          setFetchVnumbers(false);
+        })
+    }
+  }, [fetchVnumbers]);
   return (
     <Box sx={{ mt: 5 }} component="form">
       <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>

@@ -415,7 +415,17 @@ const FormPage = (props) => {
   };
 
   const onSaveTemplet = async () => {
-    const formData = previewData;
+    const jsonObjects = formBuilder.actions.getData();
+                
+    jsonObjects.forEach((jsonObject) => {
+      if (jsonObject.type === "uploadImage") {
+        let test =
+          window.previewImages[jsonObject.name + "-preview"];
+        jsonObject.value = test;
+      }
+    });
+    setPreviewData(jsonObjects);
+    const formData = jsonObjects;
     if (formData) {
       for (let i = 0; i < formData.length; i++) {
         const fobject = formData[i];
@@ -445,10 +455,14 @@ const FormPage = (props) => {
     <div>
   <ToastContainer />
   <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
+  <Box sx={{ display: "flex" }}>
   <Button sx={{ mr: 2 }} variant="contained" onClick={() => setImportDialogue(true)}>
     Import Template
   </Button>
-    
+  <Button sx={{ mr: 2 }} variant="contained" onClick={() => handleClickOpen()}>
+    Save as template
+  </Button>
+  </Box>              
     <Box sx={{ display: "flex" }}>
       <Button
         variant="contained"
@@ -469,9 +483,6 @@ const FormPage = (props) => {
       >
         Preview Form
       </Button>
-      <Button sx={{ mr: 2 }} variant="contained" onClick={() => handleClickOpen()}>
-                  Save as template
-                </Button>
       <Button variant="contained" onClick={() => {
         formBuilder.actions.clearFields();
       }}>
