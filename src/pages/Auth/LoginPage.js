@@ -21,6 +21,7 @@ import { redirect, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, Backdrop } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import backgroundImage from './login_back1.jpg';
+import LOGO from './../../components/LOGO.png';
 
 const schema = yup
   .object({
@@ -82,11 +83,14 @@ export default function SignIn() {
             sx={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "center",
+              justifyContent: "space-around",
              alignItems: "center",
               minHeight: "100vh"
             }}  
           >
+            <Box sx={{ width: "100%" }} >
+            <img src={LOGO} style={{ height: "auto", width: "200px" }} alt="logo"  />
+            </Box>
             <Box
               sx={{
                 display: "flex",
@@ -94,8 +98,8 @@ export default function SignIn() {
                 alignItems: "flex-start",
               }}
             >
-              
-              <Typography component="h2" variant="h3" style={{ fontFamily: 'sans-serif' }}>
+               
+              <Typography component="h2" variant="h3" color={'primary'} style={{ fontFamily: 'sans-serif' }}>
                 Sign in
               </Typography>
              

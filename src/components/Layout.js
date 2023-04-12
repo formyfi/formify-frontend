@@ -32,6 +32,7 @@ import { Avatar, Menu, MenuItem } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, logoutApiAction } from 'redux/slices/commonSlice';
+import LOGO from './LOGO.png';
 
 var drawerWidth = 50;
 
@@ -39,6 +40,7 @@ var drawerWidth = 50;
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   position: 'fixed',
+  backgroundColor: "#f5fbf9",
   zIndex: theme.zIndex.drawer - 1,
 }));
 
@@ -264,6 +266,7 @@ export default function Layout() {
             width="100%"
             justifyContent='space-between'
           >
+            <img src={LOGO} style={{ height: "auto", width: "150px" }} alt="logo"   />
             <Typography variant="h6" noWrap component="div">
               {commonState.org_name || title}
             </Typography>
@@ -301,7 +304,7 @@ export default function Layout() {
             <ListItem key={list.id} disablePadding  
               onMouseEnter={() => handleMouseEnter()}
               onMouseLeave={() => handleMouseLeave()}
-              sx={{ height: "70px" }}>
+              sx={{ height: "50px" }}>
               <ListItemButton onClick={()=>{
                 navigate(list.path)
               }} >
