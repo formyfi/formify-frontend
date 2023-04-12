@@ -5,6 +5,7 @@ import {
   Typography,
   TableCell,
   Chip,
+  TextField,
 } from "@mui/material";
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -21,6 +22,8 @@ const ManageTask = () => {
   const [currentRecord, setRecord] = useState([]);
   const [formJson, setFormJson] = useState([]);
   const [formValue, setFormValue] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+
   const dispatch = useDispatch();
 
   const commonState = useSelector((state) => state.common);
@@ -72,7 +75,6 @@ const ManageTask = () => {
         return (
           <TableCell align="left">
             <Button
-              variant="outlined"
               onClick={() => onGenerate(record)}
               startIcon={<FormatAlignCenter />}
             >
@@ -95,18 +97,42 @@ const ManageTask = () => {
     <Box>
       <ToastContainer />
       <Box
-        display={"flex"}
-        justifyContent="space-between"
-        alignItems={"center"}
-      >
-        <Typography component="h2" variant="h6" color="primary" sx={{mb: 2}}>
-          Completed Inspections
-        </Typography>
-      </Box>
+  display="flex"
+  justifyContent="space-between" // Update justifyContent to "space-between"
+  alignItems="center"
+>
+  <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
+    Completed Inspections
+  </Typography>
+  <Box // Wrap the TextField component in a Box component
+    display="flex"
+    justifyContent="flex-end"
+    alignItems="center"
+    mb={2}
+    sx={{ width: "300px" }}
+  >
+    <TextField
+      id="search"
+      label="Search"
+      name="name"
+      value={searchValue}
+      onChange={(e) => setSearchValue(e.target.value)}
+      autoComplete="search"
+      InputProps={{ disableUnderline: true }}
+      autoFocus
+      fullWidth
+    />
+  </Box>
+</Box>
       <AdvanceTable
         headCells={headCells}
         user={true}
-        rows={checkListState.taskLists}
+        data={checkListState.taskLists.filter(row => 
+          row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          row.station_name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          row.form_id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
+          row.vnum_id.toString().toLowerCase().includes(searchValue.toLowerCase())
+        )}
         loading={checkListState.taskLists && checkListState.taskLists.length ? false : true}
         handleTableChange={(tableProps) => {
           console.log(tableProps);

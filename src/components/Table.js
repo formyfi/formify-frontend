@@ -133,15 +133,15 @@ export default function EnhancedTable({
                     {user && <TableCell align="left">{row.first_name}</TableCell>}
                     {user && <TableCell align="left">{row.last_name}</TableCell>}
                     {user && <TableCell align="left">{row.user_name}</TableCell>}
-                    {user && <TableCell align="left">{row.user_type}</TableCell>}
-                    {user && <TableCell align="left">{row.station_name}</TableCell>}
+                    {user && <TableCell align="left">{row.user_type_name}</TableCell>}
                     {part && <TableCell align="left">{row.description}</TableCell>}
+                    {(user || part) && <TableCell align="left">{row.station_names}</TableCell>}
                     {!row.renderButton && <TableCell align="left">
-                      {editButton && onEdit && <Button variant="outlined" onClick={()=>onEdit(row.id, row)} startIcon={<EditIcon />}>
+                      {editButton && onEdit && <Button  onClick={()=>onEdit(row.id, row)} startIcon={<EditIcon />}>
                         Edit
                       </Button>}
                       &nbsp;&nbsp;&nbsp;
-                      {deleteButton && onDelete && <Button variant="outlined" onClick={()=>onDelete(row.id)} ml='2' color="error" startIcon={<DeleteIcon />}>
+                      {deleteButton && onDelete && <Button  onClick={()=>onDelete(row.id)} ml='2' color="error" startIcon={<DeleteIcon />}>
                         Delete
                       </Button>}
                     </TableCell>}

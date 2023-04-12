@@ -64,18 +64,18 @@ function EnhancedTableHead(props) {
 
 export default function AdvanceTable({
   headCells,
-  rows,
-  handleTableChange,
+  data,
   loading
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rows, setRows] = React.useState(data);
 
   useEffect(()=>{
-    handleTableChange({order, orderBy, page, rowsPerPage})
-  }, [order, orderBy, page, rowsPerPage])
+    setRows(data)
+  },[data])
   
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -91,6 +91,31 @@ export default function AdvanceTable({
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const sortedRows = React.useMemo(() => {
+    if (rows && rows.length > 0) {
+      return rows.sort((a, b) => {
+        const aValue = a[orderBy];
+        const bValue = b[orderBy];
+
+        if (order === "asc") {
+          if (typeof aValue === "string" && typeof bValue === "string") {
+            return aValue.localeCompare(bValue);
+          } else {
+            return aValue - bValue;
+          }
+        } else {
+          if (typeof aValue === "string" && typeof bValue === "string") {
+            return bValue.localeCompare(aValue);
+          } else {
+            return bValue - aValue;
+          }
+        }
+      });
+    } else {
+      return [];
+    }
+  }, [rows, order, orderBy]);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -110,7 +135,7 @@ export default function AdvanceTable({
               headCells={headCells}
             />
           <TableBody>
-              {rows && rows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
+              {sortedRows && sortedRows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (

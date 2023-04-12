@@ -121,14 +121,14 @@ const ManageForm = () => {
         return (
           <TableCell align="left">
             <Button
-              variant="outlined"
+              
               onClick={()=>onGenerate(record)}
               startIcon={<FormatAlignCenter />}
             >
               Create/Edit form
             </Button>
             <Button
-              variant="outlined"
+              
               onClick={()=>{
                 onEdit(record)
               }}
@@ -138,7 +138,7 @@ const ManageForm = () => {
               Edit
             </Button>
             <Button
-              variant="outlined"
+              
               onClick={()=>onDelete(record)}
               color="error"
               startIcon={<DeleteIcon />}

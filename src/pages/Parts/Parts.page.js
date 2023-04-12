@@ -34,6 +34,12 @@ const headCells = [
     label: "Description",
   },
   {
+    id: "station_names",
+    numeric: false,
+    disablePadding: true,
+    label: "Operations",
+  },
+  {
     id: "action",
     numeric: false,
     disablePadding: true,

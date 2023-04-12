@@ -58,16 +58,16 @@ const headCells = [
     label: "Login user name",
   },
   {
-    id: "user_type",
+    id: "user_type_name",
     numeric: false,
     disablePadding: true,
     label: "User type",
   },
   {
-    id: "station",
+    id: "station_names",
     numeric: false,
     disablePadding: true,
-    label: "Departments",
+    label: "Operations",
   },
   {
     id: "action",

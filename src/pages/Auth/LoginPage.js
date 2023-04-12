@@ -76,7 +76,7 @@ export default function SignIn() {
       {/* <Container component="main" > */}
       {/* <CssBaseline /> */}
       <Grid container flexDirection="row" >
-        <Grid sx={{my:20}}item md={6}>
+        <Grid sx={{my:20}}item xs={12} md={4}>
           <Container
             maxWidth="xs"
           >
@@ -90,11 +90,9 @@ export default function SignIn() {
             >
               
               <Typography component="h2" variant="h3" style={{ fontFamily: 'sans-serif' }}>
-                Welcome Back
+                Sign in
               </Typography>
-              <Typography component="p" variant="p" style={{ fontFamily: 'sans-serif' }}>
-                Please enter your email and password
-              </Typography>
+             
               <Box
                 component="form"
                 onSubmit={handleSubmit(onSubmit)}
@@ -142,20 +140,35 @@ export default function SignIn() {
                   Sign In
                 </Button>
               </Box>
+
             </Box>
+            <Box sx={{ mt: 20, ml:5 }}>
+            
+              <Button 
+                 
+                  sx={{ mt: 3, mb: 2 }}>
+                Terms & Conditions
+              </Button>{" "}
+              {" "}
+              <Button 
+                  
+                  sx={{ mt: 3, mb: 2 }}>
+                Privacy Policy
+              </Button>
+            
+          </Box>
           </Container>
         </Grid>
-        <Grid item md={6} sx={{
+        <Grid item xs={12} md={8} sx={{
           backgroundImage: `url('${backgroundImage}')`,
           height: "97.5vh",
           backgroundSize: "cover",
-          display: { xs: 'none', md: 'block', lg: 'block'  } 
+          display: { xs: "none", md: "block", lg: "block" }, 
         }} >
           
         </Grid>
       </Grid>
-      {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
-      {/* </Container> */}
+       
     </ThemeProvider>
   );
 }
