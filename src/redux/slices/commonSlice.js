@@ -75,6 +75,7 @@ const commonSlice = createSlice({
           state.token = payload.token
           state.user_id = payload.user_id
           state.org_id = payload.org_id
+          state.org_name = payload.org_name
           state.user_type_id = payload.user_type_id
           state.user_details = payload.user_details
           state.user_first_name = payload.user_first_name
