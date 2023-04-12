@@ -40,7 +40,7 @@ var drawerWidth = 50;
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   position: 'fixed',
-  backgroundColor: "#f5fbf9",
+  backgroundColor: "#05386B",
   zIndex: theme.zIndex.drawer - 1,
 }));
 
@@ -266,7 +266,7 @@ export default function Layout() {
             width="100%"
             justifyContent='space-between'
           >
-            <img src={LOGO} style={{ height: "auto", width: "150px" }} alt="logo"   />
+            {/* <img src={LOGO} style={{ height: "auto", width: "150px" }} alt="logo"   /> */}
             <Typography variant="h6" noWrap component="div">
               {commonState.org_name || title}
             </Typography>

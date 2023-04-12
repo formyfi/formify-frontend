@@ -89,7 +89,7 @@ export default function SignIn() {
             }}  
           >
             <Box sx={{ width: "100%" }} >
-            <img src={LOGO} style={{ height: "auto", width: "200px" }} alt="logo"  />
+            <img src={LOGO} style={{ height: "auto", width: "150px" }} alt="logo"  />
             </Box>
             <Box
               sx={{
@@ -99,7 +99,7 @@ export default function SignIn() {
               }}
             >
                
-              <Typography component="h2" variant="h3" color={'primary'} style={{ fontFamily: 'sans-serif' }}>
+              <Typography component="h3" variant="h4" color={'primary'} style={{ fontFamily: 'sans-serif' }}>
                 Sign in
               </Typography>
              
