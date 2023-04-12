@@ -1,6 +1,6 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -65,7 +65,7 @@ export default function SignIn() {
   }, [commonState]);
 
   return (
-    <ThemeProvider theme={theme}>
+    <Box>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={commonState.loader}
@@ -76,13 +76,19 @@ export default function SignIn() {
       {/* <Container component="main" > */}
       {/* <CssBaseline /> */}
       <Grid container flexDirection="row" >
-        <Grid sx={{my:20}}item xs={12} md={4}>
+        <Grid item xs={12} md={4}>
           <Container
             maxWidth="xs"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+             alignItems: "center",
+              minHeight: "100vh"
+            }}  
           >
             <Box
               sx={{
-                marginTop: 8,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
@@ -142,17 +148,14 @@ export default function SignIn() {
               </Box>
 
             </Box>
-            <Box sx={{ mt: 20, ml:5 }}>
+            <Box sx={{ mt: 8 , display: 'flex', justifyContent:'center',flexDirection:'column' }}>
             
               <Button 
-                 
-                  sx={{ mt: 3, mb: 2 }}>
+                 >
                 Terms & Conditions
               </Button>{" "}
               {" "}
-              <Button 
-                  
-                  sx={{ mt: 3, mb: 2 }}>
+              <Button>
                 Privacy Policy
               </Button>
             
@@ -169,6 +172,6 @@ export default function SignIn() {
         </Grid>
       </Grid>
        
-    </ThemeProvider>
+    </Box>
   );
 }
