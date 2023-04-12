@@ -330,6 +330,12 @@ export default function Layout() {
         <DrawerHeader />
         <Outlet />
       </Main>
+      <Box sx={{ position: 'absolute', bottom: 0, right: 0, mr: 2, mb: 2 }}>
+      <Typography variant="h8" color="textSecondary">
+        Powered by
+      </Typography>
+      <img src={LOGO} alt="logo" style={{ width: '50px', marginLeft: '8px' }} />
+    </Box>
     </Box>
   );
 }
