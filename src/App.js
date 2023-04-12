@@ -19,8 +19,8 @@ import {ToastContainer, toast} from 'react-toastify';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#8936dd',
-      secondary: '#7725C9'
+      main: '#05386B',
+      secondary: '#05CDB95'
     },
   },
 });
