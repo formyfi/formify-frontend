@@ -2,9 +2,9 @@ import React, {useState} from "react";
 import {getTaskForm, updateTaskForm} from "redux/slices/formSlice";
 import {useDispatch, useSelector} from "react-redux";
 import FormPreviewWithSubmit from "components/FormBuilder/SubmitForm/FormPreviewWithSubmit";
-import {ToastContainer, toast} from 'react-toastify';
+import {toast} from 'react-toastify';
 
-const {Box, Typography, Paper, Divider} = require("@mui/material");
+const {Box, Typography, Paper, Divider, Skeleton} = require("@mui/material");
 
 
 const FormSubmission = ({
@@ -22,9 +22,11 @@ const FormSubmission = ({
   const [formData, setFormData] = useState(form_json ? form_json : []);
   const [formValue, setFormValue] = useState(form_value ? form_value : []);
   const [formID, setFormID] = useState(form_id ? form_id : '');
+  const [loading, setLoading] = React.useState(false);
   const commonState = useSelector((state) => state.common);
   React.useEffect(() => {
     if (!formData.length || !formValue.length) {
+      setLoading(true);
       const res = dispatch(
         getTaskForm({
           station_value: stationValue,
@@ -36,11 +38,12 @@ const FormSubmission = ({
         if (resp && resp.payload.form_data && resp.payload.form_data.form_json) {
           setFormData(JSON.parse(resp.payload.form_data.form_json));
           setFormID(resp.payload.form_data.form_id);
-        }
-        if (resp && resp.payload.form_data && resp.payload.form_data.form_value) {
-          setFormValue(JSON.parse(resp.payload.form_data.form_value));
-        }
-
+          if (resp && resp.payload.form_data && resp.payload.form_data.form_value) {
+            setFormValue(JSON.parse(resp.payload.form_data.form_value));
+          }
+        } else toast.info("Checklist for this part and operation has not been created. Please contact your Manager");
+        
+        setLoading(false)
       });
     }
   }, []);
@@ -71,11 +74,19 @@ const FormSubmission = ({
     <Box sx={{mt: 5}} component="form">
 
       <Paper elevation={3} sx={{
-        p: 2, boxShadow: 3, width: '100%', maxWidth: 900, overflowY: 'auto', '&::-webkit-scrollbar': {
+        p: 2, boxShadow: 3, width: '100%', maxWidth: 650, overflowY: 'auto', '&::-webkit-scrollbar': {
           display: 'none'
         }
       }}>
-        <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: 900, mb: 2}}>
+        {loading ? <Box sx={{ mx:20, width: 250 }}>
+                        <Skeleton />
+                        <Skeleton animation="wave" />
+                        <Skeleton animation={false} />
+                          <Skeleton />
+                        <Skeleton animation="wave" />
+                        <Skeleton animation={false} />
+                      </Box> : <Box>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: 650, mb: 2}}>
           <Typography component="h2" variant="h6" color="primary">
             Part vnumber:&nbsp;
             <Typography color="black" sx={{display: 'inline-block'}}>
@@ -107,6 +118,7 @@ const FormSubmission = ({
             stationValue={stationValue}
           />
         </Box>
+        </Box>}
       </Paper>
     </Box>
   );

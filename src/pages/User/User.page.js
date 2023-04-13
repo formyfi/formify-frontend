@@ -171,6 +171,7 @@ const openEditUserForm = (id, row) => {
         headCells={headCells}
         user={true}
         rows={userState.user_list}
+        loading={userState.user_list && userState.user_list.length ? false : true}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}

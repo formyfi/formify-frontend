@@ -33,8 +33,9 @@ import { Logout, Settings } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, logoutApiAction } from 'redux/slices/commonSlice';
 import LOGO from './LOGO.png';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-var drawerWidth = 50;
+//var drawerWidth = 50;
 
 
 
@@ -57,7 +58,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
-    marginLeft: `50px`,
+   
     marginRight: `50px`,
     transition: 'margin-left 0.3s ease-in-out, width 0.3s ease-in-out',
     width: `${open ? `calc(100% - 240px)` : `calc(100% - 50px)`}`,
@@ -113,15 +114,15 @@ const RightSideMenu = ({ anchorEl,open,logout,handleClose })=>{
 
 export default function Layout() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [drawerWidth, setWidth] = React.useState(50);
   const [title, setTitle] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [isHovering, setIsHovering] =  React.useState(false);
   const openRightSide = Boolean(anchorEl);
   const navigate = useNavigate();
   const location = useLocation();
   const commonState = useSelector(state => state.common);
   const dispatch = useDispatch();
+  const isTabletOrMobile = useMediaQuery('(max-width: 1024px)'); // Set the threshold value as per your requirement
 
   const navigationList = [
     {
@@ -182,16 +183,6 @@ export default function Layout() {
     },
   ]
 
-  const handleMouseEnter = () => {
-    setIsHovering(true);
-    drawerWidth = 240;
-  };
-  
-  const handleMouseLeave = () => {
-    setIsHovering(false);
-    drawerWidth = 50;
-  };
-
   const openRightSideHandler = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -200,11 +191,16 @@ export default function Layout() {
   };
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+   setWidth(240)
   };
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    setWidth(50)
+  };
+
+  const handleDrawerToggle = () => {
+    let w = drawerWidth === 50 ? 240 : 50;
+    setWidth(w);
   };
 
   useEffect(()=>{
@@ -250,17 +246,9 @@ export default function Layout() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="static" >
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
+          
           <Box
             display={'flex'}
             width="100%"
@@ -280,6 +268,7 @@ export default function Layout() {
       <Drawer
         sx={{
           width: drawerWidth,
+          overflowX: 'hidden',
           flexShrink: 0,
           zIndex: 0,
           '& .MuiDrawer-paper': {
@@ -289,35 +278,50 @@ export default function Layout() {
         }}
         variant="persistent"
         anchor="left"
-        open={open}
+        open={true}
       >
-        {/* <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        <div
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+          }}
+        >
+        <div
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+            }}
+            onClick={handleDrawerToggle}
+          >
+        <DrawerHeader sx={{ mt: 8, ml: 2  }} >
+          <IconButton sx={{ }}>
+            { drawerWidth === 240 ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
-        </DrawerHeader> */}
+        </DrawerHeader>
+        </div>
         <Divider />
-        <List  sx={{ mt: 7 }} >
+        <List  >
           { navigationList.map((list, index) => (
             ((parseInt(commonState.user_type_id) === 3 && list.role === 3) || (parseInt(commonState.user_type_id) === 1 ) 
             ?
-            <ListItem key={list.id} disablePadding  
-              onMouseEnter={() => handleMouseEnter()}
-              onMouseLeave={() => handleMouseLeave()}
-              sx={{ height: "50px" }}>
+            <ListItem key={list.id} disablePadding
+              sx={{ my:2, height: "50px" }} onClick={handleDrawerOpen}>
               <ListItemButton onClick={()=>{
                 navigate(list.path)
               }} >
                 <ListItemIcon sx={{ color: "primary.main" }}>
                   {list.icon}
                 </ListItemIcon>
-                {isHovering ? (
+                {drawerWidth === 240 ? (
                 <ListItemText primary={list.label} />
               ) : null}
               </ListItemButton>
             </ListItem>:null)
           ))}
         </List>
+        </div>
       </Drawer>
       <RightSideMenu logout={()=>{
         navigate('/login')
@@ -326,15 +330,30 @@ export default function Layout() {
             localStorage.removeItem('persist:root')
         
       }} anchorEl={anchorEl} open={openRightSide} handleClose={openRightSideCloseHandler} />
-      <Main open={open}>
+      <Main open={drawerWidth === 240 ? true : false}>
         <DrawerHeader />
         <Outlet />
       </Main>
-      <Box sx={{ position: 'absolute', bottom: 0, right: 0, mr: 2, mb: 2 }}>
-      <Typography variant="h8" color="textSecondary">
-        Powered by
-      </Typography>
-      <img src={LOGO} alt="logo" style={{ width: '50px', marginLeft: '8px' }} />
+      <Box
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        mr: 2,
+        mb: 2,
+        zIndex: 9999,
+      }}
+    >
+      {isTabletOrMobile ? (
+        <img src={LOGO} alt="logo" style={{ width: '50px', marginLeft: '8px' }} />
+      ) : (
+        <>
+          <Typography variant="h8" color="textSecondary">
+            Powered by
+          </Typography>
+          <img src={LOGO} alt="logo" style={{ width: '50px', marginLeft: '8px' }} />
+        </>
+      )}
     </Box>
     </Box>
   );

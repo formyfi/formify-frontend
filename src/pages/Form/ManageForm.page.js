@@ -8,7 +8,6 @@ import {
   TableCell,
   Chip
 } from "@mui/material";
-import EnhancedTable from "components/Table";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";

@@ -104,6 +104,7 @@ const onSubmit = ()=>{
         headCells={headCells}
         station={true}
         rows={stationState.station_list}
+        loading={stationState.station_list && stationState.station_list.length ? false : true}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}

@@ -46,7 +46,7 @@ const TasksPage = () => {
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-  <Box sx={{ justifyContent: "center", width: '100%', maxWidth: 900 }}>
+  <Box sx={{ justifyContent: "center", width: '100%', maxWidth: 750 }}>
     <Container sx={{ marginTop: 5}}>
       <Stepper activeStep={activeStep} sx={{ marginTop: 5, width: '100%' }}>
         {steps.map((label) => {

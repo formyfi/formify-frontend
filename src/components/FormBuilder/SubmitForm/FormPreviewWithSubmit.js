@@ -55,7 +55,7 @@ const FormPreviewWithSubmit = ({
 
   return (
     <Box>
-      <Box sx={{ mt: 3, width: 700 }}>
+      <Box sx={{ mt: 3, width: 400 }}>
         <Formik
           initialValues={{
             ...initVals,
@@ -78,7 +78,7 @@ const FormPreviewWithSubmit = ({
               onSubmit(JSON.stringify(values, null, 2));
             }, 400);
           }}
-          sx={{ width: "100%", maxWidth: 700 }}
+          sx={{ width: "100%", maxWidth: 600 }}
         >
           {({
             values,
@@ -200,9 +200,9 @@ const FormPreviewWithSubmit = ({
                   >
                     Cancel
                   </Button>
-
-                </Stack>
                   <Button variant="outlined" onClick={openJourney} >Part Traveller</Button>
+                </Stack>
+                  
               </Box>
             </Form>
           )}

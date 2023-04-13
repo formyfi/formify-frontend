@@ -17,7 +17,7 @@ import {
   Button,
   Divider,
   Drawer,
-  SwipeableDrawer,
+  SwipeableDrawer,Skeleton
 } from "@mui/material";
 import ChatInput from "./ChatInput";
 import { useDispatch, useSelector } from "react-redux";
@@ -109,9 +109,14 @@ export default function HistoryTimeLine({ open, closeHandler, vnumberValue, stat
   const commonState = useSelector(state => state.common);
   const dispatch = useDispatch();
   const [addNew, setAddNew] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-   if(open) dispatch(getFormTimeLine({v_num: vnumberValue, org_id: commonState.org_id}));
+   if(open){
+    setLoading(true);
+   const res = dispatch(getFormTimeLine({v_num: vnumberValue, org_id: commonState.org_id}));
+   res.then(()=>setLoading(false));
+   } 
   }, [addNew, open]);
 
   const addNewHandler = () => {
@@ -135,7 +140,14 @@ export default function HistoryTimeLine({ open, closeHandler, vnumberValue, stat
         <Divider sx={{ mb: 3 }} />
         {!addNew && (
           <Box>
-            <CustomTimeLine records={formState.partTimeline?.data} />
+            {loading ? <Box sx={{ mx:20, width: 250 }}>
+                        <Skeleton />
+                        <Skeleton animation="wave" />
+                        <Skeleton animation={false} />
+                          <Skeleton />
+                        <Skeleton animation="wave" />
+                        <Skeleton animation={false} />
+                      </Box> : <CustomTimeLine records={formState.partTimeline?.data} />}
           </Box>
         )}
         {addNew && <ChatInput vnumberValue={vnumberValue} stationValue={stationValue} closeAddNew={addNewHandler} />}

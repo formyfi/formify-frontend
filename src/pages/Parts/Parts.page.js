@@ -117,6 +117,7 @@ const onSubmit = ()=>{
         headCells={headCells}
         part={true}
         rows={partState.part_list}
+        loading={partState.part_list && partState.part_list.length ? false : true}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}

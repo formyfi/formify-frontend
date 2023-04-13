@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,20 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import Skeleton from "@mui/material/Skeleton";
 import { visuallyHidden } from "@mui/utils";
-import { Button } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import FormatAlignCenter from '@mui/icons-material/FormatAlignCenter';
+
 
 
 function EnhancedTableHead(props) {
@@ -135,7 +123,15 @@ export default function AdvanceTable({
               headCells={headCells}
             />
           <TableBody>
-              {sortedRows && sortedRows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
+              {loading ?
+              
+              [1,2,3,4,5].map((t)=>( <TableRow>
+                 <TableCell colSpan={headCells.length} align="center">
+                    <Skeleton animation="wave" width="100%" height={48} />
+                  </TableCell>
+                </TableRow>)) 
+              :
+              sortedRows && sortedRows.slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
