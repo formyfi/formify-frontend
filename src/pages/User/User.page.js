@@ -333,7 +333,7 @@ const openEditUserForm = (id, row) => {
               }}
               id={'station'}
               options={stationState.station_list}
-              textLabel={"Departments"}
+              textLabel={"Operations"}
             />
             <div>
             <Button

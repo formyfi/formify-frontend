@@ -68,7 +68,7 @@ const ManageForm = () => {
     const res = dispatch(createCheckListAction({ ...values, org_id: commonState.org_id, unique_id: values.station +'_'+values.part  }));
     res.then((resp) => {
       if(resp && resp.payload && resp.payload.success){
-        toast.success("Checklist added successfully.");
+        toast.success("Form added successfully.");
         setDrawer(false);
         reset();
       } else if(resp && resp.payload && resp.payload.message) {
@@ -124,7 +124,7 @@ const ManageForm = () => {
               onClick={()=>onGenerate(record)}
               startIcon={<FormatAlignCenter />}
             >
-              Create/Edit form
+              Draw/Edit form
             </Button>
             <Button
               
@@ -166,8 +166,8 @@ const ManageForm = () => {
       {id:record.id, org_id: commonState.org_id}));
     res.then((resp) => {
       if(resp && resp.payload && resp.payload.success){
-        toast.success("Checklist deleted successfully.");
-      } else toast.error("There was error deleting this checklist please contact your technical team");
+        toast.success("Form deleted successfully.");
+      } else toast.error("There was error deleting this form please contact your technical team");
     });  
   };
 
@@ -197,7 +197,7 @@ const ManageForm = () => {
               reset();
             }}
           >
-            Add CheckList
+            Add Form
           </Button>
         </Box>
       </Box>
@@ -227,7 +227,7 @@ const ManageForm = () => {
         >
           <Typography variant="h5" sx={{ mb: 2 }}>
             {" "}
-            {!isEdit ? "Add " : "Edit"} CheckList
+            {!isEdit ? "Add " : "Edit"} Form
           </Typography>
           <Box
             component="form"

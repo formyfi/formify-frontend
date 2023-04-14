@@ -134,7 +134,7 @@ export default function Layout() {
     },
     {
       id: 'station',
-      label: "Departments",
+      label: "Operations",
       path: "/app/stations",
       role: 1,
       icon: <HolidayVillageIcon />

@@ -67,10 +67,10 @@ const onSubmit = ()=>{
     
     res.then((resp) => {
       if(resp && resp.payload && resp.payload.success){
-        toast.success("Department added successfully.");
+        toast.success("New Operation added successfully.");
         setDrawer(false);
         setStationForm(initialStationForm);
-      } else toast.error("There was error adding this department, please contact your technical team");
+      } else toast.error("There was error adding this operation, please contact your technical team");
     });
 }
 
@@ -83,7 +83,7 @@ const onSubmit = ()=>{
         alignItems={"center"}
       >
         <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
-          Manage Departments
+          Manage Operations
         </Typography>
         <Box>
           <Button
@@ -96,7 +96,7 @@ const onSubmit = ()=>{
               setStationForm({...initialStationForm});
             }}
           >
-            Add new department
+            Add new operation
           </Button>
         </Box>
       </Box>
@@ -124,8 +124,8 @@ const onSubmit = ()=>{
             {id:id, org_id: commonState.org_id}))
             res.then((resp) => {
               if(resp && resp.payload && resp.payload.success){
-                toast.success("Department deleted successfully.");
-              } else toast.error("There was an error deleting department, please contact your technical team");
+                toast.success("Operation deleted successfully.");
+              } else toast.error("There was an error deleting Operation, please contact your technical team");
             });
         }}
       />
@@ -144,7 +144,7 @@ const onSubmit = ()=>{
             p: 2
           }}
         >
-          <Typography variant="h5" sx={{ mb: 2 }}> {newStation ? 'Add new' : 'Edit'} departments </Typography>
+          <Typography variant="h5" sx={{ mb: 2 }}> {newStation ? 'Add new' : 'Edit'} operations </Typography>
 
           <Box
             component="form"
