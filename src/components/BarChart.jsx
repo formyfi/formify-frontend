@@ -53,7 +53,7 @@ function BarChart() {
     <Card className="m-4">
       <Card.Body>
        
-        <ReactECharts theme="dark" style={{ height: "400px" }} option={options} />
+        <ReactECharts style={{ height: "400px" }} option={options} />
       </Card.Body>
     </Card>
   );

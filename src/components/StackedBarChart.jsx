@@ -148,7 +148,7 @@ function StackedBarChart() {
         >
           Export
         </Button>
-        <ReactECharts theme="dark" option={options} style={{ height: "400px" }}/>
+        <ReactECharts option={options} style={{ height: "400px" }}/>
         </Box>
   );
 }

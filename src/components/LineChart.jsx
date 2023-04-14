@@ -71,7 +71,7 @@ function LineChart() {
     <Card className="m-4">
       <Card.Body>
         
-        <ReactECharts theme="dark" option={options}style={{ height: "400px" }}/>
+        <ReactECharts  option={options}style={{ height: "400px" }}/>
       </Card.Body>
     </Card>
   );
