@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, FormControlLabel, Grid, TextField, Typography,Autocomplete } from "@mui/material";
+import { Box, Button, Drawer, FormControlLabel, Grid, TextField, Typography,Autocomplete, InputAdornment, IconButton } from "@mui/material";
 import EnhancedTable from "components/Table";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -11,6 +11,8 @@ import { getStationList } from "redux/slices/stationSlice";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { AutocompleteCustom, AutocompleteCustomMulti } from "components/AutocompleteCustom";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const schema = yup.object({
 }).required();
@@ -83,6 +85,9 @@ const UserPage = () => {
   const [userForm, serUserForm] = useState(initialUserForm)
   const [userTypeInputValue, setUserTypeInputValue] = React.useState('');
   const [stationInputValue, setStationInputValue] = React.useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+
   const {
     register,
     handleSubmit,
@@ -269,6 +274,7 @@ const openEditUserForm = (id, row) => {
             <TextField
               margin="normal"
               fullWidth
+              type={showPassword ? "text" : "password"}
               id={userForm.password}
               label="Password"
               value={userForm.password}
@@ -282,6 +288,23 @@ const openEditUserForm = (id, row) => {
               error={errors.password}
               helperText={errors?.password?.message}
               autoFocus
+              InputProps={{ // <-- This is where the toggle button is added.
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={()=>{
+                        setShowPassword(!showPassword)
+                      }}
+                      onMouseDown={()=>{
+                        setShowPassword(!showPassword)
+                      }}
+                    >
+                      {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
             />
             <Autocomplete
               value={userForm.user_type_value}

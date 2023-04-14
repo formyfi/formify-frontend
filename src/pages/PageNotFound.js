@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
     const navigate = useNavigate()
     useEffect(()=>{
-      navigate('/app/dashboard');
+      navigate('/login');
     },[])
   
     return (
