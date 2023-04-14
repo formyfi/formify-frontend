@@ -39,7 +39,7 @@ export const Dashboard = () => {
             <LineChart />
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={12} >
           <Paper
             sx={{
               p: 1,
@@ -50,7 +50,7 @@ export const Dashboard = () => {
               margin: 2,
             }}
           >
-            {/* <StackedBarChart /> */}
+            <StackedBarChart />
           </Paper>
         </Grid>
       </Grid>

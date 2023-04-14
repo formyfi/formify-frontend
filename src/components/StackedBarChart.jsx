@@ -1,8 +1,8 @@
 import React from "react";
 import ReactECharts from "echarts-for-react";
 
-import { Card, Box, Button } from "@material-ui/core";
 import { saveAs } from "file-saver"; 
+import { Box, Button } from "@mui/material";
 function StackedBarChart() {
 
   let options = {
@@ -141,7 +141,6 @@ function StackedBarChart() {
   return (
     <Box>
         <Button
-          
           color="primary"
           onClick={handleDownload}
           
