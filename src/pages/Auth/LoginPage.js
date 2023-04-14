@@ -1,6 +1,6 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
-import { Button } from "@mui/material";
+import { Button, IconButton, InputAdornment } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -22,6 +22,8 @@ import { Alert, AlertTitle, Backdrop } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import backgroundImage from './login_back1.jpg';
 import LOGO from './../../components/LOGO.png';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const schema = yup
   .object({
@@ -52,6 +54,7 @@ export default function SignIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const commonState = useSelector((state) => state.common);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const onSubmit = (values) => {
     dispatch(loginApiAction(values));
@@ -134,12 +137,29 @@ export default function SignIn() {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
                   {...register("password")}
                   id="password"
                   error={errors.password}
+                  type={showPassword ? "text" : "password"}
                   helperText={errors?.password?.message}
                   autoComplete="current-password"
+                  InputProps={{ // <-- This is where the toggle button is added.
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={()=>{
+                            setShowPassword(!showPassword)
+                          }}
+                          onMouseDown={()=>{
+                            setShowPassword(!showPassword)
+                          }}
+                        >
+                          {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
                 <Button
                   type="submit"
