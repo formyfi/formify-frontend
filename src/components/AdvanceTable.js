@@ -151,10 +151,18 @@ export default function AdvanceTable({
                   </TableRow>
                 );
               })}
+
+              {
+                !loading && sortedRows && sortedRows.length === 0 && <TableRow>
+                <TableCell align="center" colSpan={headCells.length}>
+                  No data available.
+                </TableCell>
+              </TableRow>
+              }
             </TableBody> 
           </Table>
         </TableContainer>
-        <TablePagination
+        {rows && rows.length > 0 && <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows && rows.length}
@@ -162,7 +170,7 @@ export default function AdvanceTable({
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        />}
       </Paper>
     </Box>
   );
