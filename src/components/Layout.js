@@ -275,27 +275,35 @@ export default function Layout() {
             width: drawerWidth,
             boxSizing: 'border-box',
           },
+          '& .MuiDrawer-paper::-webkit-scrollbar': {
+            display: "none"
+          },
         }}
         variant="persistent"
         anchor="left"
         open={true}
+        classes={{
+          root: {
+            backgroundColor: "red"
+          }
+        }}
       >
         <div
-          sx={{
+          style={{
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
           }}
         >
         <div
-            sx={{
+            style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
             }}
             onClick={handleDrawerToggle}
           >
-        <DrawerHeader sx={{ mt: 8, ml: 2  }} >
+        <DrawerHeader sx={{ mt: 8, ml: 2, display: 'flex'  }} >
           <IconButton sx={{ }}>
             { drawerWidth === 240 ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
@@ -307,7 +315,7 @@ export default function Layout() {
             ((parseInt(commonState.user_type_id) === 3 && list.role === 3) || (parseInt(commonState.user_type_id) === 1 ) 
             ?
             <ListItem key={list.id} disablePadding
-              sx={{ my:2, height: "50px" }} onClick={handleDrawerOpen}>
+              sx={{ my:2, height: "50px" }} >
               <ListItemButton onClick={()=>{
                 navigate(list.path)
               }} >
