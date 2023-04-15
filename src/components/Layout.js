@@ -37,6 +37,19 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import RightSideMenu from "./RightSideMenu";
 import ChangePasswordForm from "pages/Dashboard/ChangePasswordForm";
 
+
+import { createClient } from '@supabase/supabase-js'
+
+
+const supabaseUrl = 'https://xulrhkdfzsueagghuwxr.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1bHJoa2RmenN1ZWFnZ2h1d3hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODE1ODc5NzIsImV4cCI6MTk5NzE2Mzk3Mn0.8isSZKd__PnoGmjQynQHvEpa94ERxv8fzUyJkMlifhc'
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+
+export {
+  supabase
+}
+
 //var drawerWidth = 50;
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
@@ -259,10 +272,12 @@ export default function Layout() {
             <Box>
               <RightSideMenu
                 logout={() => {
-                  navigate("/login");
                   dispatch(logoutApiAction());
                   dispatch(logout());
                   localStorage.removeItem("persist:root");
+                  supabase.auth.signOut().then(()=>{
+                    navigate("/login");
+                  });
                 }}
                 changePassword={() => {
                   setShowChangePassword(true);

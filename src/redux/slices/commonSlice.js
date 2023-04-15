@@ -25,6 +25,30 @@ const loginApiAction = createAsyncThunk(
   }
 )
 
+
+const socialLoginApiAction = createAsyncThunk(
+  'auth/login',
+  async (values) => {
+    const response = await apis.socialLogin(values).then((response)=>{
+      if(response.status === 200){
+        return response.data
+      }
+    }).catch((err)=>{
+      if(err.response && err.response.status === 401 && err.response.data){
+        return {
+          success: false,
+          message : err.response.data.message
+        }
+      }
+      return {
+        success: false,
+        message : "Something went wrong"
+      }
+    })
+    return response
+  }
+)
+
 const logoutApiAction = createAsyncThunk(
   'auth/logout',
   async () => {
@@ -81,6 +105,7 @@ const commonSlice = createSlice({
           state.user_first_name = payload.user_first_name
           state.user_last_name = payload.user_last_name
           state.user_stations = payload.stations
+          state.error = ""
           localStorage.setItem('app_token', payload.token)
         } else {
           state.error = payload.message
@@ -92,13 +117,42 @@ const commonSlice = createSlice({
         state.error = "something went wrong"
       },
 
+      [socialLoginApiAction.pending]: (state)=>{
+        state.loader = true
+      },
+      [socialLoginApiAction.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload.success) {
+          state.isLogged = true
+          state.token = payload.token
+          state.user_id = payload.user_id
+          state.org_id = payload.org_id
+          state.org_name = payload.org_name
+          state.user_type_id = payload.user_type_id
+          state.user_details = payload.user_details
+          state.user_first_name = payload.user_first_name
+          state.user_last_name = payload.user_last_name
+          state.user_stations = payload.stations
+          state.error = ""
+          localStorage.setItem('app_token', payload.token)
+        } else {
+          state.error = "Contact your admin for account"
+          state.isLogged = false
+        }
+      },
+      [socialLoginApiAction.rejected]: (state,action)=>{
+        state.loader = false
+        state.error = "something went wrong"
+      },
+
     }
   })
   
 
   export {
     loginApiAction,
-    logoutApiAction
+    logoutApiAction,
+    socialLoginApiAction
   }
   
   export const {

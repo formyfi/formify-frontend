@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { loginApiAction } from "redux/slices/commonSlice";
+import { loginApiAction, socialLoginApiAction } from "redux/slices/commonSlice";
 import { redirect, useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, Backdrop } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -24,6 +24,8 @@ import backgroundImage from './login_back1.jpg';
 import LOGO from './../../components/LOGO.png';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { supabase } from "components/Layout";
+
 
 const schema = yup
   .object({
@@ -31,15 +33,6 @@ const schema = yup
     password: yup.string().min(6).required(),
   })
   .required();
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#05386B',
-      secondary: '#05CDB95'
-    },
-  },
-});
 
 export default function SignIn() {
   const {
@@ -59,6 +52,17 @@ export default function SignIn() {
   const onSubmit = (values) => {
     dispatch(loginApiAction(values));
   };
+  
+  React.useEffect(()=>{
+    supabase.auth.getUser().then((response)=>{
+        if(response.data && response.data.user && response.error === null){
+          dispatch(socialLoginApiAction({
+            user_name: response.data.user.email,
+            client_id: response.data.user.id
+          }));
+        }
+    })
+  },[])
 
   React.useEffect(() => {
     if (commonState.isLogged === true) {
@@ -168,6 +172,36 @@ export default function SignIn() {
                   sx={{ mt: 3, mb: 2 }}
                 >
                   Sign In
+                </Button>
+                <Button
+                  
+                  variant="contained"
+                  onClick={()=>{
+
+                    supabase.auth.getUser().then((response)=>{
+                      if(response.data && response.data.user && response.error === null){
+                        dispatch(socialLoginApiAction({
+                          user_name: response.data.user.email,
+                          client_id: response.data.user.id
+                        }));
+                      } else {
+                        supabase.auth.signInWithOAuth({
+                          provider: 'azure',
+                          options: {
+                            redirectTo: 'http://localhost:3000/login',
+                            scopes: 'email',
+                          }
+                        }).then((data, error)=>{
+                          console.log({data, error})
+                          debugger
+                        })
+                      }
+                  })
+
+                   
+                  }}
+                >
+                  Social Login 
                 </Button>
               </Box>
 

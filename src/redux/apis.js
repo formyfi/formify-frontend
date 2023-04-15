@@ -28,6 +28,13 @@ const getToken = () => {
 };
 
 const apis = {
+  socialLogin: (values)=>{
+    return request.post("/api/auth/social_login", values, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+  },
   login: (values) => {
     return request.post("/api/auth/login", values, {
       headers: {
@@ -35,7 +42,6 @@ const apis = {
       },
     });
   },
-
   logout: () => {
     return request.post(
       "/api/auth/logout",
