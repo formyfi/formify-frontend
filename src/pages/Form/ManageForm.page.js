@@ -204,7 +204,7 @@ const ManageForm = () => {
       <AdvanceTable
         headCells={headCells}
         user={true}
-        rows={checkListState.listData}
+        data={checkListState.listData}
         loading={checkListState.listData && checkListState.listData.length ? false : true}
         handleTableChange={(tableProps) => {
           console.log(tableProps);

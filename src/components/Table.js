@@ -130,7 +130,6 @@ export default function EnhancedTable({
                     {user && <TableCell align="left">{row.first_name}</TableCell>}
                     {user && <TableCell align="left">{row.last_name}</TableCell>}
                     {user && <TableCell align="left">{row.user_name}</TableCell>}
-                    {user && <TableCell align="left">{row.user_type_name}</TableCell>}
                     {part && <TableCell align="left">{row.description}</TableCell>}
                     {(user || part) && <TableCell align="left">{row.station_names}</TableCell>}
                     {!row.renderButton && <TableCell align="left">
