@@ -14,26 +14,14 @@ import { AutocompleteCustom, AutocompleteCustomMulti } from "components/Autocomp
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
-const schema = yup.object({
+const schema = yup.object().shape({
+  first_name: yup.string().required("First name is required"),
+  last_name: yup.string().required("Last name is required"),
+  user_name: yup.string().email("Invalid email format").required("User name is required"),
+  password: yup.string().required("Password is required"),
+  station_value: yup.array().min(1, "At least one station is required"),
 }).required();
 
-const UserTypeOptions = [
-  { value: 1, label: 'Admin' },
-  { value: 2, label: 'Supervisor' },
-  { value: 3, label: 'Operator' }
-];
-
-const initialUserForm = {
-  id:'',
-  first_name:'',
-  last_name: '',
-  user_name:'',
-  password:'',
-  user_type:'',
-  user_type_value:'',
-  station:'',
-  station_value:''
-};
 const headCells = [
   {
     id: "id",
@@ -60,12 +48,6 @@ const headCells = [
     label: "Login user name",
   },
   {
-    id: "user_type_name",
-    numeric: false,
-    disablePadding: true,
-    label: "User type",
-  },
-  {
     id: "station_names",
     numeric: false,
     disablePadding: true,
@@ -82,7 +64,6 @@ const headCells = [
 const UserPage = () => {
   const [drawer, setDrawer] = useState(false);
   const [newUser, setNewUser] = useState(false);
-  const [userForm, serUserForm] = useState(initialUserForm)
   const [userTypeInputValue, setUserTypeInputValue] = React.useState('');
   const [stationInputValue, setStationInputValue] = React.useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -93,6 +74,8 @@ const UserPage = () => {
     handleSubmit,
     watch,
     formState: { errors },
+    setValue,
+    getValues
   } = useForm({
     resolver: yupResolver(schema)
   });
@@ -109,41 +92,51 @@ const UserPage = () => {
         {org_id: commonState.org_id}))
 }, [])
 
-const onSubmit = ()=>{
-
-  const upsertUser = userForm.id ? updateUser : createUser;
- const res = dispatch(upsertUser(
-    {user_details: userForm, org_id: commonState.org_id}));
+const onSubmit = () => {
+  handleSubmit((formData) => {
+    const upsertUser = formData.id ? updateUser : createUser;
+    const res = dispatch(
+      upsertUser({ user_details: formData, org_id: commonState.org_id })
+    );
     res.then((resp) => {
-      if(resp && resp.payload && resp.payload.success){
+      if (resp && resp.payload && resp.payload.success) {
         toast.success("User added successfully.");
         setDrawer(false);
-        serUserForm(initialUserForm);
-      } else toast.error("There was error adding user, please contact your technical team");
+        initializeForm();
+      } else
+        toast.error(
+          "There was an error adding user, please contact your technical team"
+        );
     });
-    
+  })();
+};
+
+const initializeForm = () => {
+  setValue('id', '');
+  setValue('first_name', '');
+  setValue('last_name', '');
+  setValue('user_name', '');
+  setValue('password', '');
+  setValue('station_value', []);
 }
 
 const openEditUserForm = (id, row) => {
-  let userData = {...userForm}
-  userData['id'] = id;
-  userData['first_name'] = row.first_name;
-  userData['last_name'] = row.last_name;
-  userData['user_name'] = row.user_name;
-  userData['user_type_value'] = {
-    label: UserTypeOptions.filter(typeOption => typeOption.value === row.user_type).at(0).label,
-    value: row.user_type
-  };
-  if(stationState.station_list && stationState.station_list.length && row.station_id){
-    userData['station_value'] = stationState.station_list.filter((st)=>{
-     let temp = row.station_id.split(',').map((t)=>parseInt(t));
-     return temp.includes(st.id);
-   })
- } else userData['station_value'] = [];
- 
-  serUserForm(userData);
-  setDrawer(true);
-  setNewUser(false);
+
+    setValue('id', row.id);
+    setValue('first_name', row.first_name);
+    setValue('last_name', row.last_name);
+    setValue('user_name', row.user_name);
+    if(stationState.station_list && stationState.station_list.length && row.station_id){
+      let station_values = stationState.station_list.filter((st)=>{
+       let temp = row.station_id.split(',').map((t)=>parseInt(t));
+       return temp.includes(st.id);
+     })
+     setValue('station_value', station_values);
+   } else setValue('station_value', row.station_id);
+    
+   
+    setDrawer(true);
+    setNewUser(false);
 }
 
   return (
@@ -165,7 +158,7 @@ const openEditUserForm = (id, row) => {
             onClick={() => {
               setDrawer(true);
               setNewUser(true);
-              serUserForm({...initialUserForm});
+              initializeForm();
             }}
           >
             Add new user
@@ -201,7 +194,7 @@ const openEditUserForm = (id, row) => {
         PaperProps={{ sx: { width: "500px" } }}
         onClose={() => {
           setDrawer(false);
-          serUserForm(initialUserForm);
+          initializeForm()
         }}
         variant={'temporary'}
       >
@@ -219,121 +212,54 @@ const openEditUserForm = (id, row) => {
             sx={{ mt: 1 }}
           >
             <TextField
-              margin="normal"
-              required
-              fullWidth
-              id={userForm.first_name}
               label="First Name"
-              value={userForm.first_name}
-              onChange={(e)=>{
-                let userData = {...userForm}
-                userData['first_name'] = e.target.value;
-                serUserForm(userData);
-              }}
-              name="first_name"
-              autoComplete="first_name"
-              error={errors.first_namefirst_name}
-              helperText={errors?.first_name?.message}
-              autoFocus
+              fullWidth
+              margin="normal"
+              {...register("first_name")} // register the field
+              error={!!errors.first_name} // check if there's an error for the field
+              helperText={errors.first_name?.message} // display the error message
             />
 
             <TextField
-              margin="normal"
-              fullWidth
-              id={userForm.last_name}
               label="Last Name"
-              value={userForm.last_name}
-              onChange={(e)=>{
-                let userData = {...userForm}
-                userData['last_name'] = e.target.value;
-                serUserForm(userData);
-              }}
-              name="last_name"
-              autoComplete="last_name"
-              error={errors.last_name}
-              helperText={errors?.last_name?.message}
-              autoFocus
+              fullWidth
+              margin="normal"
+              {...register("last_name")}
+              error={!!errors.last_name}
+              helperText={errors.last_name?.message}
             />
             <TextField
-              margin="normal"
+              label="User Name"
               fullWidth
-              id={userForm.user_name}
-              label="Login User Name"
-              value={userForm.user_name}
-              onChange={(e)=>{
-                let userData = {...userForm}
-                userData['user_name'] = e.target.value;
-                serUserForm(userData);
-              }}
-              name="user_name"
-              autoComplete="user_name"
-              error={errors.user_name}
-              helperText={errors?.user_name?.message}
-              autoFocus
+              margin="normal"
+              {...register("user_name")}
+              error={!!errors.user_name}
+              helperText={errors.user_name?.message}
             />
-            <TextField
-              margin="normal"
-              fullWidth
-              type={showPassword ? "text" : "password"}
-              id={userForm.password}
-              label="Password"
-              value={userForm.password}
-              onChange={(e)=>{
-                let userData = {...userForm}
-                userData['password'] = e.target.value;
-                serUserForm(userData);
-              }}
-              name="password"
-              autoComplete="password"
-              error={errors.password}
-              helperText={errors?.password?.message}
-              autoFocus
-              InputProps={{ // <-- This is where the toggle button is added.
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={()=>{
-                        setShowPassword(!showPassword)
-                      }}
-                      onMouseDown={()=>{
-                        setShowPassword(!showPassword)
-                      }}
-                    >
-                      {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
+           <TextField
+            label="Password"
+            fullWidth
+            margin="normal"
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             />
             <Autocomplete
-              value={userForm.user_type_value}
-              style = {{ marginTop : 20 }}
-              onChange={(event, newValue) => {
-                let userData = {...userForm}
-                userData['user_type_value'] = newValue;
-                serUserForm(userData);
-              }}
-              inputValue={userTypeInputValue}
-              onInputChange={(event, newInputValue) => {
-                setUserTypeInputValue(newInputValue);
-              }}
-              id="controllable-states-demo"
-              options={UserTypeOptions}
-              fullWidth
-              renderInput={(params) => <TextField {...params} label="User Type" />}
-            />
-            <AutocompleteCustomMulti
-              value={userForm?.station_value}
               style = {{ marginTop : 25 }}
-              onChange={(newValue) => {
-                let userData = {...userForm}
-                userData['station_value'] = newValue;
-                serUserForm(userData);
+              {...register('station_value')}
+              value={getValues('station_value')}
+              onChange={(e,selected)=>{
+                setValue('station_value',selected,{
+                  shouldValidate: true,
+                  shouldTouch: true,
+                  shouldDirty: true
+                })
               }}
+              multiple={true}
               id={'station'}
               options={stationState.station_list}
-              textLabel={"Departments"}
+              fullWidth
+              renderInput={(params) => <TextField {...params} label={"Operations"} />}
             />
             <div>
             <Button
@@ -349,7 +275,7 @@ const openEditUserForm = (id, row) => {
               variant="contained"
               onClick={()=>{
                 setDrawer(false)
-                serUserForm({...initialUserForm})
+                initializeForm()
               }}
               sx={{ mt: 3, mb: 2, ml:2 }}
             >

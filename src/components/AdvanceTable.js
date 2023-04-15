@@ -82,7 +82,8 @@ export default function AdvanceTable({
 
   const sortedRows = React.useMemo(() => {
     if (rows && rows.length > 0) {
-      return rows.sort((a, b) => {
+      const rowsCopy = [...rows];
+      return rowsCopy.sort((a, b) => {
         const aValue = a[orderBy];
         const bValue = b[orderBy];
 

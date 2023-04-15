@@ -297,7 +297,7 @@ const checkListsReducer = createSlice({
       [getCheckLists.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.listData = payload.checkilists
+          state.listData = payload.checklists
         }
       },
       [getCheckLists.rejected]: (state,action)=>{
@@ -349,13 +349,13 @@ const checkListsReducer = createSlice({
       [updateCheckListAction.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.listData = payload.checkilists
+          state.listData = payload.checklists
         }
       },
       [updateCheckListForm.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.listData = payload.checkilists
+          state.listData = payload.checklists
         }
       },
       [updateCheckListFormAsTemplate.fulfilled]: (state, { payload })=>{
@@ -367,19 +367,19 @@ const checkListsReducer = createSlice({
       [createCheckListAction.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.listData = payload.checkilists
+          state.listData = payload.checklists
         }
       },
       [deleteChecklist.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.listData = payload.checkilists
+          state.listData = payload.checklists
         }
       },
       [updateTaskForm.fulfilled]: (state, { payload })=>{
         state.loader = false
         if(payload && payload.success) {
-          state.listData = payload.checkilists
+          state.listData = payload.checklists
         }
       },
       [getFormTimeLine.pending]: (state, { payload  }) => {
