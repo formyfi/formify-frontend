@@ -16,6 +16,7 @@ import TasksPage from "pages/Tasks/Tasks.page";
 import ManageForm from "pages/Form/ManageForm.page";
 import ManageTask from "pages/Tasks/ManageTask.page";
 import {ToastContainer, toast} from 'react-toastify';
+import ChangePasswordForm from "pages/Dashboard/ChangePasswordForm";
 const theme = createTheme({
   palette: {
     primary: {
