@@ -188,6 +188,7 @@ export default function SignIn() {
                           provider: 'azure',  
                           options: {
                             scopes: 'email',
+                            redirectTo: "https://app.digicheck.ca/login"
                           },
                         })
                       }
