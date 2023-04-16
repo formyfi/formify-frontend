@@ -149,6 +149,7 @@ export default function Layout() {
   const navigationList = [
     {
       id: "dashboard",
+      area_id:6,
       label: "Dashboard",
       path: "/app/dashboard",
       role: 1,
@@ -156,6 +157,7 @@ export default function Layout() {
     },
     {
       id: 'station',
+      area_id:2,
       label: "Operations",
       path: "/app/stations",
       role: 1,
@@ -163,6 +165,7 @@ export default function Layout() {
     },
     {
       id: "parts",
+      area_id:3,
       label: "Parts",
       path: "/app/parts",
       role: 1,
@@ -171,6 +174,7 @@ export default function Layout() {
     {
       id: "users",
       label: "Users",
+      area_id:1,
       path: "/app/users",
       role: 1,
       icon: <PeopleIcon />,
@@ -178,12 +182,14 @@ export default function Layout() {
     {
       id: "checklists",
       label: "Checklists",
+      area_id:4,
       path: "/app/checklists",
       role: 1,
       icon: <MenuBookIcon />,
     },
     {
       id: "form_builder",
+      area_id:4,
       label: "Template Builder",
       path: "/app/formBuilder/0",
       role: 1,
@@ -191,6 +197,7 @@ export default function Layout() {
     },
     {
       id: "tasks",
+      area_id:5,
       label: "Start Inspection",
       path: "/app/tasks",
       role: 3,
@@ -198,6 +205,7 @@ export default function Layout() {
     },
     {
       id: "task_list",
+      area_id:5,
       label: "Inspection List",
       path: "/app/taskslist",
       role: 3,
@@ -217,32 +225,6 @@ export default function Layout() {
     }
   }, []);
 
-  const stringToColor = (string) => {
-    let hash = 0;
-    let i;
-
-    /* eslint-disable no-bitwise */
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    let color = "#";
-
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-    /* eslint-enable no-bitwise */
-
-    return color;
-  };
-
-  const stringAvatar = (name) => {
-    return {
-      bgcolor: stringToColor(name),
-      children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
-    };
-  };
 
   useEffect(() => {
     const currentPage = navigationList.filter(
@@ -281,15 +263,6 @@ export default function Layout() {
                 }}
                 changePassword={() => {
                   setShowChangePassword(true);
-                }}
-                user={{
-                  ...stringAvatar(
-                    commonState?.user_first_name
-                      ? commonState?.user_first_name +
-                          " " +
-                          commonState?.user_last_name
-                      : "System Message"
-                  ),
                 }}
               />
             </Box>
@@ -358,8 +331,7 @@ export default function Layout() {
           <Divider />
           <List>
             {navigationList.map((list, index) =>
-              (parseInt(commonState.user_type_id) === 3 && list.role === 3) ||
-              parseInt(commonState.user_type_id) === 1 ? (
+              commonState.user_areas &&  commonState.user_areas.includes(list.area_id) ? (
                 <ListItem
                   key={list.id}
                   disablePadding

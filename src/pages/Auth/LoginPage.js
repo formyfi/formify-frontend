@@ -66,9 +66,7 @@ export default function SignIn() {
 
   React.useEffect(() => {
     if (commonState.isLogged === true) {
-      parseInt(commonState.user_type_id) === 3
-        ? navigate("/app/tasks")
-        : navigate("/app/dashboard");
+      navigate("/app/dashboard")
     }
   }, [commonState]);
 
@@ -175,8 +173,8 @@ export default function SignIn() {
                 </Button>
                 <center>
                 <Button
-                   sx={{ mt: 3, mb: 2 }}
-                  variant="contained"
+                  
+                  
                   onClick={()=>{
                     
                     supabase.auth.getUser().then((response)=>{
@@ -199,7 +197,7 @@ export default function SignIn() {
                    
                   }}
                 >
-                  Login with Microsoft 
+                  Login with SSO 
                 </Button>
                 </center>
               </Box>

@@ -129,9 +129,10 @@ export default function EnhancedTable({
                     {station && <TableCell align="left">{row.type}</TableCell>}
                     {user && <TableCell align="left">{row.first_name}</TableCell>}
                     {user && <TableCell align="left">{row.last_name}</TableCell>}
-                    {user && <TableCell align="left">{row.user_name}</TableCell>}
+                    {user && <TableCell align="left" sx={{ width: "15%" }}>{row.user_name}</TableCell>}
                     {part && <TableCell align="left">{row.description}</TableCell>}
-                    {(user || part) && <TableCell align="left">{row.station_names}</TableCell>}
+                    {(user || part) && <TableCell align="left" sx={{ width: "20%" }}>{row.station_names}</TableCell>}
+                    {user && <TableCell align="left" sx={{ width: "20%" }}>{row.user_areas_names}</TableCell>}
                     {!row.renderButton && <TableCell align="left">
                       {editButton && onEdit && <Button  onClick={()=>onEdit(row.id, row)} startIcon={<EditIcon />}>
                         Edit

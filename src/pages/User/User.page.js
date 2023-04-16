@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, FormControlLabel, Grid, TextField, Typography,Autocomplete, InputAdornment, IconButton } from "@mui/material";
+import { Box, Button, Drawer, TextField, Typography,Autocomplete } from "@mui/material";
 import EnhancedTable from "components/Table";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -10,9 +10,6 @@ import { getUsers, updateUser, createUser, deleteUser } from "redux/slices/userS
 import { getStationList } from "redux/slices/stationSlice";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { AutocompleteCustom, AutocompleteCustomMulti } from "components/AutocompleteCustom";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const schema = yup.object().shape({
   first_name: yup.string().required("First name is required"),
@@ -20,8 +17,17 @@ const schema = yup.object().shape({
   user_name: yup.string().email("Invalid email format").required("User name is required"),
   password: yup.string().required("Password is required"),
   station_value: yup.array().min(1, "At least one station is required"),
+  functional_areas: yup.array().min(1, "At least one station is required"),
 }).required();
 
+const area_list = [
+  {value: 1, label: 'User Management'},
+  {value: 2, label: 'Operations'},
+  {value: 3, label: 'Parts Management'},
+  {value: 4, label: 'Forms management'},
+  {value: 5, label: 'Inspections'},
+  {value: 6, label: 'Reporting'}
+];
 const headCells = [
   {
     id: "id",
@@ -54,6 +60,12 @@ const headCells = [
     label: "Operations",
   },
   {
+    id: "user_areas_names",
+    numeric: false,
+    disablePadding: true,
+    label: "Functional Areas",
+  },
+  {
     id: "action",
     numeric: false,
     disablePadding: true,
@@ -64,11 +76,9 @@ const headCells = [
 const UserPage = () => {
   const [drawer, setDrawer] = useState(false);
   const [newUser, setNewUser] = useState(false);
-  const [userTypeInputValue, setUserTypeInputValue] = React.useState('');
-  const [stationInputValue, setStationInputValue] = React.useState('');
-  const [showPassword, setShowPassword] = useState(false);
-
-
+  const [areaOptions, setAreaOptions] = useState(area_list); // State to keep track of options in the Autocomplete
+ 
+  
   const {
     register,
     handleSubmit,
@@ -84,7 +94,7 @@ const UserPage = () => {
   const stationState = useSelector(state => state.station);
   const commonState = useSelector(state => state.common);
   const userState = useSelector(state => state.user);
-
+  const [stationOptions, setStationOptions] = useState(stationState.station_list);
   React.useEffect(()=>{
     dispatch(getUsers(
       {org_id: commonState.org_id}))
@@ -118,6 +128,9 @@ const initializeForm = () => {
   setValue('user_name', '');
   setValue('password', '');
   setValue('station_value', []);
+  setValue('functional_areas', []);
+  setAreaOptions(area_list);
+  setStationOptions(stationState.station_list)
 }
 
 const openEditUserForm = (id, row) => {
@@ -127,12 +140,23 @@ const openEditUserForm = (id, row) => {
     setValue('last_name', row.last_name);
     setValue('user_name', row.user_name);
     if(stationState.station_list && stationState.station_list.length && row.station_id){
+      let temp = row.station_id.split(',').map((t)=>parseInt(t));
       let station_values = stationState.station_list.filter((st)=>{
-       let temp = row.station_id.split(',').map((t)=>parseInt(t));
        return temp.includes(st.id);
      })
      setValue('station_value', station_values);
-   } else setValue('station_value', row.station_id);
+     setStationOptions(stationState.station_list.filter(st => !station_values.find(selectedSt => selectedSt.value === st.value)))
+   } else setValue('station_value', []);
+   if(row.user_areas){
+    let temp = row.user_areas.split(',').map((t)=>parseInt(t));
+    let functional_areas = area_list.filter((a)=>{
+     return temp.includes(a.value);
+   })
+   setValue('functional_areas', functional_areas);
+   setAreaOptions(area_list.filter(area => !functional_areas.find(selectedArea => selectedArea.value === area.value))) 
+ } else setValue('functional_areas', []); 
+    
+    setAreaOptions(area_list);
     
    
     setDrawer(true);
@@ -254,12 +278,31 @@ const openEditUserForm = (id, row) => {
                   shouldTouch: true,
                   shouldDirty: true
                 })
+                setStationOptions(stationState.station_list.filter(st => !selected.find(selectedSt => selectedSt.value === st.value)))
               }}
               multiple={true}
               id={'station'}
-              options={stationState.station_list}
+              options={stationOptions}
               fullWidth
               renderInput={(params) => <TextField {...params} label={"Operations"} />}
+            />
+            <Autocomplete
+              style = {{ marginTop : 25 }}
+              {...register('functional_areas')}
+              value={getValues('functional_areas')}
+              onChange={(e,selected)=>{
+                setValue('functional_areas',selected,{
+                  shouldValidate: true,
+                  shouldTouch: true,
+                  shouldDirty: true
+                })
+                setAreaOptions(area_list.filter(area => !selected.find(selectedArea => selectedArea.value === area.value))) 
+              }}
+              multiple={true}
+              id={'area_list'}
+              options={areaOptions}
+              fullWidth
+              renderInput={(params) => <TextField {...params} label={"Functional Area"} />}
             />
             <div>
             <Button

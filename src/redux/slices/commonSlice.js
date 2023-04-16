@@ -76,6 +76,7 @@ const commonSlice = createSlice({
       org_name: '',
       user_type_id: null,
       user_stations: [],
+      user_areas:'',
       loader: false,
     },
     reducers: {
@@ -105,6 +106,7 @@ const commonSlice = createSlice({
           state.user_first_name = payload.user_first_name
           state.user_last_name = payload.user_last_name
           state.user_stations = payload.stations
+          state.user_areas = payload.areas?.areas
           state.error = ""
           localStorage.setItem('app_token', payload.token)
         } else {
@@ -133,10 +135,11 @@ const commonSlice = createSlice({
           state.user_first_name = payload.user_first_name
           state.user_last_name = payload.user_last_name
           state.user_stations = payload.stations
+          state.user_areas = payload.areas?.areas
           state.error = ""
           localStorage.setItem('app_token', payload.token)
         } else {
-          state.error = "Contact your admin for account"
+          state.error = "Contact your admin to activate your account"
           state.isLogged = false
         }
       },
