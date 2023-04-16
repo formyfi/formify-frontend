@@ -173,11 +173,12 @@ export default function SignIn() {
                 >
                   Sign In
                 </Button>
+                <center>
                 <Button
-                  
+                   sx={{ mt: 3, mb: 2 }}
                   variant="contained"
                   onClick={()=>{
-
+                    
                     supabase.auth.getUser().then((response)=>{
                       if(response.data && response.data.user && response.error === null){
                         dispatch(socialLoginApiAction({
@@ -191,9 +192,6 @@ export default function SignIn() {
                             redirectTo: window.location.origin + '/login',
                             scopes: 'email',
                           }
-                        }).then((data, error)=>{
-                          console.log({data, error})
-                          debugger
                         })
                       }
                   })
@@ -201,8 +199,9 @@ export default function SignIn() {
                    
                   }}
                 >
-                  Social Login 
+                  Login with Microsoft 
                 </Button>
+                </center>
               </Box>
 
             </Box>
