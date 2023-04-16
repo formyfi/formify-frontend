@@ -39,7 +39,7 @@ const ManageForm = () => {
   const [drawer, setDrawer] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [partList, setPartList] = React.useState([]);
-
+  const [loading, setLoading] = useState(false)
   const {
     register,
     handleSubmit,
@@ -59,7 +59,9 @@ const ManageForm = () => {
   const checkListState = useSelector((state) => state.checkList);
 
   React.useEffect(() => {
-    dispatch(getCheckLists({ org_id: commonState.org_id }));
+    setLoading(true)
+   const res = dispatch(getCheckLists({ org_id: commonState.org_id }));
+    res.then(()=>setLoading(false))
     dispatch(getStationList({ org_id: commonState.org_id }));
     dispatch(getPartList({ org_id: commonState.org_id }));
   }, []);
@@ -205,7 +207,7 @@ const ManageForm = () => {
         headCells={headCells}
         user={true}
         data={checkListState.listData}
-        loading={checkListState.listData && checkListState.listData.length ? false : true}
+        loading={loading}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}

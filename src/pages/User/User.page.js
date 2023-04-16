@@ -77,7 +77,7 @@ const UserPage = () => {
   const [drawer, setDrawer] = useState(false);
   const [newUser, setNewUser] = useState(false);
   const [areaOptions, setAreaOptions] = useState(area_list); // State to keep track of options in the Autocomplete
- 
+  const [loading, setLoading] = useState(false)
   
   const {
     register,
@@ -96,10 +96,12 @@ const UserPage = () => {
   const userState = useSelector(state => state.user);
   const [stationOptions, setStationOptions] = useState(stationState.station_list);
   React.useEffect(()=>{
-    dispatch(getUsers(
+    setLoading(true);
+    const res = dispatch(getUsers(
       {org_id: commonState.org_id}))
       dispatch(getStationList(
         {org_id: commonState.org_id}))
+    res.then(()=>setLoading(false))    
 }, [])
 
 const onSubmit = () => {
@@ -193,7 +195,7 @@ const openEditUserForm = (id, row) => {
         headCells={headCells}
         user={true}
         rows={userState.user_list}
-        loading={userState.user_list && userState.user_list.length ? false : true}
+        loading={loading}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}

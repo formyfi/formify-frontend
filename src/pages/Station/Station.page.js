@@ -43,6 +43,7 @@ const StationPage = () => {
   const [drawer, setDrawer] = useState(false);
   const [newStation, setNewStation] = useState(false);
   const [stationForm, setStationForm] = useState(initialStationForm)
+  const [loading, setLoading] = useState(false)
   const {
     register,
     handleSubmit,
@@ -57,8 +58,10 @@ const StationPage = () => {
   const commonState = useSelector(state => state.common);
   
   React.useEffect(()=>{
-    dispatch(getStationList(
+   setLoading(true) 
+   const res = dispatch(getStationList(
       {org_id: commonState.org_id}))
+    res.then(()=>setLoading(false))   
 }, [])
 
 const onSubmit = ()=>{
@@ -104,7 +107,7 @@ const onSubmit = ()=>{
         headCells={headCells}
         station={true}
         rows={stationState.station_list}
-        loading={stationState.station_list && stationState.station_list.length ? false : true}
+        loading={loading}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}

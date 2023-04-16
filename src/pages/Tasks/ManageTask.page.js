@@ -23,6 +23,7 @@ const ManageTask = () => {
   const [formJson, setFormJson] = useState([]);
   const [formValue, setFormValue] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -30,7 +31,9 @@ const ManageTask = () => {
   const checkListState = useSelector((state) => state.checkList);
 
   React.useEffect(() => {
-    dispatch(getTaskLists({org_id: commonState.org_id, user_id: commonState.user_id}));
+    setLoading(true);
+   const res = dispatch(getTaskLists({org_id: commonState.org_id, user_id: commonState.user_id}));
+   res.then(()=>setLoading(false))
   }, []);
 
   const headCells = [
@@ -133,7 +136,7 @@ const ManageTask = () => {
           row.form_id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
           row.vnum_id.toString().toLowerCase().includes(searchValue.toLowerCase())
         )}
-        loading={checkListState.taskLists && checkListState.taskLists.length ? false : true}
+        loading={loading}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}

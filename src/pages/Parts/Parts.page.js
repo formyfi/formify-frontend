@@ -51,8 +51,7 @@ const PartsPage = () => {
   const [drawer, setDrawer] = useState(false);
   const [newPart, setNewPart] = useState(false);
   const [partForm, setPartForm] = useState(initialPartForm)
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [stationInputValue, setStationInputValue] = React.useState('');
+  const [loading, setLoading] = useState(false)
   const {
     register,
     handleSubmit,
@@ -68,8 +67,10 @@ const PartsPage = () => {
   const commonState = useSelector(state => state.common);
   
   React.useEffect(()=>{
-    dispatch(getPartList(
+    setLoading(true)
+    const res = dispatch(getPartList(
       {org_id: commonState.org_id}))
+      res.then(()=>setLoading(false))
       dispatch(getStationList(
         {org_id: commonState.org_id}))
 }, [])
@@ -82,7 +83,6 @@ const onSubmit = ()=>{
         toast.success("Part added successfully.");
         setDrawer(false);
         setPartForm(initialPartForm);
-        setSelectedImage(null)
       } else toast.error("There was error adding this part please contact your technical team");
     });
 }
@@ -117,7 +117,7 @@ const onSubmit = ()=>{
         headCells={headCells}
         part={true}
         rows={partState.part_list}
-        loading={partState.part_list && partState.part_list.length ? false : true}
+        loading={loading}
         handleTableChange={(tableProps) => {
           console.log(tableProps);
         }}
@@ -156,7 +156,6 @@ const onSubmit = ()=>{
         onClose={() => {
           setDrawer(false);
           setPartForm(initialPartForm);
-          setSelectedImage(null)
         }}
         variant={'temporary'}
       >
@@ -284,7 +283,6 @@ const onSubmit = ()=>{
               onClick={()=>{
                 setDrawer(false)
                 setPartForm({...initialPartForm})
-                setSelectedImage(null)
               }}
               sx={{ mt: 3, mb: 2, ml:2 }}
             >
