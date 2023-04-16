@@ -187,7 +187,7 @@ export default function SignIn() {
                         supabase.auth.signInWithOAuth({
                           provider: 'azure',
                           options: {
-                            redirectTo: window.location.origin + '/login',
+                            redirectTo: 'https://app.digicheck.ca/login',
                             scopes: 'email',
                           }
                         })
