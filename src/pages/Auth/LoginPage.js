@@ -185,11 +185,10 @@ export default function SignIn() {
                         }));
                       } else {
                         supabase.auth.signInWithOAuth({
-                          provider: 'azure',
+                          provider: 'azure',  
                           options: {
-                            redirectTo: 'https://app.digicheck.ca/login',
                             scopes: 'email',
-                          }
+                          },
                         })
                       }
                   })
