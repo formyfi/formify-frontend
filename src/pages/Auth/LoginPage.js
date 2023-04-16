@@ -188,7 +188,7 @@ export default function SignIn() {
                         supabase.auth.signInWithOAuth({
                           provider: 'azure',
                           options: {
-                            redirectTo: 'http://localhost:3000/login',
+                            redirectTo: window.location.origin + '/login',
                             scopes: 'email',
                           }
                         }).then((data, error)=>{
