@@ -34,7 +34,19 @@ const PreviewRadio = ({ data }) => {
         {data.values.map((option) => (
           <FormControlLabel
             value={option.value}
-            control={<Radio   color={option.value === "pass" ? "success" : option.value === "fail" ? "error" : "primary" } name={option.name} value={option.value} />}
+            control={
+              <Radio
+                color={
+                  option.value === "pass"
+                    ? "success"
+                    : option.value === "fail"
+                    ? "error"
+                    : "primary"
+                }
+                name={option.name}
+                value={option.value}
+              />
+            }
             label={option.label}
           />
         ))}
@@ -51,7 +63,11 @@ const PreviewCheckbox = ({ data }) => {
         {data.values.map((option) => (
           <FormControlLabel
             control={
-              <Checkbox name={option.name} value={option.value} defaultChecked={option.selected} />
+              <Checkbox
+                name={option.name}
+                value={option.value}
+                defaultChecked={option.selected}
+              />
             }
             name={data.name}
             label={option.label}
@@ -117,7 +133,7 @@ const PreviewTextAreaField = ({ data }) => {
 
 const PreviewNumberField = ({ data }) => {
   return (
-    <FormControl >
+    <FormControl>
       <TextField
         type={"number"}
         id={data.label}
@@ -141,7 +157,12 @@ const PreviewAutoCompleteField = ({ data }) => {
         freeSolo={!data.requireValidOption}
         sx={{ width: 300 }}
         renderInput={(params) => (
-          <TextField {...params}  name={data.name} type="text" label={data.label} />
+          <TextField
+            {...params}
+            name={data.name}
+            type="text"
+            label={data.label}
+          />
         )}
       />
     </FormControl>
@@ -151,7 +172,16 @@ const PreviewAutoCompleteField = ({ data }) => {
 const PreviewDateField = ({ data }) => {
   return (
     <FormControl>
-      <TextField type={"date"} fullWidth  name={data.name} id={data.label} label={data.label} focused />
+      <TextField
+        sx={{ height: "40px" }}
+        shrink
+        type={"date"}
+        fullWidth
+        name={data.name}
+        id={data.label}
+        label={data.label}
+        focused
+      />
       <FormHelperText>{data?.description}</FormHelperText>
     </FormControl>
   );
@@ -159,7 +189,7 @@ const PreviewDateField = ({ data }) => {
 
 const PreviewTypography = ({ data }) => {
   return (
-    <Box my={1} className="preview-typo"  >
+    <Box my={1} className="preview-typo">
       <Typography variant={data.subtype} component={data.subtype}>
         {data.label}
       </Typography>
@@ -176,11 +206,18 @@ const PreviewUploadField = ({ data }) => {
 };
 
 const PreviewImage = ({ data }) => {
-  console.log(data)
-  return data.value && data.value?.success && (
-    <FormControl>
-      <img src={process.env.REACT_APP_API_BASE +'/'+ data.value?.file_path} class="preview-img" alt="preview-details" />
-    </FormControl>
+  console.log(data);
+  return (
+    data.value &&
+    data.value?.success && (
+      <FormControl>
+        <img
+          src={process.env.REACT_APP_API_BASE + "/" + data.value?.file_path}
+          class="preview-img"
+          alt="preview-details"
+        />
+      </FormControl>
+    )
   );
 };
 
@@ -195,5 +232,5 @@ export {
   PreviewDateField,
   PreviewTypography,
   PreviewUploadField,
-  PreviewImage
+  PreviewImage,
 };

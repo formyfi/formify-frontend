@@ -19,11 +19,16 @@ import {
 } from "@mui/material";
 import $ from "jquery";
 import React, { useEffect, useRef } from "react";
-import { updateCheckListForm, updateCheckListFormAsTemplate, getCheckLists, getTemplates } from "redux/slices/formSlice";
+import {
+  updateCheckListForm,
+  updateCheckListFormAsTemplate,
+  getCheckLists,
+  getTemplates,
+} from "redux/slices/formSlice";
 import "./style.css";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import "react-form-builder2/dist/app.css";
+
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import FormPreviewWithSubmit from "components/FormBuilder/SubmitForm/FormPreviewWithSubmit";
@@ -32,7 +37,7 @@ import FormPreview from "components/FormBuilder/FormPreview";
 window.jQuery = $;
 window.$ = $;
 window.previewImages = {};
-window.previewImagesObjects = {}
+window.previewImagesObjects = {};
 require("jquery-ui-sortable");
 require("formBuilder");
 
@@ -44,11 +49,11 @@ const FormPage = (props) => {
   const [open, setOpen] = React.useState(false);
   const [openDialogue, setOpenDialogue] = React.useState(false);
   const [previewData, setPreviewData] = React.useState([]);
-  const [templateName, setTemplateName] = React.useState('');
-  const [templateValue, setTemplateValue] = React.useState('');
-  const [openImportDialogue, setImportDialogue] = React.useState('');
-  const [template, setTemplate] = React.useState('');
-  
+  const [templateName, setTemplateName] = React.useState("");
+  const [templateValue, setTemplateValue] = React.useState("");
+  const [openImportDialogue, setImportDialogue] = React.useState("");
+  const [template, setTemplate] = React.useState("");
+
   const { form_id } = useParams(); //This form id should be used to store the form json in forms table and should used for fetching saved form json
 
   useEffect(() => {
@@ -95,7 +100,7 @@ const FormPage = (props) => {
               inputEle.addEventListener("change", (e) => {
                 if (e.target.files && e.target.files.length > 0) {
                   const img = document.createElement("img");
-                  
+
                   const imgsrc = URL.createObjectURL(e.target.files[0]);
                   img.src = imgsrc;
                   img.id = "img_" + fieldData.name;
@@ -114,7 +119,8 @@ const FormPage = (props) => {
                     .getElementById("wrapper_" + fieldData.name)
                     .append(clearButton);
                   window.previewImages[fieldData.name] = imgsrc;
-                  window.previewImagesObjects[fieldData.name] = e.target.files[0];
+                  window.previewImagesObjects[fieldData.name] =
+                    e.target.files[0];
                 }
               });
 
@@ -173,179 +179,154 @@ const FormPage = (props) => {
         },
         fields,
         templates,
-        disableFields: ['button'],
-        
+        disableFields: ["button"],
+
         scrollToFieldOnAdd: true,
         editOnAdd: true,
         showActionButtons: false,
         inputSets: [
           {
-            label: 'Pass Fail Radio',
-            name: 'pass_fail_radio',
+            label: "Pass Fail Radio",
+            name: "pass_fail_radio",
             fields: [
-                {
-                  type: 'radio-group',
-                  label: 'Pass Fail Radio question',
-                  className: 'pass_fail',
-                  required: true,
-                  values: [
-                    {
-                      label: 'Pass',
-                      value: 'pass',
-                      selected: false
-                    },
-                    {
-                      label: 'Fail',
-                      value: 'fail',
-                      selected: false
-                    }
-                  ]
-                },
-              ]
+              {
+                type: "radio-group",
+                label: "Pass Fail Radio question",
+                className: "pass_fail",
+                required: true,
+                values: [
+                  {
+                    label: "Pass",
+                    value: "pass",
+                    selected: false,
+                  },
+                  {
+                    label: "Fail",
+                    value: "fail",
+                    selected: false,
+                  },
+                ],
+              },
+            ],
           },
         ],
         typeUserDisabledAttrs: {
-          'checkbox-group': [
-            'inline',
-            'toggle',
-            'other',
-          ],
-          'autocomplete': [
-            'requireValidOption',
-            'placeholder',
-          ],
-          'date': [
-            'placeholder',
-          ],
-          'file': [
-            'placeholder',
-            'subtype',
-            'multiple',
-          ],
-          'number': [
-            'placeholder',
-            'step'
-          ],
-          'radio-group': [
-            'placeholder',
-            'inline',
-            'other',
-            'step'
-          ],
-          'select': [
-            'placeholder',
-            'multiple'
-          ],
-          'text': [
-            'placeholder',
-            'subtype',
-            'maxlength',
-          ],
-          'textarea': [
-            'placeholder',
-            'subtype',
-            'maxlength',
-            'rows',
-          ],
+          "checkbox-group": ["inline", "toggle", "other"],
+          autocomplete: ["requireValidOption", "placeholder"],
+          date: ["placeholder"],
+          file: ["placeholder", "subtype", "multiple"],
+          number: ["placeholder", "step"],
+          "radio-group": ["placeholder", "inline", "other", "step"],
+          select: ["placeholder", "multiple"],
+          text: ["placeholder", "subtype", "maxlength"],
+          textarea: ["placeholder", "subtype", "maxlength", "rows"],
         },
       });
     }
 
-    return ()=>{
-      formBuilder = null
-      FormBuildRef.current = null
-    }
+    return () => {
+      formBuilder = null;
+      FormBuildRef.current = null;
+    };
   }, []);
-  
+
   const dispatch = useDispatch();
   const commonState = useSelector((state) => state.common);
   const checkListState = useSelector((state) => state.checkList);
 
   React.useEffect(() => {
-     dispatch(getTemplates({ org_id: commonState.org_id }));
+    dispatch(getTemplates({ org_id: commonState.org_id }));
     const res = dispatch(getCheckLists({ id: form_id, slug: "form_only" }));
     window.previewImages = {};
     res.then((resp) => {
       if (resp && resp.payload && resp.payload.data) {
         form_json = JSON.parse(resp.payload.data);
-        const fieldsRecords = []
+        const fieldsRecords = [];
         for (let i = 0; i < form_json.length; i++) {
           const fObject = form_json[i];
 
           if (fObject.type === "uploadImage") {
-            window.previewImages[fObject.name + "-preview"] = process.env.REACT_APP_API_BASE + '/' + fObject.value?.file_path;
+            window.previewImages[fObject.name + "-preview"] =
+              process.env.REACT_APP_API_BASE + "/" + fObject.value?.file_path;
 
-            fieldsRecords.push({  ...fObject, value : process.env.REACT_APP_API_BASE + '/' + fObject.value?.file_path });
+            fieldsRecords.push({
+              ...fObject,
+              value:
+                process.env.REACT_APP_API_BASE + "/" + fObject.value?.file_path,
+            });
           } else {
-            if (fObject.type === "checkbox-group" || fObject.type === "radio-group") {
+            if (
+              fObject.type === "checkbox-group" ||
+              fObject.type === "radio-group"
+            ) {
               for (let i = 0; i < fObject.values.length; i++) {
                 const element = fObject.values[i];
-                if(element.value == null || (!element.value)){
-                  element.value = ''
+                if (element.value == null || !element.value) {
+                  element.value = "";
                 }
               }
             }
             fieldsRecords.push(fObject);
           }
-          
-          
         }
-        
+
         formBuilder.actions.setData(fieldsRecords);
       }
     });
   }, []);
 
   React.useEffect(() => {
-   
-   window.previewImages = {};
-  
-  
-     if (template && template.length ) {
-       form_json = JSON.parse(template);
-       const fieldsRecords = []
-       for (let i = 0; i < form_json.length; i++) {
-         const fObject = form_json[i];
+    window.previewImages = {};
 
-         if (fObject.type === "uploadImage") {
-           window.previewImages[fObject.name + "-preview"] = process.env.REACT_APP_API_BASE + '/' + fObject.value?.file_path;
+    if (template && template.length) {
+      form_json = JSON.parse(template);
+      const fieldsRecords = [];
+      for (let i = 0; i < form_json.length; i++) {
+        const fObject = form_json[i];
 
-           fieldsRecords.push({  ...fObject, value : process.env.REACT_APP_API_BASE + '/' + fObject.value?.file_path });
-         } else {
-           if (fObject.type === "checkbox-group" || fObject.type === "radio-group") {
-             for (let i = 0; i < fObject.values.length; i++) {
-               const element = fObject.values[i];
-               if(element.value == null || (!element.value)){
-                 element.value = ''
-               }
-             }
-           }
-           fieldsRecords.push(fObject);
-         }
-         
-         
-       }
-       if(formBuilder !== null){
+        if (fObject.type === "uploadImage") {
+          window.previewImages[fObject.name + "-preview"] =
+            process.env.REACT_APP_API_BASE + "/" + fObject.value?.file_path;
+
+          fieldsRecords.push({
+            ...fObject,
+            value:
+              process.env.REACT_APP_API_BASE + "/" + fObject.value?.file_path,
+          });
+        } else {
+          if (
+            fObject.type === "checkbox-group" ||
+            fObject.type === "radio-group"
+          ) {
+            for (let i = 0; i < fObject.values.length; i++) {
+              const element = fObject.values[i];
+              if (element.value == null || !element.value) {
+                element.value = "";
+              }
+            }
+          }
+          fieldsRecords.push(fObject);
+        }
+      }
+      if (formBuilder !== null) {
         formBuilder.actions.setData(fieldsRecords);
-       }
-     }
- }, [template]);
+      }
+    }
+  }, [template]);
 
   const getFileFromUrl = (blobUrl, name) => {
     return fetch(blobUrl)
       .then((response) => {
-        
-        const filename = response.headers.get('content-disposition')
-        .split(';')
-        .map(param => param.trim())
-        .find(param => param.startsWith('filename='))
-        .split('=')[1];
+        const filename = response.headers
+          .get("content-disposition")
+          .split(";")
+          .map((param) => param.trim())
+          .find((param) => param.startsWith("filename="))
+          .split("=")[1];
 
-        return { blob: response.blob() ,filename }
-      
+        return { blob: response.blob(), filename };
       })
       .then((blobData) => {
-       
         const file = new File([blobData.blob], blobData.filename);
         // use the file object to send POST request
 
@@ -362,17 +343,17 @@ const FormPage = (props) => {
     const formData = new FormData();
     formData.append("file", urlObject);
 
-    return fetch(process.env.REACT_APP_API_BASE+ "/api/file/upload", {
+    return fetch(process.env.REACT_APP_API_BASE + "/api/file/upload", {
       method: "POST",
       body: formData,
     })
       .then((response) => {
-        
-        return response.json()
-      }).then((response)=>{
+        return response.json();
+      })
+      .then((response) => {
         console.log(response);
-        
-        return response
+
+        return response;
       })
       .catch((error) => {
         console.error(error);
@@ -386,7 +367,14 @@ const FormPage = (props) => {
         const fobject = formData[i];
 
         if (fobject.type === "uploadImage") {
-          fobject.value = await uploadFile(window.previewImagesObjects[fobject.name + '-preview']);
+          fobject.value = await uploadFile(
+            window.previewImagesObjects[fobject.name + "-preview"]
+          );
+        }
+        if (fobject.label !== null) {
+          fobject.label = String(fobject.label)
+            .trim()
+            .replace(/(<([^>]+)>)/gi, "");
         }
       }
 
@@ -416,11 +404,10 @@ const FormPage = (props) => {
 
   const onSaveTemplet = async () => {
     const jsonObjects = formBuilder.actions.getData();
-                
+
     jsonObjects.forEach((jsonObject) => {
       if (jsonObject.type === "uploadImage") {
-        let test =
-          window.previewImages[jsonObject.name + "-preview"];
+        let test = window.previewImages[jsonObject.name + "-preview"];
         jsonObject.value = test;
       }
     });
@@ -431,7 +418,9 @@ const FormPage = (props) => {
         const fobject = formData[i];
 
         if (fobject.type === "uploadImage") {
-          fobject.value = await uploadFile(window.previewImagesObjects[fobject.name + '-preview']);
+          fobject.value = await uploadFile(
+            window.previewImagesObjects[fobject.name + "-preview"]
+          );
         }
       }
 
@@ -453,165 +442,255 @@ const FormPage = (props) => {
 
   return (
     <div>
-  <ToastContainer />
-  <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
-  <Box sx={{ display: "flex" }}>
-  <Button sx={{ mr: 2 }} variant="contained" onClick={() => setImportDialogue(true)}>
-    Import Template
-  </Button>
-  <Button sx={{ mr: 2 }} variant="contained" onClick={() => handleClickOpen()}>
-    Save as template
-  </Button>
-  </Box>              
-    <Box sx={{ display: "flex" }}>
-      <Button
-        variant="contained"
-        onClick={() => {
-          setOpen(true);
-          const jsonObjects = formBuilder.actions.getData();
-          
-          jsonObjects.forEach((jsonObject) => {
-            if (jsonObject.type === "uploadImage") {
-              let test =
-                window.previewImages[jsonObject.name + "-preview"];
-              jsonObject.value = test;
-            }
-          });
-          setPreviewData(jsonObjects);
+      <ToastContainer />
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 2,
         }}
-        sx={{ mx: 2 }}
       >
-        Preview Form
-      </Button>
-      <Button variant="contained" onClick={() => {
-        formBuilder.actions.clearFields();
-      }}>
-        Clear All
-      </Button>
-    </Box>
-  </Box>
-  <Divider sx={{ mb: 3 }} />
-  
-  <Drawer
-    open={open}
-    onClose={() => {
-      setOpen(false);
-    }}
-    anchor="right"
-    PaperProps={{ sx: { width: "800px" } }}
-    variant={"temporary"}
-  >
-    <Box sx={{ my: 6, mx: 3, display: "flex", justifyContent: "center", height: "100%" }}>
-      <Paper elevation={3} sx={{ p: 2, boxShadow: 3, width: '100%', maxWidth: 700, overflowY: 'auto', '&::-webkit-scrollbar': {
-        display: 'none'
-      } }}>
-        <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
-          Form Preview
-        </Typography>
-        <Divider />
-        <FormPreview
-          onSubmit={onSubmit}
-          form_id={form_id}
-          isSubmitable
-          onCancel={() => { setOpen(false) }}
-          title="Form Preview"
-          previewData={previewData}
-          sx={{ maxHeight: 'inherit' }}
-        />
-      </Paper>
-      {/* <FormPreview onSubmit={onSubmit} onCancel={()=>{setOpen(false)}}title="Form Preview" previewData={previewData} /> */}
-    </Box>
-  </Drawer>
-  <Box>
-  <Dialog open={openDialogue} onClose={handleClose}>
-        <DialogTitle>Template name</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To save this template pleast give it a name to identify.
-          </DialogContentText>
-          <TextField
-          sx={{mt:2}}
-            id='form_name'
-            label='Template Name'
-            variant="standard"
-            fullWidth
-            name="name"
-            value={templateName}
-              onChange={(e)=>{
+        <Box sx={{ display: "flex" }}>
+          <Button
+            sx={{ mr: 2 }}
+            variant="contained"
+            onClick={() => setImportDialogue(true)}
+          >
+            Import Template
+          </Button>
+          <Button
+            sx={{ mr: 2 }}
+            variant="contained"
+            onClick={() => handleClickOpen()}
+          >
+            Save as template
+          </Button>
+        </Box>
+        <Box sx={{ display: "flex" }}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setOpen(true);
+              const jsonObjects = formBuilder.actions.getData();
+
+              jsonObjects.forEach((jsonObject) => {
+                if (jsonObject.type === "uploadImage") {
+                  let test = window.previewImages[jsonObject.name + "-preview"];
+                  jsonObject.value = test;
+                }
+                if (jsonObject.label !== null) {
+                  jsonObject.label = String(jsonObject.label)
+                    .trim()
+                    .replace(/(<([^>]+)>)/gi, "");
+                }
+                if (typeof jsonObject.values === "object") {
+                  jsonObject.values.forEach((jbVal)=>{
+                    if(jbVal.label){
+                      jbVal.label = String(jbVal.label)
+                      .trim()
+                      .replace(/(<([^>]+)>)/gi, "");
+                    }
+                  })
+                 
+                }
+              });
+              setPreviewData(jsonObjects);
+            }}
+            sx={{ mx: 2 }}
+          >
+            Preview Form
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              formBuilder.actions.clearFields();
+            }}
+          >
+            Clear All
+          </Button>
+        </Box>
+      </Box>
+      <Divider sx={{ mb: 3 }} />
+
+      <Drawer
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        anchor="right"
+        PaperProps={{ sx: { width: "800px" } }}
+        variant={"temporary"}
+      >
+        <Box
+          sx={{
+            my: 6,
+            mx: 3,
+            display: "flex",
+            justifyContent: "center",
+            height: "100%",
+          }}
+        >
+          <Paper
+            elevation={3}
+            sx={{
+              p: 2,
+              boxShadow: 3,
+              width: "100%",
+              maxWidth: 700,
+              overflowY: "auto",
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
+          >
+            <Typography
+              component="h2"
+              variant="h6"
+              color="primary"
+              sx={{ mb: 2 }}
+            >
+              Form Preview
+            </Typography>
+            <Divider />
+            <FormPreview
+              onSubmit={onSubmit}
+              form_id={form_id}
+              isSubmitable
+              onCancel={() => {
+                setOpen(false);
+              }}
+              title="Form Preview"
+              previewData={previewData}
+              sx={{ maxHeight: "inherit" }}
+            />
+          </Paper>
+          {/* <FormPreview onSubmit={onSubmit} onCancel={()=>{setOpen(false)}}title="Form Preview" previewData={previewData} /> */}
+        </Box>
+      </Drawer>
+      <Box>
+        <Dialog open={openDialogue} onClose={handleClose}>
+          <DialogTitle>Template name</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              To save this template pleast give it a name to identify.
+            </DialogContentText>
+            <TextField
+              sx={{ mt: 2 }}
+              id="form_name"
+              label="Template Name"
+              variant="standard"
+              fullWidth
+              name="name"
+              value={templateName}
+              onChange={(e) => {
                 setTemplateName(e.target.value);
               }}
               autoComplete="name"
               autoFocus
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={()=>{
-             handleClose();
-             setTemplateName('');
-            }}>Cancel</Button>
-          <Button onClick={()=>{
-            onSaveTemplet();
-            handleClose();
-            setTemplateName('');
-          }}>Save</Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={openImportDialogue} onClose={()=>{
-        setImportDialogue(false)
-      }}>
-        <DialogTitle>Import Template</DialogTitle>
-        <DialogContent>
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
-         <InputLabel id="template-label" sx={{ pl: 1 }}>Select Template</InputLabel>
-        <Select
-          id={'template'}
-          labelId="template-label"
-          value={templateValue}
-          sx={{ mx: 2, width:'260px' }}
-          label="Select Template"
-          onChange={(e)=>{
-            const {
-              target: { value },
-            } = e;
-            setTemplateValue(value)
-          }
-          }
-        >
-          {checkListState.templates && checkListState.templates.length && checkListState.templates.map((ut) => (
-            <MenuItem
-              key={ut.id}
-              value={ut.id}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                handleClose();
+                setTemplateName("");
+              }}
             >
-              {ut.name}
-            </MenuItem>
-          ))}
-        </Select>
-        </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={()=>{
-            setImportDialogue(false)
-          }}>Cancel</Button>
-          <Button disabled={templateValue == '' ? true : false} onClick={()=>{
-            if(checkListState.templates && checkListState.templates.length){
-              let tempForm = checkListState.templates.filter((t)=>t.id===templateValue);
-              if(tempForm && tempForm.length && tempForm[0].form_json){
-                setTemplate(tempForm[0].form_json);
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                onSaveTemplet();
+                handleClose();
+                setTemplateName("");
+              }}
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={openImportDialogue}
+          onClose={() => {
+            setImportDialogue(false);
+          }}
+        >
+          <DialogTitle>Import Template</DialogTitle>
+          <DialogContent>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="template-label" sx={{ pl: 1 }}>
+                Select Template
+              </InputLabel>
+              <Select
+                id={"template"}
+                labelId="template-label"
+                value={templateValue}
+                sx={{ mx: 2, width: "260px" }}
+                label="Select Template"
+                onChange={(e) => {
+                  const {
+                    target: { value },
+                  } = e;
+                  setTemplateValue(value);
+                }}
+              >
+                {checkListState.templates &&
+                  checkListState.templates.length &&
+                  checkListState.templates.map((ut) => (
+                    <MenuItem key={ut.id} value={ut.id}>
+                      {ut.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
                 setImportDialogue(false);
-              } 
-            }
-          }}>Import</Button>
-        </DialogActions>
-      </Dialog>
-    </Box>  
-  <Paper elevation={3} sx={{ p: 5, boxShadow: 3, width: '100%', maxWidth: 1700, overflowY: 'auto', '&::-webkit-scrollbar': {
-        display: 'none'
-        } }}>
-          <div id="fb-editor" ref={FormBuildRef} />
-        </Paper>
-  
-</div>
-
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={templateValue == "" ? true : false}
+              onClick={() => {
+                if (
+                  checkListState.templates &&
+                  checkListState.templates.length
+                ) {
+                  let tempForm = checkListState.templates.filter(
+                    (t) => t.id === templateValue
+                  );
+                  if (tempForm && tempForm.length && tempForm[0].form_json) {
+                    setTemplate(tempForm[0].form_json);
+                    setImportDialogue(false);
+                  }
+                }
+              }}
+            >
+              Import
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 5,
+          boxShadow: 3,
+          width: "100%",
+          maxWidth: 1700,
+          overflowY: "auto",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        }}
+      >
+        <div id="fb-editor" ref={FormBuildRef} />
+      </Paper>
+    </div>
   );
 };
 

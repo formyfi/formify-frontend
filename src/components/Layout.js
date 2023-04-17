@@ -331,7 +331,7 @@ export default function Layout() {
           <Divider />
           <List>
             {navigationList.map((list, index) =>
-              commonState.user_areas &&  commonState.user_areas.includes(list.area_id) ? (
+              commonState.user_details.super_user === 1 || (commonState.user_areas &&  commonState.user_areas.includes(list.area_id)) ? (
                 <ListItem
                   key={list.id}
                   disablePadding
