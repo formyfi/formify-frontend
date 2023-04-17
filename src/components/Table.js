@@ -138,7 +138,7 @@ export default function EnhancedTable({
                         Edit
                       </Button>}
                       &nbsp;&nbsp;&nbsp;
-                      {deleteButton && onDelete && <Button  onClick={()=>onDelete(row.id)} ml='2' color="error" startIcon={<DeleteIcon />}>
+                      {deleteButton && onDelete && <Button  onClick={()=>onDelete(row.id)} ml='2' disabled={row.super_user === 1} color="error" startIcon={<DeleteIcon />}>
                         Delete
                       </Button>}
                     </TableCell>}
