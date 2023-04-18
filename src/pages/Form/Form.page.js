@@ -374,14 +374,16 @@ const FormPage = (props) => {
         if (fobject.label !== null) {
           fobject.label = String(fobject.label)
             .trim()
-            .replace(/(<([^>]+)>)/gi, "");
+            .replaceAll(/(<([^>]+)>)/gi, "")
+            .replaceAll('&nbsp;','');
         }
         if (typeof fobject.values === "object") {
           fobject.values.forEach((jbVal)=>{
             if(jbVal.label){
               jbVal.label = String(jbVal.label)
               .trim()
-              .replace(/(<([^>]+)>)/gi, "");
+              .replaceAll(/(<([^>]+)>)/gi, "")
+              .replaceAll('&nbsp;','');
             }
           })
          
@@ -492,14 +494,16 @@ const FormPage = (props) => {
                 if (jsonObject.label !== null) {
                   jsonObject.label = String(jsonObject.label)
                     .trim()
-                    .replace(/(<([^>]+)>)/gi, "");
+                    .replaceAll(/(<([^>]+)>)/gi, "")
+                    .replaceAll('&nbsp;','');
                 }
                 if (typeof jsonObject.values === "object") {
                   jsonObject.values.forEach((jbVal)=>{
                     if(jbVal.label){
                       jbVal.label = String(jbVal.label)
                       .trim()
-                      .replace(/(<([^>]+)>)/gi, "");
+                      .replaceAll(/(<([^>]+)>)/gi, "")
+                      .replaceAll('&nbsp;','');
                     }
                   })
                  

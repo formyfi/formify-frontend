@@ -206,13 +206,27 @@ const PreviewUploadField = ({ data }) => {
 };
 
 const PreviewImage = ({ data }) => {
-  console.log(data);
+  if(data.value &&
+    data.value?.success){
+      return (
+        (
+          <FormControl>
+            <Typography variant="h5" >{data.label}</Typography>
+            <img
+              src={data.value?.file_path}
+              class="preview-img"
+              alt="preview-details"
+            />
+          </FormControl>
+        )
+      );
+    }
   return (
-    data.value &&
-    data.value?.success && (
+    data.value && (
       <FormControl>
+         <Typography variant="h5" component={"h5"} >{data.label}</Typography>
         <img
-          src={process.env.REACT_APP_API_BASE + "/" + data.value?.file_path}
+          src={data.value}
           class="preview-img"
           alt="preview-details"
         />

@@ -77,12 +77,11 @@ const PreviewCheckbox = ({ data, filledFormValue }) => {
                   <Checkbox
                     name={option.name}
                     value={option.value}
-                    defaultChecked={filledFormValue ? false : option.selected}
                     row
                     checked={
-                      values[option.name] &&
-                      typeof values[option.name] === "object" &&
-                      values[option.name].includes(option.value)
+                      values[data.name] &&
+                      typeof values[data.name] === "object" &&
+                      values[data.name].includes(option.value)
                     }
                   />
                 }
@@ -307,6 +306,7 @@ const PreviewImage = ({ data }) => {
     data.value &&
     data.value?.success && (
       <FormControl>
+         <Typography variant="h5" component={"h5"} >{data.label}</Typography>
         <img
           src={process.env.REACT_APP_API_BASE + "/" + data.value?.file_path}
           class="preview-img"
