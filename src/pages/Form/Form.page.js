@@ -376,6 +376,16 @@ const FormPage = (props) => {
             .trim()
             .replace(/(<([^>]+)>)/gi, "");
         }
+        if (typeof fobject.values === "object") {
+          fobject.values.forEach((jbVal)=>{
+            if(jbVal.label){
+              jbVal.label = String(jbVal.label)
+              .trim()
+              .replace(/(<([^>]+)>)/gi, "");
+            }
+          })
+         
+        }
       }
 
       const res = dispatch(

@@ -340,6 +340,9 @@ export default function Layout() {
                   <ListItemButton
                     onClick={() => {
                       navigate(list.path);
+                      if(window.innerWidth <= 786){
+                        setWidth(50);
+                      }
                     }}
                   >
                     <ListItemIcon sx={{ color: "primary.main" }}>
