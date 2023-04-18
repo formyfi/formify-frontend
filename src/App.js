@@ -17,6 +17,7 @@ import ManageForm from "pages/Form/ManageForm.page";
 import ManageTask from "pages/Tasks/ManageTask.page";
 import {ToastContainer, toast} from 'react-toastify';
 import ChangePasswordForm from "pages/Dashboard/ChangePasswordForm";
+import ManageWorkflow from "pages/Workflow/Workflow.page";
 const theme = createTheme({
   palette: {
     primary: {
@@ -47,6 +48,7 @@ function App() {
                   <Route path="users" element={<UserPage />}  ></Route>
                   <Route path="dashboard" element={<Dashboard />}  ></Route>
                   <Route path="taskslist" element={<ManageTask />}  ></Route>
+                  <Route path="workflow" element={<ManageWorkflow />}  ></Route>
                 </Route>
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
