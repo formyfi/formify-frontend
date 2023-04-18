@@ -20,6 +20,15 @@ import {
 } from "@mui/material";
 import React from "react";
 
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
 const PreviewRadio = ({ data }) => {
   const selected = data.values.filter((itm) => itm.selected === true);
   return (
@@ -206,6 +215,7 @@ const PreviewUploadField = ({ data }) => {
 };
 
 const PreviewImage = ({ data }) => {
+  debugger
   if(data.value &&
     data.value?.success){
       return (
@@ -225,11 +235,20 @@ const PreviewImage = ({ data }) => {
     data.value && (
       <FormControl>
          <Typography variant="h5" component={"h5"} >{data.label}</Typography>
-        <img
-          src={data.value}
-          class="preview-img"
-          alt="preview-details"
-        />
+         <Box sx={{ display: "flex", gap: '5px' }} >
+         {
+          String(data.value).split(',').map((prev)=>{
+            return <Box>
+                <img
+                  src={isValidUrl(prev) ? prev : process.env.REACT_APP_API_BASE + '/'+  prev}
+                  class="preview-img"
+                  alt="preview-details"
+                />
+            </Box>
+          })
+         }
+         </Box>
+        
       </FormControl>
     )
   );

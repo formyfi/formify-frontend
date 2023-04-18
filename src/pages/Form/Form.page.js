@@ -81,6 +81,7 @@ const FormPage = (props) => {
               inputEle.name = fieldData.name;
               inputEle.type = "file";
               inputEle.accept = "image/*";
+              inputEle.multiple = true;
 
               const clearButton = document.createElement("button");
               clearButton.dataset.name = fieldData.name;
@@ -99,17 +100,17 @@ const FormPage = (props) => {
 
               inputEle.addEventListener("change", (e) => {
                 if (e.target.files && e.target.files.length > 0) {
-                  const img = document.createElement("img");
+                  // const img = document.createElement("img");
 
-                  const imgsrc = URL.createObjectURL(e.target.files[0]);
-                  img.src = imgsrc;
-                  img.id = "img_" + fieldData.name;
+                  const imgsrc = e.target.files
+                  // img.src = imgsrc;
+                  // img.id = "img_" + fieldData.name;
 
-                  img.className = "preview-img";
+                  // img.className = "preview-img";
                   e.currentTarget.style = "display:none;";
 
                   const text = document.createElement("p");
-                  text.innerHTML = imgsrc + " &nbsp;&nbsp;&nbsp;";
+                  text.innerHTML = imgsrc.length + " Images Selected";
 
                   document
                     .getElementById("wrapper_" + fieldData.name)
@@ -120,7 +121,7 @@ const FormPage = (props) => {
                     .append(clearButton);
                   window.previewImages[fieldData.name] = imgsrc;
                   window.previewImagesObjects[fieldData.name] =
-                    e.target.files[0];
+                    e.target.files;
                 }
               });
 
@@ -246,13 +247,11 @@ const FormPage = (props) => {
           const fObject = form_json[i];
 
           if (fObject.type === "uploadImage") {
-            window.previewImages[fObject.name + "-preview"] =
-              process.env.REACT_APP_API_BASE + "/" + fObject.value?.file_path;
+            window.previewImages[fObject.name + "-preview"] =  fObject.value;
 
             fieldsRecords.push({
               ...fObject,
-              value:
-                process.env.REACT_APP_API_BASE + "/" + fObject.value?.file_path,
+              value: fObject.value,
             });
           } else {
             if (
@@ -285,13 +284,12 @@ const FormPage = (props) => {
         const fObject = form_json[i];
 
         if (fObject.type === "uploadImage") {
-          window.previewImages[fObject.name + "-preview"] =
-            process.env.REACT_APP_API_BASE + "/" + fObject.value?.file_path;
+          window.previewImages[fObject.name + "-preview"] = fObject.value;
 
           fieldsRecords.push({
             ...fObject,
             value:
-              process.env.REACT_APP_API_BASE + "/" + fObject.value?.file_path,
+              process.env.REACT_APP_API_BASE + "/" + fObject.value
           });
         } else {
           if (
@@ -314,32 +312,8 @@ const FormPage = (props) => {
     }
   }, [template]);
 
-  const getFileFromUrl = (blobUrl, name) => {
-    return fetch(blobUrl)
-      .then((response) => {
-        const filename = response.headers
-          .get("content-disposition")
-          .split(";")
-          .map((param) => param.trim())
-          .find((param) => param.startsWith("filename="))
-          .split("=")[1];
-
-        return { blob: response.blob(), filename };
-      })
-      .then((blobData) => {
-        const file = new File([blobData.blob], blobData.filename);
-        // use the file object to send POST request
-
-        return file;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   const uploadFile = async (urlObject) => {
     // const file = await getFileFromUrl(url, "test.png");
-
     const formData = new FormData();
     formData.append("file", urlObject);
 
@@ -358,6 +332,8 @@ const FormPage = (props) => {
       .catch((error) => {
         console.error(error);
       });
+
+    
   };
 
   const onSubmit = async () => {
@@ -367,9 +343,19 @@ const FormPage = (props) => {
         const fobject = formData[i];
 
         if (fobject.type === "uploadImage") {
-          fobject.value = await uploadFile(
-            window.previewImagesObjects[fobject.name + "-preview"]
-          );
+          let tmp = []
+          if(window.previewImagesObjects[fobject.name + "-preview"]){
+            for (let u = 0; u < window.previewImagesObjects[fobject.name + "-preview"].length; u++) {
+              let val =await uploadFile(window.previewImagesObjects[fobject.name + "-preview"][u])
+              if(val.success === true){
+                tmp.push(val.file_path)
+              }
+            }
+            fobject.value = tmp.join(',')
+          } else {
+            fobject.value = window.previewImages[fobject.name + "-preview"]
+          }
+          
         }
         if (fobject.label !== null) {
           fobject.label = String(fobject.label)
@@ -488,8 +474,23 @@ const FormPage = (props) => {
 
               jsonObjects.forEach((jsonObject) => {
                 if (jsonObject.type === "uploadImage") {
-                  let test = window.previewImages[jsonObject.name + "-preview"];
-                  jsonObject.value = test;
+                  let flistObj = window.previewImages[jsonObject.name + "-preview"];
+
+                  let testPath = []
+                  if(typeof flistObj === "object"){
+                    
+                    for (let u = 0; u < flistObj.length; u++) {
+                      const fObj = flistObj[u];
+                      if(typeof fObj  === 'obj'){
+                        testPath.push(URL.createObjectURL(fObj)) 
+                      } else {
+                        testPath.push(fObj) 
+                      }
+                    }
+                    jsonObject.value = testPath.join(',');
+                  } else {
+                    jsonObject.value = flistObj;
+                  }
                 }
                 if (jsonObject.label !== null) {
                   jsonObject.label = String(jsonObject.label)

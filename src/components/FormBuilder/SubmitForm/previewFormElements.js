@@ -300,21 +300,40 @@ const PreviewUploadField = ({ data }) => {
   );
 };
 
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
 const PreviewImage = ({ data }) => {
   console.log(data);
+  debugger
   return (
-    data.value &&
-    data.value?.success && (
+    data.value && (
       <FormControl>
          <Typography variant="h5" component={"h5"} >{data.label}</Typography>
-        <img
-          src={process.env.REACT_APP_API_BASE + "/" + data.value?.file_path}
-          class="preview-img"
-          alt="preview-details"
-        />
+         <Box sx={{ display: "flex", gap: '5px' }} >
+         {
+          String(data.value).split(',').map((prev)=>{
+            return <Box>
+                <img
+                  src={isValidUrl(prev) ? prev : process.env.REACT_APP_API_BASE + '/'+  prev}
+                  class="preview-img"
+                  alt="preview-details"
+                />
+            </Box>
+          })
+         }
+         </Box>
       </FormControl>
     )
   );
+
+  
 };
 
 export {

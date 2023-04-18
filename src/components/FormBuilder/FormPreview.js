@@ -104,6 +104,7 @@ import {
                 if (previewObj.type === "uploadImage") {
                   return (
                     <Box my={2}>
+                      {/* render multuple images */}
                       <PreviewImage data={previewObj} />
                     </Box>
                   );
