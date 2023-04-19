@@ -25,6 +25,7 @@ import LOGO from './../../components/LOGO.png';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { supabase } from "components/Layout";
+import navigationList from "config/navigation";
 
 
 const schema = yup
@@ -66,6 +67,14 @@ export default function SignIn() {
 
   React.useEffect(() => {
     if (commonState.isLogged === true) {
+      if(commonState.user_areas){
+        const areasArray = String(commonState.user_areas).split(',')
+        const sortedValue = areasArray.sort((a,b)=>(a-b))
+        if(sortedValue.length > 0){
+          let firstArea = navigationList.find(nav => nav.area_id == sortedValue.at(0))
+          return navigate(firstArea.path);
+        }
+      }
       navigate("/app/dashboard")
     }
   }, [commonState]);

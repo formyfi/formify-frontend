@@ -383,6 +383,15 @@ const PreviewImage = ({ data }) => {
          <Box sx={{ display: "flex", gap: '5px' }} >
          {
           String(data.value).split(',').map((prev)=>{
+            if(typeof prev === "object") {
+              return <Box>
+                  <img
+                    src={URL.createObjectURL(prev)}
+                    class="preview-img"
+                    alt="preview-details"
+                  />
+              </Box>
+            }
             return <Box>
                 <img
                   src={isValidUrl(prev) ? prev : process.env.REACT_APP_API_BASE + '/'+  prev}

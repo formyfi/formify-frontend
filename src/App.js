@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from "react-redux";
@@ -26,6 +26,17 @@ const theme = createTheme({
     },
   },
 });
+
+const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
+  return (
+    <Route {...rest} render={(props) => (
+      isAuthenticated
+        ? <Component {...props} />
+        : <Navigate to='/login' />
+    )} />
+  )
+}
+
 
 function App() {
   return (

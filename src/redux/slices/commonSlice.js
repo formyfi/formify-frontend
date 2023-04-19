@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage'
 const loginApiAction = createAsyncThunk(
   'auth/login',
   async (values) => {
+    debugger
     const response = await apis.login({...values, 'user_name': values.email}).then((response)=>{
       if(response.status === 200){
         return response.data
@@ -27,7 +28,7 @@ const loginApiAction = createAsyncThunk(
 
 
 const socialLoginApiAction = createAsyncThunk(
-  'auth/login',
+  'auth/socialLogin',
   async (values) => {
     const response = await apis.socialLogin(values).then((response)=>{
       if(response.status === 200){
