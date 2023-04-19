@@ -23,6 +23,15 @@ import React from "react";
 
 const PreviewRadio = ({ data, error, field }) => {
   const selected = data.values.filter((itm) => itm.selected === true);
+  // Create a temporary element to parse the HTML string
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  // Get the text content from the temporary element
+  const plainText = tempElement.textContent;
+
+  // Replace all occurrences of '&nbsp;' with an empty string
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <Field name={data.name}>
       {({
@@ -32,7 +41,7 @@ const PreviewRadio = ({ data, error, field }) => {
       }) => (
         <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <FormLabel id="demo-radio-buttons-group-label">
-            {data.label}
+            {trimmedLabel}
           </FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
@@ -59,6 +68,12 @@ const PreviewRadio = ({ data, error, field }) => {
 };
 
 const PreviewCheckbox = ({ data, filledFormValue }) => {
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <Field name={data.name}>
       {({
@@ -68,7 +83,7 @@ const PreviewCheckbox = ({ data, filledFormValue }) => {
       }) => (
         <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <FormLabel id="demo-radio-buttons-group-label">
-            {data.label}
+            {trimmedLabel}
           </FormLabel>
           <FormGroup>
             {data.values.map((option) => (
@@ -100,6 +115,12 @@ const PreviewCheckbox = ({ data, filledFormValue }) => {
 };
 
 const PreviewSelect = ({ data }) => {
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <Field name={data.name}>
       {({
@@ -108,12 +129,12 @@ const PreviewSelect = ({ data }) => {
         meta,
       }) => (
         <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
-          <InputLabel id="demo-simple-select-label">{data.label}</InputLabel>
+          <InputLabel id="demo-simple-select-label">{trimmedLabel}</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             fullWidth
-            label={data.label}
+            label={trimmedLabel}
             {...field}
           >
             {data.values.map((option) => (
@@ -132,6 +153,12 @@ const PreviewSelect = ({ data }) => {
 };
 
 const PreviewTextField = ({ data }) => {
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <Field name={data.name}>
       {({
@@ -141,8 +168,8 @@ const PreviewTextField = ({ data }) => {
       }) => (
         <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <TextField
-            id={data.label}
-            label={data.label}
+            id={trimmedLabel}
+            label={trimmedLabel}
             variant="outlined"
             fullWidth
             error={meta.touched && !!meta.error}
@@ -159,6 +186,12 @@ const PreviewTextField = ({ data }) => {
 };
 
 const PreviewTextAreaField = ({ data }) => {
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <Field name={data.name}>
       {({
@@ -168,8 +201,8 @@ const PreviewTextAreaField = ({ data }) => {
       }) => (
         <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <TextField
-            id={data.label}
-            label={data.label}
+            id={trimmedLabel}
+            label={trimmedLabel}
             variant="outlined"
             multiline
             fullWidth
@@ -189,6 +222,12 @@ const PreviewTextAreaField = ({ data }) => {
 };
 
 const PreviewNumberField = ({ data }) => {
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <Field name={data.name}>
       {({
@@ -199,8 +238,8 @@ const PreviewNumberField = ({ data }) => {
         <FormControl error={meta.touched && meta.error} sx={{ width: "100%", maxWidth: 600 }}>
           <TextField
             type={"number"}
-            id={data.label}
-            label={data.label}
+            id={trimmedLabel}
+            label={trimmedLabel}
             name={data.name}
             variant="outlined"
             error={meta.touched && meta.error}
@@ -217,6 +256,12 @@ const PreviewNumberField = ({ data }) => {
 };
 
 const PreviewAutoCompleteField = ({ data }) => {
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <Field name={data.name}>
       {({
@@ -239,7 +284,7 @@ const PreviewAutoCompleteField = ({ data }) => {
                 name={data.name}
                 type="text"
                 error={meta.touched && meta.error}
-                label={data.label}
+                label={trimmedLabel}
                 {...field}
               />
             )}
@@ -255,6 +300,12 @@ const PreviewAutoCompleteField = ({ data }) => {
 };
 
 const PreviewDateField = ({ data }) => {
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <Field name={data.name}>
       {({
@@ -266,8 +317,8 @@ const PreviewDateField = ({ data }) => {
           <TextField
             type={"date"}
             name={data.name}
-            id={data.label}
-            label={data.label}
+            id={trimmedLabel}
+            label={trimmedLabel}
             focused
             error={meta.touched && meta.error}
             {...field}
@@ -283,17 +334,28 @@ const PreviewDateField = ({ data }) => {
 };
 
 const PreviewTypography = ({ data }) => {
-  const trimmedLabel = data.label.replace(/&nbsp;/g, '');
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <Box my={1} className="preview-typo" sx={{ width: "100%", maxWidth: 600 }}>
       <Typography variant={data.subtype} component={data.subtype}>
-        {TRIMMEDLABEL}
+        {trimmedLabel}
       </Typography>
     </Box>
   );
 };
 
 const PreviewUploadField = ({ data }) => {
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     <FormControl>
       <Button variant="outlined">Upload</Button>
@@ -311,12 +373,16 @@ function isValidUrl(string) {
 }
 
 const PreviewImage = ({ data }) => {
-  console.log(data);
-  debugger
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = data.label;
+
+  const plainText = tempElement.textContent;
+
+  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
   return (
     data.value && (
       <FormControl>
-         <Typography variant="h5" component={"h5"} >{data.label}</Typography>
+         <Typography variant="h5" component={"h5"} >{trimmedLabel}</Typography>
          <Box sx={{ display: "flex", gap: '5px' }} >
          {
           String(data.value).split(',').map((prev)=>{
