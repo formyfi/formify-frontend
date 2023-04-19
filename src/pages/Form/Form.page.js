@@ -33,7 +33,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import FormPreviewWithSubmit from "components/FormBuilder/SubmitForm/FormPreviewWithSubmit";
 import FormPreview from "components/FormBuilder/FormPreview";
-
+import {useNavigate} from "react-router-dom";
 window.jQuery = $;
 window.$ = $;
 window.previewImages = {};
@@ -54,7 +54,7 @@ const FormPage = (props) => {
   const [openImportDialogue, setImportDialogue] = React.useState("");
   const [openPublishDialogue, setPublishDialogue] = React.useState("");
   const [template, setTemplate] = React.useState("");
-
+  const navigate = useNavigate();
   const { form_id } = useParams(); //This form id should be used to store the form json in forms table and should used for fetching saved form json
 
   useEffect(() => {
@@ -487,6 +487,12 @@ const FormPage = (props) => {
            
           >
             Publish
+          </Button>
+          <Button
+            onClick={() => navigate('/app/checklists')}
+           
+          >
+            Cancel
           </Button>
         </Box> : null}
       </Box> 
