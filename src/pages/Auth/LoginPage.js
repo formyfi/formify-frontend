@@ -69,7 +69,7 @@ export default function SignIn() {
     if (commonState.isLogged === true) {
       if(commonState.user_areas){
         const areasArray = String(commonState.user_areas).split(',')
-        const sortedValue = areasArray.sort((a,b)=>(a-b))
+        const sortedValue = areasArray.sort((a,b)=>(b-a))
         if(sortedValue.length > 0){
           let firstArea = navigationList.find(nav => nav.area_id == sortedValue.at(0))
           return navigate(firstArea.path);
