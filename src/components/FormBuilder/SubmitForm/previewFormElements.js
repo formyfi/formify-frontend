@@ -283,10 +283,11 @@ const PreviewDateField = ({ data }) => {
 };
 
 const PreviewTypography = ({ data }) => {
+  const trimmedLabel = data.label.replace(/&nbsp;/g, '');
   return (
     <Box my={1} className="preview-typo" sx={{ width: "100%", maxWidth: 600 }}>
       <Typography variant={data.subtype} component={data.subtype}>
-        {data.label}
+        {trimmedLabel}
       </Typography>
     </Box>
   );
