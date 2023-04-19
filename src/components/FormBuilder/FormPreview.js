@@ -20,7 +20,7 @@ import {
     PreviewUploadField,
   } from "./previewFormElements";
   
-  const FormPreview = ({ title, previewData,onSubmit,isSubmitable, onCancel }) => {
+  const FormPreview = ({ title, previewData,onSubmit,isSubmitable, onCancel, form_id }) => {
       
     return (<Box>
           <Divider />
@@ -114,7 +114,7 @@ import {
               })}
             </Box>
             <Box sx={{ mb: 5 }}>
-              <Button variant="contained" onClick={() => onSubmit()}>
+              <Button variant="contained" disabled={form_id ? true : false} onClick={() => onSubmit()}>
                 Save Form
               </Button>
               <Button variant="contained" onClick={() => onCancel()} sx={{ mx: 2 }}>

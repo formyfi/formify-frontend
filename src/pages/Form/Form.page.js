@@ -52,6 +52,7 @@ const FormPage = (props) => {
   const [templateName, setTemplateName] = React.useState("");
   const [templateValue, setTemplateValue] = React.useState("");
   const [openImportDialogue, setImportDialogue] = React.useState("");
+  const [openPublishDialogue, setPublishDialogue] = React.useState("");
   const [template, setTemplate] = React.useState("");
 
   const { form_id } = useParams(); //This form id should be used to store the form json in forms table and should used for fetching saved form json
@@ -184,7 +185,7 @@ const FormPage = (props) => {
 
         scrollToFieldOnAdd: true,
         editOnAdd: true,
-        showActionButtons: false,
+        showActionButtons: true,
         inputSets: [
           {
             label: "Pass Fail Radio",
@@ -336,7 +337,7 @@ const FormPage = (props) => {
     
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (isDraft) => {
     const formData = previewData;
     if (formData) {
       for (let i = 0; i < formData.length; i++) {
@@ -381,6 +382,7 @@ const FormPage = (props) => {
           form_json: formData,
           id: form_id,
           org_id: commonState.org_id,
+          is_draft: isDraft,
         })
       );
       res.then((resp) => {
@@ -452,77 +454,31 @@ const FormPage = (props) => {
         <Box sx={{ display: "flex" }}>
           <Button
             sx={{ mr: 2 }}
-            variant="contained"
+           
             onClick={() => setImportDialogue(true)}
           >
             Import Template
           </Button>
-          <Button
+         {form_id == 0 ? <Button
             sx={{ mr: 2 }}
-            variant="contained"
+           
             onClick={() => handleClickOpen()}
           >
             Save as template
-          </Button>
+          </Button> : null}
         </Box>
         <Box sx={{ display: "flex" }}>
           <Button
-            variant="contained"
-            onClick={() => {
-              setOpen(true);
-              const jsonObjects = formBuilder.actions.getData();
-
-              jsonObjects.forEach((jsonObject) => {
-                if (jsonObject.type === "uploadImage") {
-                  let flistObj = window.previewImages[jsonObject.name + "-preview"];
-
-                  let testPath = []
-                  if(typeof flistObj === "object"){
-                    
-                    for (let u = 0; u < flistObj.length; u++) {
-                      const fObj = flistObj[u];
-                      if(typeof fObj  === 'obj'){
-                        testPath.push(URL.createObjectURL(fObj)) 
-                      } else {
-                        testPath.push(fObj) 
-                      }
-                    }
-                    jsonObject.value = testPath.join(',');
-                  } else {
-                    jsonObject.value = flistObj;
-                  }
-                }
-                if (jsonObject.label !== null) {
-                  jsonObject.label = String(jsonObject.label)
-                    .trim()
-                    .replaceAll(/(<([^>]+)>)/gi, "")
-                    .replaceAll('&nbsp;','');
-                }
-                if (typeof jsonObject.values === "object") {
-                  jsonObject.values.forEach((jbVal)=>{
-                    if(jbVal.label){
-                      jbVal.label = String(jbVal.label)
-                      .trim()
-                      .replaceAll(/(<([^>]+)>)/gi, "")
-                      .replaceAll('&nbsp;','');
-                    }
-                  })
-                 
-                }
-              });
-              setPreviewData(jsonObjects);
-            }}
-            sx={{ mx: 2 }}
+            
+            onClick={() => onSubmit(true)}
           >
-            Preview Form
+            Save As Draft
           </Button>
           <Button
-            variant="contained"
-            onClick={() => {
-              formBuilder.actions.clearFields();
-            }}
+            onClick={() => setPublishDialogue(true)}
+           
           >
-            Clear All
+            Publish
           </Button>
         </Box>
       </Box>
@@ -686,6 +642,34 @@ const FormPage = (props) => {
               }}
             >
               Import
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={openPublishDialogue}
+          onClose={() => {
+            setPublishDialogue(false);
+          }}
+        >
+          <DialogTitle>Confirmation</DialogTitle>
+          <DialogContent>
+            Are you sure want to publish this form? Make sure to preview form before publishing.
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                setPublishDialogue(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                    onSubmit(false)
+                    setPublishDialogue(false);
+              }}
+            >
+              Publish
             </Button>
           </DialogActions>
         </Dialog>

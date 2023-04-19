@@ -41,7 +41,7 @@ const FormSubmission = ({
           if (resp && resp.payload.form_data && resp.payload.form_data.form_value) {
             setFormValue(JSON.parse(resp.payload.form_data.form_value));
           }
-        } else toast.info("Checklist for this part and operation has not been created. Please contact your Manager");
+        } else toast.info("Form has not been published for this part - station. Please contact your manager");
         
         setLoading(false)
       });

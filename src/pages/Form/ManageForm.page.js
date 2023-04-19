@@ -104,11 +104,11 @@ const ManageForm = () => {
     {
       id: "form",
       numeric: false,
-      label: "Form Created",
+      label: "Published",
       render: (record) => {
         return (
           <TableCell align="left">
-            {!record.form_json ? <Chip label='No' color='error'  />
+            {record.is_draft ? <Chip label='No' color='error'  />
             : <Chip label='Yes' color='success' />}
           </TableCell>
         );
