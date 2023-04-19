@@ -467,7 +467,7 @@ const FormPage = (props) => {
             Save as template
           </Button> : null}
         </Box>
-        <Box sx={{ display: "flex" }}>
+        {form_id != 0 ? <Box sx={{ display: "flex" }}>
           <Button
             
             onClick={() => onSubmit(true)}
@@ -480,8 +480,8 @@ const FormPage = (props) => {
           >
             Publish
           </Button>
-        </Box>
-      </Box>
+        </Box> : null}
+      </Box> 
       <Divider sx={{ mb: 3 }} />
 
       <Drawer
