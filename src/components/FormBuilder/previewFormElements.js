@@ -30,7 +30,7 @@ function isValidUrl(string) {
 }
 
 const PreviewRadio = ({ data }) => {
-  debugger
+
   const tempElement = document.createElement('div');
   tempElement.innerHTML = data.label;
 

@@ -88,16 +88,13 @@ const PreviewCheckbox = ({ data, filledFormValue }) => {
           <FormGroup>
             {data.values.map((option) => (
               <FormControlLabel
+               key={option.name}
                 control={
                   <Checkbox
                     name={option.name}
                     value={option.value}
                     row
-                    checked={
-                      values[data.name] &&
-                      typeof values[data.name] === "object" &&
-                      values[data.name].includes(option.value)
-                    }
+                    checked={Array.isArray(values[data.name]) && values[data.name].includes(option.value)}
                   />
                 }
                 {...field}
