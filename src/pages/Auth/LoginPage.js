@@ -1,23 +1,16 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import { Button, IconButton, InputAdornment } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { loginApiAction, socialLoginApiAction } from "redux/slices/commonSlice";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Alert, AlertTitle, Backdrop } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import backgroundImage from './login_back1.jpg';
@@ -39,7 +32,6 @@ export default function SignIn() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -71,7 +63,7 @@ export default function SignIn() {
         const areasArray = String(commonState.user_areas).split(',')
         const sortedValue = areasArray.sort((a,b)=>(b-a))
         if(sortedValue.length > 0){
-          let firstArea = navigationList.find(nav => nav.area_id == sortedValue.at(0))
+          let firstArea = navigationList.find(nav => String(nav.area_id) === sortedValue.at(0))
           return navigate(firstArea.path);
         }
       }

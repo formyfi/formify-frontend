@@ -131,6 +131,7 @@ export default function Layout() {
 
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [hideContent, setHideContent] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(null);
 
   useEffect(()=>{
     if(location.pathname === "/app/change-password"){
@@ -165,6 +166,7 @@ export default function Layout() {
     let areas = commonState.user_areas.split(',')
     let access = areas.includes(String(activePath.area_id))
     console.log(access);
+    setActiveMenu(activePath)
     if(access === false){
       setHideContent(true);
     } else {
@@ -273,7 +275,8 @@ export default function Layout() {
                 <ListItem
                   key={list.id}
                   disablePadding
-                  sx={{ my: 2, height: "50px" }}
+                  sx={{ my: 2, height: "50px",backgroundColor: list.id === activeMenu.id?'lightblue':'', }}
+                  className="active"
                 >
                   <ListItemButton
                     onClick={() => {
