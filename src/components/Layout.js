@@ -275,7 +275,7 @@ export default function Layout() {
                 <ListItem
                   key={list.id}
                   disablePadding
-                  sx={{ my: 2, height: "50px",backgroundColor: list.id === activeMenu.id?'lightblue':'', }}
+                  sx={{ my: 2, height: "50px",backgroundColor: activeMenu && list.id === activeMenu.id?'lightblue':'', }}
                   className="active"
                 >
                   <ListItemButton
