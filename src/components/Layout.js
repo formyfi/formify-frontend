@@ -164,7 +164,7 @@ export default function Layout() {
 
     const activePath = navigationList.find(itm => location.pathname.slice('/').includes(itm.path));
     let areas = commonState.user_areas.split(',')
-    let access = areas.includes(String(activePath.area_id))
+    let access = areas.includes(String(activePath?.area_id))
     console.log(access);
     setActiveMenu(activePath)
     if(access === false){
