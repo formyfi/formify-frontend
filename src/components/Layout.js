@@ -161,8 +161,11 @@ export default function Layout() {
       (item) => item.path === location.pathname
     );
     if (currentPage && currentPage.length) setTitle(currentPage[0].label);
-
-    const activePath = navigationList.find(itm => location.pathname.slice('/').includes(itm.path));
+      let activePath = '';
+      if(location.pathname.includes('formBuilder')){
+        activePath = navigationList.find(itm => itm.path.includes('formBuilder'));
+      } else activePath = navigationList.find(itm => location.pathname.slice('/').includes(itm.path));
+    
     let areas = commonState.user_areas.split(',')
     let access = areas.includes(String(activePath?.area_id))
     console.log(access);
