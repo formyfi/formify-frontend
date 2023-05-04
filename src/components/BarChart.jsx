@@ -6,7 +6,7 @@ import { Card } from "react-bootstrap";
 function BarChart() {
    let options = {
     title: {
-        text: 'Orders by Product Category Names'
+        text: 'Total inspections done per day'
       },
         tooltip: {
           trigger: 'axis',
@@ -28,7 +28,7 @@ function BarChart() {
         xAxis: [
           {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: ['05/01', '05/02', '05/023', '05/04', '05/05', '05/06', '05/07'],
             axisTick: {
               alignWithLabel: true
             }
@@ -44,7 +44,7 @@ function BarChart() {
             name: 'Direct',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220]
+            data: [10, 52, 40, 34, 40, 42, 43]
           }
         ]
       };

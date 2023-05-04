@@ -6,6 +6,14 @@ import {
   TableCell,
   Chip,
   TextField,
+  Dialog,
+  DialogActions,
+  InputLabel,
+  Select,
+  FormControl,
+  MenuItem,
+  DialogTitle,
+  DialogContent
 } from "@mui/material";
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,7 +23,7 @@ import FormatAlignCenter from "@mui/icons-material/FormatAlignCenter";
 import AdvanceTable from "components/AdvanceTable";
 import FormSubmission from "./components/FormSubmission";
 import { getTaskLists} from "redux/slices/formSlice";
-
+import { saveAs } from "file-saver"; 
 
 const ManageTask = () => {
   const [drawer, setDrawer] = useState(false);
@@ -24,6 +32,7 @@ const ManageTask = () => {
   const [formValue, setFormValue] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [openDialogue, setOpenDialogue] = React.useState(false);
 
   const dispatch = useDispatch();
 
@@ -35,6 +44,14 @@ const ManageTask = () => {
    const res = dispatch(getTaskLists({org_id: commonState.org_id, user_id: commonState.user_id}));
    res.then(()=>setLoading(false))
   }, []);
+
+  const handleClickOpen = () => {
+    setOpenDialogue(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialogue(false);
+  };
 
   const headCells = [
     {
@@ -89,6 +106,35 @@ const ManageTask = () => {
     },
   ];
 
+  const handleDownload = () => {
+    const data = checkListState.taskLists.filter(row => 
+      row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      row.station_name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      row.form_id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
+      row.vnum_id.toString().toLowerCase().includes(searchValue.toLowerCase())
+    );
+  
+    // Get the headers of the CSV
+    const headers = Object.keys(data[0]).filter(header => header !== 'form_data' && header !== 'form_json');
+  
+    // Create an array of the CSV rows
+    const rows = data.map(obj => {
+      return headers.map(header => {
+      return obj[header];
+      }).join(",");
+      });
+  
+    // Join the header row and the CSV rows
+    const csvData = headers.join(",") + "\n" + rows.join("\n");
+  
+    // Convert CSV string to Blob
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+  
+    // Save Blob as CSV file
+    saveAs(blob, "checklist_data.csv");
+  };
+  
+
   const onGenerate = (record) => {
     setRecord(record);
     setFormJson(JSON.parse(record.form_json));
@@ -107,13 +153,21 @@ const ManageTask = () => {
   <Typography component="h2" variant="h6" color="primary" sx={{ mb: 2 }}>
     Completed Inspections
   </Typography>
+      
   <Box // Wrap the TextField component in a Box component
     display="flex"
     justifyContent="flex-end"
     alignItems="center"
     mb={2}
-    sx={{ width: "300px" }}
+    sx={{ width: "400px" }}
   >
+      <Button
+          color="primary"
+          onClick={() => handleDownload()}
+          sx={{ width: "400px" }}
+        >
+          Export Inspections
+        </Button>
     <TextField
       id="search"
       label="Search"
@@ -126,6 +180,7 @@ const ManageTask = () => {
       fullWidth
     />
   </Box>
+  
 </Box>
       <AdvanceTable
         headCells={headCells}

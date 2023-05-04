@@ -69,7 +69,7 @@ const navigationList = [
       id: "task_list",
       area_id:5,
       label: "Inspection List",
-      path: "/app/taskslist",
+      path: "/app/inspections",
       role: 3,
       icon: <ListAltIcon />,
     },

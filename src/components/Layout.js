@@ -9,7 +9,6 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
@@ -17,12 +16,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
-import { Outlet, useLocation, useMatch, useNavigate } from "react-router-dom";
-
-
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import { Avatar, Menu, MenuItem } from "@mui/material";
-import { Logout, Settings } from "@mui/icons-material";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, logoutApiAction } from "redux/slices/commonSlice";
 import LOGO from "./LOGO.png";
@@ -33,7 +27,6 @@ import ChangePasswordForm from "pages/Dashboard/ChangePasswordForm";
 
 import { createClient } from '@supabase/supabase-js'
 import navigationList from "config/navigation";
-import { toast } from "react-toastify";
 
 
 const supabaseUrl = 'https://xulrhkdfzsueagghuwxr.supabase.co'
@@ -73,51 +66,6 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   })
 );
 
-// const RightSideMenu = ({ anchorEl,open,logout,handleClose })=>{
-
-//   return (<Menu
-//     anchorEl={anchorEl}
-//     id="account-menu"
-//     open={open}
-//     onClose={handleClose}
-//     onClick={handleClose}
-//     PaperProps={{
-//       elevation: 0,
-//       sx: {
-//         overflow: 'visible',
-//         filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-//         mt: 1.5,
-//         '& .MuiAvatar-root': {
-//           width: 32,
-//           height: 32,
-//           ml: -0.5,
-//           mr: 1,
-//         },
-//         '&:before': {
-//           content: '""',
-//           display: 'block',
-//           position: 'absolute',
-//           top: 0,
-//           right: 14,
-//           width: 10,
-//           height: 10,
-//           bgcolor: 'background.paper',
-//           transform: 'translateY(-50%) rotate(45deg)',
-//           zIndex: 0,
-//         },
-//       },
-//     }}
-//     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-//     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-//   >
-//     <MenuItem onClick={logout}>
-//       <ListItemIcon>
-//         <Logout fontSize="small" />
-//       </ListItemIcon>
-//       Logout
-//     </MenuItem>
-//   </Menu>)
-// }
 
 export default function Layout() {
   const theme = useTheme();
@@ -168,10 +116,9 @@ export default function Layout() {
     
     let areas = commonState.user_areas.split(',')
     let access = areas.includes(String(activePath?.area_id))
-    console.log(access);
     setActiveMenu(activePath)
     if(access === false){
-      setHideContent(true);
+      if(!location.pathname.includes('workflow')) setHideContent(true);
     } else {
       setHideContent(false);
     }

@@ -12,7 +12,7 @@ function LineChart() {
       trigger: 'axis'
     },
     legend: {
-      data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
+      data: ['Laser Cutting', 'Plasma Cutting', 'Turning', 'Turning', 'Milling']
     },
     grid: {
       left: '3%',
@@ -35,34 +35,28 @@ function LineChart() {
     },
     series: [
       {
-        name: 'Email',
+        name: 'Laser Cutting',
         type: 'line',
         stack: 'Total',
-        data: [120, 132, 101, 134, 90, 230, 210]
+        data: [7, 5, 6, 8, 9, 8, 4]
       },
       {
-        name: 'Union Ads',
+        name: 'Plasma Cutting',
         type: 'line',
         stack: 'Total',
-        data: [220, 182, 191, 234, 290, 330, 310]
+        data: [6, 8, 5, 4, 7, 6, 7]
       },
       {
-        name: 'Video Ads',
+        name: 'Turning',
         type: 'line',
         stack: 'Total',
-        data: [150, 232, 201, 154, 190, 330, 410]
+        data: [6, 2, 5, 9, 8, 5, 4]
       },
       {
-        name: 'Direct',
+        name: 'Milling',
         type: 'line',
         stack: 'Total',
-        data: [320, 332, 301, 334, 390, 330, 320]
-      },
-      {
-        name: 'Search Engine',
-        type: 'line',
-        stack: 'Total',
-        data: [820, 932, 901, 934, 1290, 1330, 1320]
+        data: [8, 4, 7, 5, 4, 2, 3]
       }
     ]
   };
@@ -70,7 +64,7 @@ function LineChart() {
   return (
     <Card className="m-4">
       <Card.Body>
-        
+      <Card.Title>Total inspections done per station</Card.Title>
         <ReactECharts  option={options}style={{ height: "400px" }}/>
       </Card.Body>
     </Card>

@@ -18,7 +18,7 @@ export const Dashboard = () => {
               p: 1,
               display: 'flex',
               flexDirection: 'column',
-              height: 415,
+              height: 450,
               width: '100%',
               margin: 2,
             }}
@@ -32,7 +32,7 @@ export const Dashboard = () => {
               p: 1,
               display: 'flex',
               flexDirection: 'column',
-              height: 415,
+              height: 450,
               width: '100%',
               margin: 2,
             }}
