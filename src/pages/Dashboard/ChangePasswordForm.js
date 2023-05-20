@@ -1,8 +1,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { updatePassword } from "redux/slices/userSlice";
+import {useDispatch, useSelector} from "react-redux";
 import * as Yup from "yup";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Box,
   Button,
@@ -41,7 +44,10 @@ const PasswordField = ({
   );
 };
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm = ({onClose}) => {
+  const commonState = useSelector((state) => state.common);
+
+  const dispatch = useDispatch();
   const initialValues = {
     currentPassword: "",
     newPassword: "",
@@ -49,14 +55,20 @@ const ChangePasswordForm = () => {
   };
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    // Perform password change logic here
-    // You can access the values object to implement your password change functionality
-    // Remember to handle validation, error handling, and security measures as needed
+    
     if (values.newPassword !== values.confirmNewPassword) {
       alert("New password and confirm password must match.");
     } else {
-      // Perform password change logic
-      alert("Password change successful!");
+      const res = dispatch(updatePassword({user_id: commonState.user_details.user_name, new_password: values.newPassword, old_password:values.currentPassword}));
+      res.then((resp) => {
+        if (resp && resp.payload && resp.payload.success) {
+          toast.success(resp.payload.message);
+          onClose();
+        }else {
+           toast.error(resp.payload.message)
+           onClose();
+          }
+      })
       resetForm();
     }
     setSubmitting(false);

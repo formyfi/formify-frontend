@@ -93,6 +93,30 @@ const updateUser = createAsyncThunk(
       return response
     }
   )
+  
+  const updatePassword = createAsyncThunk(
+    'update_password',
+    async (values) => {
+      const response = await apis.updatePassword(values).then((response)=>{
+          if(response.status === 200){
+              return response.data
+            }
+          }).catch((err)=>{
+            if(err.response && err.response.status === 401 && err.response.data){
+              return {
+                success: false,
+                message : err.response.data.message
+              }
+            }
+            return {
+              success: false,
+              message : "Something went wrong"
+            }
+      })
+      return response
+    }
+  )
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -136,6 +160,12 @@ const userSlice = createSlice({
           state.user_list = payload.user_list
         }
       },
+      [updatePassword.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.user_list = payload.user_list
+        }
+      },
     }
   })
   
@@ -144,7 +174,8 @@ const userSlice = createSlice({
     getUsers,
     updateUser,
     createUser,
-    deleteUser
+    deleteUser,
+    updatePassword
   }
 
   // Export the reducer, either as a default or named export

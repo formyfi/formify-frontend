@@ -103,6 +103,16 @@ const apis = {
       },
     });
   },
+
+  updatePassword: (values) => {
+    return request.post("/api/users/update_password", values, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+  },
+
   createUser: (values) => {
     return request.post("/api/users/create_user", values, {
       headers: {

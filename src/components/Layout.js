@@ -15,7 +15,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, logoutApiAction } from "redux/slices/commonSlice";
@@ -168,7 +167,7 @@ export default function Layout() {
         }}
         variant={'temporary'}
       >
-        <ChangePasswordForm />
+        <ChangePasswordForm onClose={()=>setShowChangePassword(false)}/>
       </Drawer>
       <Drawer
         sx={{
