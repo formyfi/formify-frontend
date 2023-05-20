@@ -9,10 +9,8 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  Input,
   FormHelperText,
   TextField,
-  TextareaAutosize,
   Autocomplete,
   Box,
   Typography,
@@ -30,13 +28,12 @@ function isValidUrl(string) {
 }
 
 const PreviewRadio = ({ data }) => {
-
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   const selected = data.values.filter((itm) => itm.selected === true);
   return (
     <FormControl>
@@ -72,12 +69,12 @@ const PreviewRadio = ({ data }) => {
 };
 
 const PreviewCheckbox = ({ data }) => {
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
     <FormControl>
       <FormLabel id="demo-radio-buttons-group-label">{trimmedLabel}</FormLabel>
@@ -101,12 +98,12 @@ const PreviewCheckbox = ({ data }) => {
 };
 
 const PreviewSelect = ({ data }) => {
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
     <FormControl fullWidth>
       <InputLabel id="demo-simple-select-label">{trimmedLabel}</InputLabel>
@@ -128,12 +125,12 @@ const PreviewSelect = ({ data }) => {
 };
 
 const PreviewTextField = ({ data }) => {
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
     <FormControl fullWidth>
       <TextField
@@ -149,12 +146,12 @@ const PreviewTextField = ({ data }) => {
 };
 
 const PreviewTextAreaField = ({ data }) => {
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
     <FormControl fullWidth>
       <TextField
@@ -172,12 +169,12 @@ const PreviewTextAreaField = ({ data }) => {
 };
 
 const PreviewNumberField = ({ data }) => {
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
     <FormControl>
       <TextField
@@ -194,12 +191,12 @@ const PreviewNumberField = ({ data }) => {
 };
 
 const PreviewAutoCompleteField = ({ data }) => {
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
     <FormControl fullWidth>
       <Autocomplete
@@ -222,12 +219,12 @@ const PreviewAutoCompleteField = ({ data }) => {
 };
 
 const PreviewDateField = ({ data }) => {
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
     <FormControl>
       <TextField
@@ -246,12 +243,12 @@ const PreviewDateField = ({ data }) => {
 };
 
 const PreviewTypography = ({ data }) => {
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
     <Box my={1} className="preview-typo">
       <Typography variant={data.subtype} component={data.subtype}>
@@ -262,7 +259,6 @@ const PreviewTypography = ({ data }) => {
 };
 
 const PreviewUploadField = ({ data }) => {
-  const trimmedLabel = trimmedLabel.replace(/&nbsp;/g, '');
   return (
     <FormControl>
       <Button variant="outlined">Upload</Button>
@@ -271,54 +267,60 @@ const PreviewUploadField = ({ data }) => {
 };
 
 const PreviewImage = ({ data }) => {
-  const tempElement = document.createElement('div');
+  const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
 
   const plainText = tempElement.textContent;
 
-  const trimmedLabel = plainText.replace(/&nbsp;/g, '');
-  if(data.value &&
-    data.value?.success){
-      return (
-        (
-          <FormControl>
-            <Typography variant="h5" >{trimmedLabel}</Typography>
-            <img
-              src={data.value?.file_path}
-              class="preview-img"
-              alt="preview-details"
-            />
-          </FormControl>
-        )
-      );
-    }
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+  if (data.value && data.value?.success) {
+    return (
+      <FormControl>
+        <Typography variant="h5">{trimmedLabel}</Typography>
+        <img
+          src={data.value?.file_path}
+          class="preview-img"
+          alt="preview-details"
+        />
+      </FormControl>
+    );
+  }
   return (
     data.value && (
       <FormControl>
-         <Typography variant="h5" component={"h5"} >{trimmedLabel}</Typography>
-         <Box sx={{ display: "flex", gap: '5px' }} >
-         {
-          String(data.value).split(',').map((prev)=>{
-            if(typeof prev === "object") {
-              return <Box>
+        <Typography variant="h5" component={"h5"}>
+          {trimmedLabel}
+        </Typography>
+        <Box sx={{ display: "flex", gap: "5px" }}>
+          {String(data.value)
+            .split(",")
+            .map((prev) => {
+              if (typeof prev === "object") {
+                return (
+                  <Box>
+                    <img
+                      src={URL.createObjectURL(prev)}
+                      class="preview-img"
+                      alt="preview-details"
+                    />
+                  </Box>
+                );
+              }
+              return (
+                <Box>
                   <img
-                    src={URL.createObjectURL(prev)}
+                    src={
+                      isValidUrl(prev)
+                        ? prev
+                        : process.env.REACT_APP_API_BASE + "/" + prev
+                    }
                     class="preview-img"
                     alt="preview-details"
                   />
-              </Box>
-            }
-            return <Box>
-                <img
-                  src={isValidUrl(prev) ? prev : process.env.REACT_APP_API_BASE + '/'+  prev}
-                  class="preview-img"
-                  alt="preview-details"
-                />
-            </Box>
-          })
-         }
-         </Box>
-        
+                </Box>
+              );
+            })}
+        </Box>
       </FormControl>
     )
   );

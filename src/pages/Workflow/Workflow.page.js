@@ -1,5 +1,4 @@
-
-import React, { useCallback } from 'react';
+import React, { useCallback } from "react";
 import ReactFlow, {
   addEdge,
   useNodesState,
@@ -8,13 +7,11 @@ import ReactFlow, {
   BackgroundVariant,
   ReactFlowProvider,
   useStoreApi,
-  Controls, MiniMap 
-} from 'reactflow';
-import {
-  Box,
-} from "@mui/material";
-import 'reactflow/dist/style.css';
-import { Position } from 'reactflow';
+  Controls,
+} from "reactflow";
+import { Box } from "@mui/material";
+import "reactflow/dist/style.css";
+import { Position } from "reactflow";
 
 const MIN_DISTANCE = 150;
 
@@ -22,46 +19,46 @@ const nodeDefaults = {
   sourcePosition: Position.Right,
   targetPosition: Position.Left,
   style: {
-    borderRadius: '100%',
-    backgroundColor: '#fff',
+    borderRadius: "100%",
+    backgroundColor: "#fff",
     width: 50,
     height: 50,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 };
 
 const initialNodes = [
   {
-    id: '1',
+    id: "1",
     position: { x: 0, y: 0 },
     data: {
-      label: '⬛️',
+      label: "⬛️",
     },
     ...nodeDefaults,
   },
   {
-    id: '2',
+    id: "2",
     position: { x: 250, y: -100 },
     data: {
-      label: '🟩',
+      label: "🟩",
     },
     ...nodeDefaults,
   },
   {
-    id: '3',
+    id: "3",
     position: { x: 250, y: 100 },
     data: {
-      label: '🟧',
+      label: "🟧",
     },
     ...nodeDefaults,
   },
   {
-    id: '4',
+    id: "4",
     position: { x: 500, y: 0 },
     data: {
-      label: '🟦',
+      label: "🟦",
     },
     ...nodeDefaults,
   },
@@ -69,14 +66,14 @@ const initialNodes = [
 
 const initialEdges = [
   {
-    id: 'e1-2',
-    source: '1',
-    target: '2',
+    id: "e1-2",
+    source: "1",
+    target: "2",
   },
   {
-    id: 'e1-3',
-    source: '1',
-    target: '3',
+    id: "e1-3",
+    source: "1",
+    target: "3",
   },
 ];
 
@@ -85,7 +82,10 @@ const ManageWorkflow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
+  );
 
   const getClosestEdge = useCallback((node) => {
     const { nodeInternals } = store.getState();
@@ -116,7 +116,8 @@ const ManageWorkflow = () => {
       return null;
     }
 
-    const closeNodeIsSource = closestNode.node.positionAbsolute.x < node.positionAbsolute.x;
+    const closeNodeIsSource =
+      closestNode.node.positionAbsolute.x < node.positionAbsolute.x;
 
     return {
       id: `${node.id}-${closestNode.node.id}`,
@@ -130,13 +131,16 @@ const ManageWorkflow = () => {
       const closeEdge = getClosestEdge(node);
 
       setEdges((es) => {
-        const nextEdges = es.filter((e) => e.className !== 'temp');
+        const nextEdges = es.filter((e) => e.className !== "temp");
 
         if (
           closeEdge &&
-          !nextEdges.find((ne) => ne.source === closeEdge.source && ne.target === closeEdge.target)
+          !nextEdges.find(
+            (ne) =>
+              ne.source === closeEdge.source && ne.target === closeEdge.target
+          )
         ) {
-          closeEdge.className = 'temp';
+          closeEdge.className = "temp";
           nextEdges.push(closeEdge);
         }
 
@@ -151,7 +155,7 @@ const ManageWorkflow = () => {
       const closeEdge = getClosestEdge(node);
 
       setEdges((es) => {
-        const nextEdges = es.filter((e) => e.className !== 'temp');
+        const nextEdges = es.filter((e) => e.className !== "temp");
 
         if (closeEdge) {
           nextEdges.push(closeEdge);
@@ -164,21 +168,28 @@ const ManageWorkflow = () => {
   );
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt:20}}>
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onNodeDrag={onNodeDrag}
-      onNodeDragStop={onNodeDragStop}
-      onConnect={onConnect}
-      fitView
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        mt: 20,
+      }}
     >
-      <Controls />
-              
-      <Background variant={BackgroundVariant.Cross} gap={50} />
-    </ReactFlow>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onNodeDrag={onNodeDrag}
+        onNodeDragStop={onNodeDragStop}
+        onConnect={onConnect}
+        fitView
+      >
+        <Controls />
+
+        <Background variant={BackgroundVariant.Cross} gap={50} />
+      </ReactFlow>
     </Box>
   );
 };
@@ -188,4 +199,3 @@ export default () => (
     <ManageWorkflow />
   </ReactFlowProvider>
 );
-

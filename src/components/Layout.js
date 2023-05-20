@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -23,19 +23,15 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import RightSideMenu from "./RightSideMenu";
 import ChangePasswordForm from "pages/Dashboard/ChangePasswordForm";
 
-
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js";
 import navigationList from "config/navigation";
 
+const supabaseUrl = "https://xulrhkdfzsueagghuwxr.supabase.co";
+const supabaseAnonKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1bHJoa2RmenN1ZWFnZ2h1d3hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODE1ODc5NzIsImV4cCI6MTk5NzE2Mzk3Mn0.8isSZKd__PnoGmjQynQHvEpa94ERxv8fzUyJkMlifhc";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const supabaseUrl = 'https://xulrhkdfzsueagghuwxr.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1bHJoa2RmenN1ZWFnZ2h1d3hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODE1ODc5NzIsImV4cCI6MTk5NzE2Mzk3Mn0.8isSZKd__PnoGmjQynQHvEpa94ERxv8fzUyJkMlifhc'
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-
-export {
-  supabase
-}
+export { supabase };
 
 //var drawerWidth = 50;
 
@@ -65,9 +61,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   })
 );
 
-
 export default function Layout() {
-  const theme = useTheme();
   const [drawerWidth, setWidth] = React.useState(50);
   const [title, setTitle] = React.useState("");
   const navigate = useNavigate();
@@ -80,17 +74,14 @@ export default function Layout() {
   const [hideContent, setHideContent] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
 
-  useEffect(()=>{
-    if(location.pathname === "/app/change-password"){
-      setShowChangePassword(true)
+  useEffect(() => {
+    if (location.pathname === "/app/change-password") {
+      setShowChangePassword(true);
     } else {
-      setShowChangePassword(false)
+      setShowChangePassword(false);
     }
+  }, [location.pathname]);
 
-  },[location.pathname])
-
-
-  
   const handleDrawerToggle = () => {
     let w = drawerWidth === 50 ? 240 : 50;
     setWidth(w);
@@ -100,30 +91,34 @@ export default function Layout() {
     if (commonState.isLogged === false) {
       navigate("/login");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   useEffect(() => {
     const currentPage = navigationList.filter(
       (item) => item.path === location.pathname
     );
     if (currentPage && currentPage.length) setTitle(currentPage[0].label);
-      let activePath = '';
-      if(location.pathname.includes('formBuilder')){
-        activePath = navigationList.find(itm => itm.path.includes('formBuilder'));
-      } else activePath = navigationList.find(itm => location.pathname.slice('/').includes(itm.path));
-    
-    let areas = commonState.user_areas.split(',')
-    let access = areas.includes(String(activePath?.area_id))
-    setActiveMenu(activePath)
-    if(access === false){
-      if(!location.pathname.includes('workflow')) setHideContent(true);
+    let activePath = "";
+    if (location.pathname.includes("formBuilder")) {
+      activePath = navigationList.find((itm) =>
+        itm.path.includes("formBuilder")
+      );
+    } else
+      activePath = navigationList.find((itm) =>
+        location.pathname.slice("/").includes(itm.path)
+      );
+
+    let areas = commonState.user_areas.split(",");
+    let access = areas.includes(String(activePath?.area_id));
+    setActiveMenu(activePath);
+    if (access === false) {
+      if (!location.pathname.includes("workflow")) setHideContent(true);
     } else {
       setHideContent(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
-
-
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -146,7 +141,7 @@ export default function Layout() {
                   dispatch(logoutApiAction());
                   dispatch(logout());
                   localStorage.removeItem("persist:root");
-                  supabase.auth.signOut().then(()=>{
+                  supabase.auth.signOut().then(() => {
                     navigate("/login");
                   });
                 }}
@@ -163,11 +158,11 @@ export default function Layout() {
         anchor="right"
         PaperProps={{ sx: { width: "500px" } }}
         onClose={() => {
-          setShowChangePassword(false)
+          setShowChangePassword(false);
         }}
-        variant={'temporary'}
+        variant={"temporary"}
       >
-        <ChangePasswordForm onClose={()=>setShowChangePassword(false)}/>
+        <ChangePasswordForm onClose={() => setShowChangePassword(false)} />
       </Drawer>
       <Drawer
         sx={{
@@ -220,17 +215,26 @@ export default function Layout() {
           <Divider />
           <List>
             {navigationList.map((list, index) =>
-              commonState.user_details.super_user === 1 || (commonState.user_areas &&  commonState.user_areas.includes(list.area_id)) ? (
+              commonState.user_details.super_user === 1 ||
+              (commonState.user_areas &&
+                commonState.user_areas.includes(list.area_id)) ? (
                 <ListItem
                   key={list.id}
                   disablePadding
-                  sx={{ my: 2, height: "50px",backgroundColor: activeMenu && list.id === activeMenu.id?'lightblue':'', }}
+                  sx={{
+                    my: 2,
+                    height: "50px",
+                    backgroundColor:
+                      activeMenu && list.id === activeMenu.id
+                        ? "lightblue"
+                        : "",
+                  }}
                   className="active"
                 >
                   <ListItemButton
                     onClick={() => {
                       navigate(list.path);
-                      if(window.innerWidth <= 786){
+                      if (window.innerWidth <= 786) {
                         setWidth(50);
                       }
                     }}
@@ -251,7 +255,7 @@ export default function Layout() {
 
       <Main open={drawerWidth === 240 ? true : false}>
         <DrawerHeader />
-        {hideContent?<>Access Denied</>:<Outlet />}
+        {hideContent ? <>Access Denied</> : <Outlet />}
       </Main>
       <Box
         sx={{

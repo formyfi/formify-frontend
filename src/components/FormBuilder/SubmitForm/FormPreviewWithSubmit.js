@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Divider, Typography, Button, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   PreviewAutoCompleteField,
@@ -14,7 +14,7 @@ import {
   PreviewTypography,
   PreviewUploadField,
 } from "./previewFormElements";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import HistoryTimeLine from "./HistoryTimeLine";
 
 const FormPreviewWithSubmit = ({
@@ -44,14 +44,13 @@ const FormPreviewWithSubmit = ({
     setInitVals(initialValues);
   }, [previewData]);
 
-  const openJourney = ()=> {
-    setHistoryModel(!historyModel)
-  }
+  const openJourney = () => {
+    setHistoryModel(!historyModel);
+  };
 
   if (initVals === null) {
     return <Box>loading</Box>;
   }
-  
 
   return (
     <Box>
@@ -188,7 +187,7 @@ const FormPreviewWithSubmit = ({
                 <Stack direction="row" spacing={2}>
                   <Button
                     variant="contained"
-                    disabled={form_id == 0 ? true : false}
+                    disabled={form_id === 0 ? true : false}
                     onClick={() => handleSubmit()}
                   >
                     Save Form
@@ -200,14 +199,20 @@ const FormPreviewWithSubmit = ({
                   >
                     Cancel
                   </Button>
-                  <Button variant="outlined" onClick={openJourney} >Part Traveller</Button>
+                  <Button variant="outlined" onClick={openJourney}>
+                    Part Traveller
+                  </Button>
                 </Stack>
-                  
               </Box>
             </Form>
           )}
         </Formik>
-        <HistoryTimeLine open={historyModel} vnumberValue={vnumberValue} stationValue={stationValue} closeHandler={openJourney} />
+        <HistoryTimeLine
+          open={historyModel}
+          vnumberValue={vnumberValue}
+          stationValue={stationValue}
+          closeHandler={openJourney}
+        />
       </Box>
     </Box>
   );

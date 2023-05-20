@@ -1,7 +1,7 @@
 import React from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { PersistGate } from 'redux-persist/integration/react';
+import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store";
 import LoginPage from "./pages/Auth/LoginPage";
@@ -15,28 +15,17 @@ import PartsPage from "pages/Parts/Parts.page";
 import TasksPage from "pages/Tasks/Tasks.page";
 import ManageForm from "pages/Form/ManageForm.page";
 import ManageTask from "pages/Tasks/ManageTask.page";
-import {ToastContainer, toast} from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 
 import ManageWorkflow from "pages/Workflow/Workflow.page";
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#05386B',
-      secondary: '#5CDB95'
+      main: "#05386B",
+      secondary: "#5CDB95",
     },
   },
 });
-
-const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
-  return (
-    <Route {...rest} render={(props) => (
-      isAuthenticated
-        ? <Component {...props} />
-        : <Navigate to='/login' />
-    )} />
-  )
-}
-
 
 function App() {
   return (
@@ -44,27 +33,30 @@ function App() {
       <React.StrictMode>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-          <ThemeProvider theme={theme}>
-           <ToastContainer />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="app/" element={<Layout />} >
-                  <Route path="dashboard" element={<Dashboard />}  ></Route>
-                  <Route path="checklists" element={<ManageForm />}  ></Route>
-                  <Route path="formBuilder/:form_id" element={<FormPage />}  ></Route>
-                  <Route path="stations" element={<StationPage />}  ></Route>
-                  <Route path="parts" element={<PartsPage />}  ></Route>
-                  <Route path="tasks" element={<TasksPage />}  ></Route>
-                  <Route path="users" element={<UserPage />}  ></Route>
-                  <Route path="dashboard" element={<Dashboard />}  ></Route>
-                  <Route path="inspections" element={<ManageTask />}  ></Route>
-                  <Route path="workflow" element={<ManageWorkflow />}  ></Route>
-                </Route>
-                <Route path="*" element={<PageNotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </ThemeProvider>
+            <ThemeProvider theme={theme}>
+              <ToastContainer />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="app/" element={<Layout />}>
+                    <Route path="dashboard" element={<Dashboard />}></Route>
+                    <Route path="checklists" element={<ManageForm />}></Route>
+                    <Route
+                      path="formBuilder/:form_id"
+                      element={<FormPage />}
+                    ></Route>
+                    <Route path="stations" element={<StationPage />}></Route>
+                    <Route path="parts" element={<PartsPage />}></Route>
+                    <Route path="tasks" element={<TasksPage />}></Route>
+                    <Route path="users" element={<UserPage />}></Route>
+                    <Route path="dashboard" element={<Dashboard />}></Route>
+                    <Route path="inspections" element={<ManageTask />}></Route>
+                    <Route path="workflow" element={<ManageWorkflow />}></Route>
+                  </Route>
+                  <Route path="*" element={<PageNotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </ThemeProvider>
           </PersistGate>
         </Provider>
       </React.StrictMode>

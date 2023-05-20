@@ -1,23 +1,29 @@
-import { Box, Button, Drawer, FormControlLabel, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Drawer, TextField, Typography } from "@mui/material";
 import EnhancedTable from "components/Table";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {useDispatch, useSelector} from "react-redux";
-import { getStationList, upsertStation, deleteStation } from "redux/slices/stationSlice";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getStationList,
+  upsertStation,
+  deleteStation,
+} from "redux/slices/stationSlice";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
-const schema = yup.object({
-  // email: yup.string().required(),
-}).required();
+const schema = yup
+  .object({
+    // email: yup.string().required(),
+  })
+  .required();
 const initialStationForm = {
-  id:'',
-  name:'',
-  type: ''
-}
+  id: "",
+  name: "",
+  type: "",
+};
 const headCells = [
   {
     id: "name",
@@ -42,40 +48,43 @@ const headCells = [
 const StationPage = () => {
   const [drawer, setDrawer] = useState(false);
   const [newStation, setNewStation] = useState(false);
-  const [stationForm, setStationForm] = useState(initialStationForm)
-  const [loading, setLoading] = useState(false)
+  const [stationForm, setStationForm] = useState(initialStationForm);
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
-  
-  const dispatch = useDispatch();
-  const stationState = useSelector(state => state.station);
-  const commonState = useSelector(state => state.common);
-  
-  React.useEffect(()=>{
-   setLoading(true) 
-   const res = dispatch(getStationList(
-      {org_id: commonState.org_id}))
-    res.then(()=>setLoading(false))   
-}, [])
 
-const onSubmit = ()=>{
-  const res = dispatch(upsertStation(
-    {...stationForm, org_id: commonState.org_id}))
-    
+  const dispatch = useDispatch();
+  const stationState = useSelector((state) => state.station);
+  const commonState = useSelector((state) => state.common);
+
+  React.useEffect(() => {
+    setLoading(true);
+    const res = dispatch(getStationList({ org_id: commonState.org_id }));
+    res.then(() => setLoading(false));
+  }, []);
+
+  const onSubmit = () => {
+    const res = dispatch(
+      upsertStation({ ...stationForm, org_id: commonState.org_id })
+    );
+
     res.then((resp) => {
-      if(resp && resp.payload && resp.payload.success){
+      if (resp && resp.payload && resp.payload.success) {
         toast.success("New Operation added successfully.");
         setDrawer(false);
         setStationForm(initialStationForm);
-      } else toast.error("There was error adding this operation, please contact your technical team");
+      } else
+        toast.error(
+          "There was error adding this operation, please contact your technical team"
+        );
     });
-}
+  };
 
   return (
     <Box>
@@ -91,12 +100,12 @@ const onSubmit = ()=>{
         <Box>
           <Button
             variant="outlined"
-            style = {{ marginBottom : 25 }}
+            style={{ marginBottom: 25 }}
             startIcon={<AddIcon />}
             onClick={() => {
               setDrawer(true);
               setNewStation(true);
-              setStationForm({...initialStationForm});
+              setStationForm({ ...initialStationForm });
             }}
           >
             Add new operation
@@ -114,22 +123,26 @@ const onSubmit = ()=>{
         editButton={true}
         deleteButton={true}
         onEdit={(id, row) => {
-          let stationData = {...stationForm}
-          stationData['id'] = row.id;
-          stationData['name'] = row.name;
-          stationData['type'] = row.type;
+          let stationData = { ...stationForm };
+          stationData["id"] = row.id;
+          stationData["name"] = row.name;
+          stationData["type"] = row.type;
           setStationForm(stationData);
           setDrawer(true);
           setNewStation(false);
         }}
         onDelete={(id) => {
-         const res = dispatch(deleteStation(
-            {id:id, org_id: commonState.org_id}))
-            res.then((resp) => {
-              if(resp && resp.payload && resp.payload.success){
-                toast.success("Operation deleted successfully.");
-              } else toast.error("There was an error deleting Operation, please contact your technical team");
-            });
+          const res = dispatch(
+            deleteStation({ id: id, org_id: commonState.org_id })
+          );
+          res.then((resp) => {
+            if (resp && resp.payload && resp.payload.success) {
+              toast.success("Operation deleted successfully.");
+            } else
+              toast.error(
+                "There was an error deleting Operation, please contact your technical team"
+              );
+          });
         }}
       />
       <Drawer
@@ -140,14 +153,17 @@ const onSubmit = ()=>{
           setDrawer(false);
           setStationForm(initialStationForm);
         }}
-        variant={'temporary'}
+        variant={"temporary"}
       >
         <Box
           sx={{
-            p: 2
+            p: 2,
           }}
         >
-          <Typography variant="h5" sx={{ mb: 2 }}> {newStation ? 'Add new' : 'Edit'} operations </Typography>
+          <Typography variant="h5" sx={{ mb: 2 }}>
+            {" "}
+            {newStation ? "Add new" : "Edit"} operations{" "}
+          </Typography>
 
           <Box
             component="form"
@@ -162,9 +178,9 @@ const onSubmit = ()=>{
               id={stationForm.name}
               label="Name"
               value={stationForm.name}
-              onChange={(e)=>{
-                let stationData = {...stationForm}
-                stationData['name'] = e.target.value;
+              onChange={(e) => {
+                let stationData = { ...stationForm };
+                stationData["name"] = e.target.value;
                 setStationForm(stationData);
               }}
               name="name"
@@ -180,9 +196,9 @@ const onSubmit = ()=>{
               id={stationForm.type}
               label="Description"
               value={stationForm.type}
-              onChange={(e)=>{
-                let stationData = {...stationForm}
-                stationData['type'] = e.target.value;
+              onChange={(e) => {
+                let stationData = { ...stationForm };
+                stationData["type"] = e.target.value;
                 setStationForm(stationData);
               }}
               name="type"
@@ -192,25 +208,20 @@ const onSubmit = ()=>{
               autoFocus
             />
             <div>
-            <Button
-              type="submit"
-              
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              {newStation ? 'Submit' : 'Update'}
-            </Button>
-            <Button
-              type="button"
-              variant="contained"
-              onClick={()=>{
-                setDrawer(false)
-                setStationForm({...initialStationForm})
-              }}
-              sx={{ mt: 3, mb: 2, ml:2 }}
-            >
-              Cancel
-            </Button>
+              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+                {newStation ? "Submit" : "Update"}
+              </Button>
+              <Button
+                type="button"
+                variant="contained"
+                onClick={() => {
+                  setDrawer(false);
+                  setStationForm({ ...initialStationForm });
+                }}
+                sx={{ mt: 3, mb: 2, ml: 2 }}
+              >
+                Cancel
+              </Button>
             </div>
           </Box>
         </Box>
