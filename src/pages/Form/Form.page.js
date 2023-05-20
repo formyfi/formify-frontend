@@ -33,7 +33,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import FormPreviewWithSubmit from "components/FormBuilder/SubmitForm/FormPreviewWithSubmit";
 import FormPreview from "components/FormBuilder/FormPreview";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 window.jQuery = $;
 window.$ = $;
 window.previewImages = {};
@@ -103,7 +103,7 @@ const FormPage = (props) => {
                 if (e.target.files && e.target.files.length > 0) {
                   // const img = document.createElement("img");
 
-                  const imgsrc = e.target.files
+                  const imgsrc = e.target.files;
                   // img.src = imgsrc;
                   // img.id = "img_" + fieldData.name;
 
@@ -121,8 +121,7 @@ const FormPage = (props) => {
                     .getElementById("wrapper_" + fieldData.name)
                     .append(clearButton);
                   window.previewImages[fieldData.name] = imgsrc;
-                  window.previewImagesObjects[fieldData.name] =
-                    e.target.files;
+                  window.previewImagesObjects[fieldData.name] = e.target.files;
                 }
               });
 
@@ -248,7 +247,7 @@ const FormPage = (props) => {
           const fObject = form_json[i];
 
           if (fObject.type === "uploadImage") {
-            window.previewImages[fObject.name + "-preview"] =  fObject.value;
+            window.previewImages[fObject.name + "-preview"] = fObject.value;
 
             fieldsRecords.push({
               ...fObject,
@@ -289,8 +288,7 @@ const FormPage = (props) => {
 
           fieldsRecords.push({
             ...fObject,
-            value:
-              process.env.REACT_APP_API_BASE + "/" + fObject.value
+            value: process.env.REACT_APP_API_BASE + "/" + fObject.value,
           });
         } else {
           if (
@@ -333,16 +331,13 @@ const FormPage = (props) => {
       .catch((error) => {
         console.error(error);
       });
-
-    
   };
 
   const onSubmit = async (isDraft) => {
     const jsonObjects = formBuilder.actions.getData();
     jsonObjects.forEach((jsonObject) => {
       if (jsonObject.type === "uploadImage") {
-        let test =
-          window.previewImages[jsonObject.name + "-preview"];
+        let test = window.previewImages[jsonObject.name + "-preview"];
         jsonObject.value = test;
       }
     });
@@ -352,36 +347,40 @@ const FormPage = (props) => {
         const fobject = formData[i];
 
         if (fobject.type === "uploadImage") {
-          let tmp = []
-          if(window.previewImagesObjects[fobject.name + "-preview"]){
-            for (let u = 0; u < window.previewImagesObjects[fobject.name + "-preview"].length; u++) {
-              let val =await uploadFile(window.previewImagesObjects[fobject.name + "-preview"][u])
-              if(val.success === true){
-                tmp.push(val.file_path)
+          let tmp = [];
+          if (window.previewImagesObjects[fobject.name + "-preview"]) {
+            for (
+              let u = 0;
+              u < window.previewImagesObjects[fobject.name + "-preview"].length;
+              u++
+            ) {
+              let val = await uploadFile(
+                window.previewImagesObjects[fobject.name + "-preview"][u]
+              );
+              if (val.success === true) {
+                tmp.push(val.file_path);
               }
             }
-            fobject.value = tmp.join(',')
+            fobject.value = tmp.join(",");
           } else {
-            fobject.value = window.previewImages[fobject.name + "-preview"]
+            fobject.value = window.previewImages[fobject.name + "-preview"];
           }
-          
         }
         if (fobject.label !== null) {
           fobject.label = String(fobject.label)
             .trim()
             .replaceAll(/(<([^>]+)>)/gi, "")
-            .replaceAll('&nbsp;','');
+            .replaceAll("&nbsp;", "");
         }
         if (typeof fobject.values === "object") {
-          fobject.values.forEach((jbVal)=>{
-            if(jbVal.label){
+          fobject.values.forEach((jbVal) => {
+            if (jbVal.label) {
               jbVal.label = String(jbVal.label)
-              .trim()
-              .replaceAll(/(<([^>]+)>)/gi, "")
-              .replaceAll('&nbsp;','');
+                .trim()
+                .replaceAll(/(<([^>]+)>)/gi, "")
+                .replaceAll("&nbsp;", "");
             }
-          })
-         
+          });
         }
       }
 
@@ -460,42 +459,23 @@ const FormPage = (props) => {
         }}
       >
         <Box sx={{ display: "flex" }}>
-          <Button
-            sx={{ mr: 2 }}
-           
-            onClick={() => setImportDialogue(true)}
-          >
+          <Button sx={{ mr: 2 }} onClick={() => setImportDialogue(true)}>
             Import Template
           </Button>
-         {form_id == 0 ? <Button
-            sx={{ mr: 2 }}
-           
-            onClick={() => handleClickOpen()}
-          >
-            Save as template
-          </Button> : null}
+          {form_id == 0 ? (
+            <Button sx={{ mr: 2 }} onClick={() => handleClickOpen()}>
+              Save as template
+            </Button>
+          ) : null}
         </Box>
-        {form_id != 0 ? <Box sx={{ display: "flex" }}>
-          <Button
-            
-            onClick={() => onSubmit(true)}
-          >
-            Save As Draft
-          </Button>
-          <Button
-            onClick={() => setPublishDialogue(true)}
-           
-          >
-            Publish
-          </Button>
-          <Button
-            onClick={() => navigate('/app/checklists')}
-           
-          >
-            Cancel
-          </Button>
-        </Box> : null}
-      </Box> 
+        {form_id != 0 ? (
+          <Box sx={{ display: "flex" }}>
+            <Button onClick={() => onSubmit(true)}>Save As Draft</Button>
+            <Button onClick={() => setPublishDialogue(true)}>Publish</Button>
+            <Button onClick={() => navigate("/app/checklists")}>Cancel</Button>
+          </Box>
+        ) : null}
+      </Box>
       <Divider sx={{ mb: 3 }} />
 
       <Drawer
@@ -667,7 +647,8 @@ const FormPage = (props) => {
         >
           <DialogTitle>Confirmation</DialogTitle>
           <DialogContent>
-            Are you sure want to publish this form? Make sure to preview form before publishing.
+            Are you sure want to publish this form? Make sure to preview form
+            before publishing.
           </DialogContent>
           <DialogActions>
             <Button
@@ -679,8 +660,8 @@ const FormPage = (props) => {
             </Button>
             <Button
               onClick={() => {
-                    onSubmit(false)
-                    setPublishDialogue(false);
+                onSubmit(false);
+                setPublishDialogue(false);
               }}
             >
               Publish

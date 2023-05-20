@@ -1,11 +1,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { updatePassword } from "redux/slices/userSlice";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import {
   Box,
   Button,
@@ -28,6 +28,7 @@ const PasswordField = ({
       {...field}
       fullWidth
       label={label}
+      type={!!showCurrentPassword ? "text" : "password"}
       margin="normal"
       error={meta.touched && !!meta.error}
       helperText={meta.touched && meta.error}
@@ -44,7 +45,7 @@ const PasswordField = ({
   );
 };
 
-const ChangePasswordForm = ({onClose}) => {
+const ChangePasswordForm = ({ onClose }) => {
   const commonState = useSelector((state) => state.common);
 
   const dispatch = useDispatch();
@@ -55,20 +56,25 @@ const ChangePasswordForm = ({onClose}) => {
   };
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    
     if (values.newPassword !== values.confirmNewPassword) {
       alert("New password and confirm password must match.");
     } else {
-      const res = dispatch(updatePassword({user_id: commonState.user_details.user_name, new_password: values.newPassword, old_password:values.currentPassword}));
+      const res = dispatch(
+        updatePassword({
+          user_id: commonState.user_details.user_name,
+          new_password: values.newPassword,
+          old_password: values.currentPassword,
+        })
+      );
       res.then((resp) => {
         if (resp && resp.payload && resp.payload.success) {
           toast.success(resp.payload.message);
           onClose();
-        }else {
-           toast.error(resp.payload.message)
-           onClose();
-          }
-      })
+        } else {
+          toast.error(resp.payload.message);
+          onClose();
+        }
+      });
       resetForm();
     }
     setSubmitting(false);
@@ -76,7 +82,9 @@ const ChangePasswordForm = ({onClose}) => {
 
   const validationSchema = Yup.object().shape({
     currentPassword: Yup.string().required("Required"),
-    newPassword: Yup.string().required("Required"),
+    newPassword: Yup.string()
+      .min(6, "Must Contain 6 Characters")
+      .required("Required"),
     confirmNewPassword: Yup.string()
       .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
       .required("Required"),
@@ -111,7 +119,7 @@ const ChangePasswordForm = ({onClose}) => {
           >
             {({ isSubmitting, isValid }) => (
               <Form>
-                <Box sx={{ pb: 3 }} >
+                <Box sx={{ pb: 3 }}>
                   <Box sx={{ pb: 1 }}>
                     <Field name="currentPassword">
                       {({ field, meta }) => (
@@ -119,8 +127,10 @@ const ChangePasswordForm = ({onClose}) => {
                           field={field}
                           label={"Current Password"}
                           meta={meta}
-                          handleToggleCurrentPasswordVisibility={handleToggleCurrentPasswordVisibility}
-                          showCurrentPassword={showCurrentPassword}
+                          handleToggleCurrentPasswordVisibility={
+                            handleToggleCurrentPasswordVisibility
+                          }
+                          showCurrentPassword={!!showCurrentPassword}
                         />
                       )}
                     </Field>
@@ -132,7 +142,9 @@ const ChangePasswordForm = ({onClose}) => {
                           field={field}
                           label={"New Password"}
                           meta={meta}
-                          handleToggleCurrentPasswordVisibility={handleToggleNewPasswordVisibility}
+                          handleToggleCurrentPasswordVisibility={
+                            handleToggleNewPasswordVisibility
+                          }
                           showCurrentPassword={showNewPassword}
                         />
                       )}
@@ -145,7 +157,9 @@ const ChangePasswordForm = ({onClose}) => {
                           field={field}
                           label={"Confirm Password"}
                           meta={meta}
-                          handleToggleCurrentPasswordVisibility={handleToggleConfirmNewPasswordVisibility}
+                          handleToggleCurrentPasswordVisibility={
+                            handleToggleConfirmNewPasswordVisibility
+                          }
                           showCurrentPassword={showConfirmNewPassword}
                         />
                       )}
