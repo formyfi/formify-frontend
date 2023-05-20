@@ -75,7 +75,9 @@
     ],
     "rules": {
       "no-unused-vars": "off",
-      "react-hooks/exhaustive-deps": "off"
+      "react-hooks/exhaustive-deps": "off",
+      "eqeqeq": "off",
+      "import/no-anonymous-default-export": "off"
     }
   }
 }
