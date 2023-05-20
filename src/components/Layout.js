@@ -252,7 +252,7 @@ export default function Layout() {
 
       <Main open={drawerWidth === 240 ? true : false}>
         <DrawerHeader />
-        {hideContent?<>Not permission to check this</>:<Outlet />}
+        {hideContent?<>Access Denied</>:<Outlet />}
       </Main>
       <Box
         sx={{

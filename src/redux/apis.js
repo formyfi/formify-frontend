@@ -199,6 +199,34 @@ const apis = {
     });
   },
 
+  getFullInseoctionsData: (values) => {
+    return request.get("/api/tasks/get_full_tasklist_data", {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      params: values,
+    });
+  },
+
+  getStationInseoctionsData: (values) => {
+    return request.get("/api/tasks/get_station_tasklist_data", {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      params: values,
+    });
+  },
+  getTotalStationsInspections: (values) => {
+    return request.get("/api/tasks/get_total_stations_inspections", {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      params: values,
+    });
+  },
   getTaskForm: (values) => {
     return request.get("/api/tasks/get_task_form", {
       headers: {

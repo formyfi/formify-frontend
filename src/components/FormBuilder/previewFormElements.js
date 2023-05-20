@@ -277,7 +277,6 @@ const PreviewImage = ({ data }) => {
   const plainText = tempElement.textContent;
 
   const trimmedLabel = plainText.replace(/&nbsp;/g, '');
-  debugger
   if(data.value &&
     data.value?.success){
       return (

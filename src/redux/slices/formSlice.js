@@ -48,6 +48,76 @@ const getTaskLists = createAsyncThunk(
   }
 )
 
+const getFullInseoctionsData = createAsyncThunk(
+  'get_full_tasklist_data',
+  async (values) => {
+    const response = await apis.getFullInseoctionsData(values).then((response)=>{
+        if(response.status === 200){
+            return response.data
+          }
+        }).catch((err)=>{
+          if(err.response && err.response.status === 401 && err.response.data){
+            return {
+              success: false,
+              message : err.response.data.message
+            }
+          }
+          return {
+            success: false,
+            message : "Something went wrong"
+          }
+    })
+    return response
+  }
+)
+
+const getStationInseoctionsData = createAsyncThunk(
+  'get_station_tasklist_data',
+  async (values) => {
+    const response = await apis.getStationInseoctionsData(values).then((response)=>{
+        if(response.status === 200){
+            return response.data
+          }
+        }).catch((err)=>{
+          if(err.response && err.response.status === 401 && err.response.data){
+            return {
+              success: false,
+              message : err.response.data.message
+            }
+          }
+          return {
+            success: false,
+            message : "Something went wrong"
+          }
+    })
+    return response
+  }
+)
+
+const getTotalStationsInspections = createAsyncThunk(
+  'get_total_stations_inspections',
+  async (values) => {
+    const response = await apis.getTotalStationsInspections(values).then((response)=>{
+        if(response.status === 200){
+            return response.data
+          }
+        }).catch((err)=>{
+          if(err.response && err.response.status === 401 && err.response.data){
+            return {
+              success: false,
+              message : err.response.data.message
+            }
+          }
+          return {
+            success: false,
+            message : "Something went wrong"
+          }
+    })
+    return response
+  }
+)
+
+
 const getTemplates = createAsyncThunk(
   'get_templates',
   async (values) => {
@@ -332,6 +402,48 @@ const checkListsReducer = createSlice({
         state.loader = false
         state.error = "something went wrong"
       },
+      [getFullInseoctionsData.pending]: (state)=>{
+        state.loader = true
+        state.listData = []
+      },
+      [getFullInseoctionsData.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.taskLists = payload.task_lists
+        }
+      },
+      [getFullInseoctionsData.rejected]: (state,action)=>{
+        state.loader = false
+        state.error = "something went wrong"
+      },
+      [getStationInseoctionsData.pending]: (state)=>{
+        state.loader = true
+        state.listData = []
+      },
+      [getStationInseoctionsData.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.taskLists = payload.task_lists
+        }
+      },
+      [getStationInseoctionsData.rejected]: (state,action)=>{
+        state.loader = false
+        state.error = "something went wrong"
+      },
+      [getTotalStationsInspections.pending]: (state)=>{
+        state.loader = true
+        state.listData = []
+      },
+      [getTotalStationsInspections.fulfilled]: (state, { payload })=>{
+        state.loader = false
+        if(payload && payload.success) {
+          state.taskLists = payload.task_lists
+        }
+      },
+      [getTotalStationsInspections.rejected]: (state,action)=>{
+        state.loader = false
+        state.error = "something went wrong"
+      },
       [getTaskForm.pending]: (state)=>{
         state.loader = true
         state.listData = []
@@ -402,6 +514,9 @@ const checkListsReducer = createSlice({
     getTaskForm,
     updateTaskForm,
     getTaskLists,
+    getFullInseoctionsData,
+    getStationInseoctionsData,
+    getTotalStationsInspections,
     updateCheckListFormAsTemplate,
     getFormTimeLine,
     setFormTimeLine

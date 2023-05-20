@@ -6,15 +6,8 @@ import {
   TableCell,
   Chip,
   TextField,
-  Dialog,
-  DialogActions,
-  InputLabel,
-  Select,
-  FormControl,
-  MenuItem,
-  DialogTitle,
-  DialogContent
 } from "@mui/material";
+import * as XLSX from 'xlsx';
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
@@ -106,39 +99,100 @@ const ManageTask = () => {
     },
   ];
 
+  // const handleDownload = () => {
+  //   const data = checkListState.taskLists.filter(row => 
+  //     row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
+  //     row.station_name.toLowerCase().includes(searchValue.toLowerCase()) ||
+  //     row.form_id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
+  //     row.vnum_id.toString().toLowerCase().includes(searchValue.toLowerCase())
+  //   );
+  
+  //   // Get the headers of the CSV
+  //   const headers = Object.keys(data[0]).filter(header => header !== 'form_data' && header !== 'form_json');
+  
+  //   // Create an array of the CSV rows
+  //   const rows = data.map(obj => {
+  //     return headers.map(header => {
+  //     return obj[header];
+  //     }).join(",");
+  //     });     
+  
+  //   // Join the header row and the CSV rows
+  //   const csvData = headers.join(",") + "\n" + rows.join("\n");
+  
+  //   // Convert CSV string to Blob
+  //   const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+  
+  //   // Save Blob as CSV file
+  //   saveAs(blob, "checklist_data.csv");
+  // };
+
   const handleDownload = () => {
-    const data = checkListState.taskLists.filter(row => 
-      row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      row.station_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      row.form_id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
-      row.vnum_id.toString().toLowerCase().includes(searchValue.toLowerCase())
+    const data = checkListState.taskLists.filter(
+      (row) =>
+        row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        row.station_name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        row.form_id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
+        row.vnum_id.toString().toLowerCase().includes(searchValue.toLowerCase())
     );
   
-    // Get the headers of the CSV
-    const headers = Object.keys(data[0]).filter(header => header !== 'form_data' && header !== 'form_json');
-  
-    // Create an array of the CSV rows
-    const rows = data.map(obj => {
-      return headers.map(header => {
-      return obj[header];
-      }).join(",");
+    const workbook = XLSX.utils.book_new();
+
+    const main_headers = Object.keys(data[0]).filter(header => header !== 'form_data' && header !== 'form_json');
+    const main_rows = data.map((obj) => {
+      return main_headers.map((header) => {
+        return obj[header];
       });
+    });
+    const worksheet = XLSX.utils.aoa_to_sheet([main_headers, ...main_rows]);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Completed Inspections');
+
+    // Create a sheet for each unique form_id
+    const formIds = [...new Set(data.map((row) => row.form_id))];
+    formIds.forEach((formId) => {
+      let sheetData = data.filter((row) => row.form_id === formId);
+      const form_json = sheetData[0].form_json;
+      if (form_json && form_json.length) {
+        const headers = [];
+        const rows = [];
   
-    // Join the header row and the CSV rows
-    const csvData = headers.join(",") + "\n" + rows.join("\n");
+        form_json.forEach((item) => {
+          if (item.type !== 'header') {
+            headers.push(item.label);
+          }
+        });
+        sheetData.forEach((obj) => {
+          const row = [];
+          obj.form_json.forEach((value) => {
+            if (value.type !== 'header') {
+              row.push(value.field_value);
+            }
+          });
+          rows.push(row);
+        });
   
-    // Convert CSV string to Blob
-    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
+        const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+        const name = 'Form: '+formId
+        XLSX.utils.book_append_sheet(workbook, worksheet, name);
+      }
+    });
   
-    // Save Blob as CSV file
-    saveAs(blob, "checklist_data.csv");
+    // Convert workbook to Excel file
+    const excelData = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  
+    // Save Excel file
+    const date = new Date().toJSON();
+    const file_name = 'checklist_data_'+date+'.xlsx';
+    saveAs(new Blob([excelData]), file_name);
   };
+    
+  
   
 
   const onGenerate = (record) => {
     setRecord(record);
-    setFormJson(JSON.parse(record.form_json));
-    setFormValue(JSON.parse(record.form_data));
+    setFormJson(record.form_json);
+    setFormValue(record.form_data);
     setDrawer(true);
   };
 
