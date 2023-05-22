@@ -239,7 +239,7 @@ const ManageTask = () => {
       <AdvanceTable
         headCells={headCells}
         user={true}
-        data={checkListState.taskLists.filter(row => 
+        data={checkListState.taskLists && checkListState.taskLists.filter(row => 
           row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
           row.station_name.toLowerCase().includes(searchValue.toLowerCase()) ||
           row.form_id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
