@@ -34,7 +34,14 @@ const ManageTask = () => {
 
   React.useEffect(() => {
     setLoading(true);
-   const res = dispatch(getTaskLists({org_id: commonState.org_id, user_id: commonState.user_id}));
+   const res = dispatch(
+     getTaskLists({
+       org_id: commonState.org_id,
+       user_id: commonState.user_id,
+       perPage: 10,
+       page: 0,
+     })
+   );
    res.then(()=>setLoading(false))
   }, []);
 
