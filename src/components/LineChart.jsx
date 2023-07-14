@@ -53,10 +53,12 @@ function LineChart() {
 
   const handleDateRangeChange = (event) => {
     const { name, value } = event.target;
-    if (name === "start") {
-      setStartDate(new Date(value));
-    } else if (name === "end") {
-      setEndDate(new Date(value));
+    if (value) {
+      if (name === "start") {
+        setStartDate(new Date(value));
+      } else if (name === "end") {
+        setEndDate(new Date(value));
+      }
     }
   };
 
