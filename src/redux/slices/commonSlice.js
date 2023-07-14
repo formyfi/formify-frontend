@@ -95,23 +95,25 @@ const commonSlice = createSlice({
       },
       [loginApiAction.fulfilled]: (state, { payload })=>{
         state.loader = false
-        if(payload.success) {
-          state.isLogged = true
-          state.token = payload.token
-          state.user_id = payload.user_id
-          state.org_id = payload.org_id
-          state.org_name = payload.org_name
-          state.user_type_id = payload.user_type_id
-          state.user_details = payload.user_details
-          state.user_first_name = payload.user_first_name
-          state.user_last_name = payload.user_last_name
-          state.user_stations = payload.stations
-          state.user_areas = payload.areas?.areas
-          state.error = ""
-          localStorage.setItem('app_token', payload.token)
+        if (payload?.success) {
+          state.isLogged = true;
+          state.token = payload.token;
+          state.user_id = payload.user_id;
+          state.org_id = payload.org_id;
+          state.org_name = payload.org_name;
+          state.user_type_id = payload.user_type_id;
+          state.user_details = payload.user_details;
+          state.user_first_name = payload.user_first_name;
+          state.user_last_name = payload.user_last_name;
+          state.user_stations = payload.stations;
+          state.user_areas = payload.areas?.areas;
+          state.error = "";
+          localStorage.setItem("app_token", payload.token);
         } else {
-          state.error = payload.message
-          state.isLogged = false
+          state.error = payload?.message
+            ? payload.message
+            : "Email and password are incorrect";
+          state.isLogged = false;
         }
       },
       [loginApiAction.rejected]: (state,action)=>{

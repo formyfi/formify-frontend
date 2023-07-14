@@ -54,7 +54,7 @@ const FormPreviewWithSubmit = ({
 
   return (
     <Box>
-      <Box sx={{ mt: 3, width: 400 }}>
+      <Box sx={{ mt: 3, minWidth: 400 }}>
         <Formik
           initialValues={{
             ...initVals,
