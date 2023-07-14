@@ -12,7 +12,7 @@ request.interceptors.response.use(
   },
   (res) => {
     let response = res.response;
-    if (response.url !== "/api/auth/login" && response.status === 401) {
+    if (response.config.url !== "/api/auth/login" && response.status === 401) {
       debugger;
       // refresh page
       localStorage.clear();
