@@ -109,7 +109,7 @@ export default function Layout() {
         location.pathname.slice("/").includes(itm.path)
       );
 
-    let areas = commonState.user_areas.split(",");
+    let areas = commonState.user_areas ? commonState.user_areas.split(",") : [];
     let access = areas.includes(String(activePath?.area_id));
     setActiveMenu(activePath);
     if (access === false) {
