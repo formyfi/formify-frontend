@@ -48,7 +48,13 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function AdvanceTable({ headCells, data, loading }) {
+export default function AdvanceTable({
+  headCells,
+  pagination = true,
+  data,
+  loading,
+  limit = 5,
+}) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page, setPage] = React.useState(0);
@@ -118,13 +124,15 @@ export default function AdvanceTable({ headCells, data, loading }) {
             />
             <TableBody>
               {loading
-                ? [1, 2, 3, 4, 5].map((t) => (
-                    <TableRow>
-                      <TableCell colSpan={headCells.length} align="center">
-                        <Skeleton animation="wave" width="100%" height={48} />
-                      </TableCell>
-                    </TableRow>
-                  ))
+                ? Array(limit)
+                    .fill("a")
+                    .map((t) => (
+                      <TableRow>
+                        <TableCell colSpan={headCells.length} align="center">
+                          <Skeleton animation="wave" width="100%" height={37} />
+                        </TableCell>
+                      </TableRow>
+                    ))
                 : sortedRows &&
                   sortedRows
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -155,7 +163,7 @@ export default function AdvanceTable({ headCells, data, loading }) {
             </TableBody>
           </Table>
         </TableContainer>
-        {rows && rows.length > 0 && (
+        {pagination && rows && rows.length > 0 && (
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
