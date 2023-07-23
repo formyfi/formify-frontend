@@ -288,7 +288,7 @@ const PreviewImage = ({ data }) => {
   return (
     data.value && (
       <FormControl>
-        <Typography variant="h5" component={"h5"}>
+        <Typography variant="h6" component={"h6"}>
           {trimmedLabel}
         </Typography>
         <Box sx={{ display: "flex", gap: "5px" }}>
