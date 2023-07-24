@@ -9,14 +9,14 @@ import {
   TablePagination,
 } from "@mui/material";
 import * as XLSX from "xlsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import FormatAlignCenter from "@mui/icons-material/FormatAlignCenter";
 import AdvanceTable from "components/AdvanceTable";
 import FormSubmission from "./components/FormSubmission";
-import { getTaskLists } from "redux/slices/formSlice";
+import { getAllTaskLists, getTaskLists } from "redux/slices/formSlice";
 import { saveAs } from "file-saver";
 
 const ManageTask = () => {
@@ -51,15 +51,15 @@ const ManageTask = () => {
     setOpenDialogue(false);
   };
 
-  const fetchRecords = ({ optionlimit, optionPage }) => {
+  const fetchRecords = ({ optionlimit, optionPage, searchValue }) => {
     setLoading(true);
-    debugger;
     const res = dispatch(
       getTaskLists({
         org_id: commonState.org_id,
         user_id: commonState.user_id,
         perPage: optionlimit,
         page: optionPage + 1,
+        searchText: searchValue,
       })
     );
     res.then((res) => {
@@ -71,6 +71,35 @@ const ManageTask = () => {
       }
     });
   };
+
+  const fetchAllValues = async ({ optionPage = 0, records = [] }) => {
+    const res = await dispatch(
+      getAllTaskLists({
+        org_id: commonState.org_id,
+        user_id: commonState.user_id,
+        perPage: 1000,
+        page: optionPage,
+      })
+    );
+    if (res && res?.payload) {
+      debugger;
+      const apiRes = res?.payload;
+      if (apiRes?.total_records) {
+        let totalPage = Math.ceil(apiRes?.total_records / 1000);
+        if (totalPage === optionPage) {
+          // stopppp
+          return [...records, ...apiRes.task_lists];
+        } else {
+          fetchAllValues({
+            optionPage: optionPage + 1,
+            hasMore: true,
+            records: [...records, ...apiRes.task_lists],
+          });
+        }
+      }
+    }
+  };
+
   const headCells = [
     {
       id: "vnum_id",
@@ -127,6 +156,47 @@ const ManageTask = () => {
     },
   ];
 
+  useEffect(() => {
+    // Create a timeout variable to store the timer ID
+    let timeoutId;
+
+    // Define the delay time for debouncing (e.g., 500 milliseconds)
+    const delay = 500;
+
+    // Create a function to handle the actual search logic
+    const searchFunction = (value) => {
+      if (value && String(value).trim() != "")
+        fetchRecords({
+          optionlimit: limit,
+          optionPage: 1,
+          searchValue: value,
+        });
+    };
+
+    // Function to handle debouncing
+    const handleDebounce = (value) => {
+      // Clear any existing timeout to avoid duplicate calls
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+
+      // Set a new timeout to execute the search function after the delay
+      timeoutId = setTimeout(() => {
+        searchFunction(value ? value : "");
+      }, delay);
+    };
+
+    // Call the debounce function whenever the searchValue changes
+    handleDebounce(searchValue);
+
+    // Clean up the timeout on unmount to avoid any potential memory leaks
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [searchValue]);
+
   // const handleDownload = () => {
   //   const data = checkListState.taskLists.filter(row =>
   //     row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -155,17 +225,12 @@ const ManageTask = () => {
   //   saveAs(blob, "checklist_data.csv");
   // };
 
-  const handleDownload = () => {
-    const data = checkListState.taskLists.filter(
-      (row) =>
-        row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        row.station_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        row.form_id
-          .toString()
-          .toLowerCase()
-          .includes(searchValue.toLowerCase()) ||
-        row.vnum_id.toString().toLowerCase().includes(searchValue.toLowerCase())
-    );
+  const handleDownload = async () => {
+    const allValues = await fetchAllValues({
+      optionPage: 1,
+      records: [],
+    });
+    const data = allValues;
 
     const workbook = XLSX.utils.book_new();
 
@@ -269,24 +334,7 @@ const ManageTask = () => {
         headCells={headCells}
         pagination={false}
         user={true}
-        data={
-          checkListState.taskLists &&
-          checkListState.taskLists.filter(
-            (row) =>
-              row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-              row.station_name
-                .toLowerCase()
-                .includes(searchValue.toLowerCase()) ||
-              row.form_id
-                .toString()
-                .toLowerCase()
-                .includes(searchValue.toLowerCase()) ||
-              row.vnum_id
-                .toString()
-                .toLowerCase()
-                .includes(searchValue.toLowerCase())
-          )
-        }
+        data={checkListState.taskLists}
         loading={loading}
         limit={limit}
         handleTableChange={(tableProps) => {
