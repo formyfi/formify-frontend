@@ -226,7 +226,7 @@ const PreviewDateField = ({ data }) => {
 
   const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
-    <FormControl>
+    <FormControl sx={{ py: 2 }}>
       <TextField
         sx={{ height: "40px" }}
         shrink
@@ -276,7 +276,9 @@ const PreviewImage = ({ data }) => {
   if (data.value && data.value?.success) {
     return (
       <FormControl>
-        <Typography variant="h5">{trimmedLabel}</Typography>
+        <FormLabel id="demo-radio-buttons-group-label">
+          {trimmedLabel}
+        </FormLabel>
         <img
           src={data.value?.file_path}
           class="preview-img"
@@ -288,9 +290,9 @@ const PreviewImage = ({ data }) => {
   return (
     data.value && (
       <FormControl>
-        <Typography variant="h6" component={"h6"}>
+        <FormLabel sx={{ py: 1 }} id="demo-radio-buttons-group-label">
           {trimmedLabel}
-        </Typography>
+        </FormLabel>
         <Box sx={{ display: "flex", gap: "5px" }}>
           {String(data.value)
             .split(",")
