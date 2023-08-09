@@ -416,9 +416,9 @@ const PreviewImage = ({ data }) => {
   return (
     data.value && (
       <FormControl>
-        <Typography variant="h5" component={"h5"}>
+        <FormLabel sx={{ py: 1 }} id="demo-radio-buttons-group-label">
           {trimmedLabel}
-        </Typography>
+        </FormLabel>
         <Box sx={{ display: "flex", gap: "5px" }}>
           {String(data.value)
             .split(",")

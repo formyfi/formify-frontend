@@ -114,6 +114,13 @@ const FormPreview = ({
                 </Box>
               );
             }
+            if (previewObj.type === "br") {
+              return (
+                <Box my={2}>
+                  <Divider />
+                </Box>
+              );
+            }
 
             return false;
           })}

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Divider, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   PreviewAutoCompleteField,
@@ -170,6 +170,14 @@ const FormPreviewWithSubmit = ({
                   return (
                     <Box my={2}>
                       <PreviewImage data={previewObj} />
+                    </Box>
+                  );
+                }
+
+                if (previewObj.type === "br") {
+                  return (
+                    <Box my={2}>
+                      <Divider />
                     </Box>
                   );
                 }

@@ -70,6 +70,16 @@ const FormPage = (props) => {
           },
           icon: "<i class='formbuilder-icon-file input-control input-control-10 ui-sortable-handle' ></i>",
         },
+        {
+          label: "Divider ",
+          attrs: {
+            type: "br",
+            onclick: () => {
+              alert("a");
+            },
+          },
+          icon: `<i class="fas fa-minus"></i>`,
+        },
       ];
       let templates = {
         uploadImage: function (fieldData) {
@@ -147,6 +157,14 @@ const FormPage = (props) => {
             },
           };
         },
+        br: function (fieldData) {
+          return {
+            field: '<span id="' + fieldData.name + '">',
+            onRender: function () {
+              console.log("aa");
+            },
+          };
+        },
       };
 
       formBuilder = $(FormBuildRef.current).formBuilder({
@@ -181,7 +199,6 @@ const FormPage = (props) => {
         fields,
         templates,
         disableFields: ["button"],
-
         scrollToFieldOnAdd: true,
         editOnAdd: true,
         showActionButtons: true,
@@ -209,6 +226,7 @@ const FormPage = (props) => {
                 ],
               },
             ],
+            icon: `<i class="fas fa-cog"></i>`,
           },
         ],
         typeUserDisabledAttrs: {
@@ -221,6 +239,7 @@ const FormPage = (props) => {
           select: ["placeholder", "multiple"],
           text: ["placeholder", "subtype", "maxlength"],
           textarea: ["placeholder", "subtype", "maxlength", "rows"],
+          br: ["class"],
         },
       });
     }
