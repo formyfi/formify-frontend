@@ -88,7 +88,7 @@ const SelectInfo = ({ handleNext, stationValue,  partValue, setPartList, partLis
         </Select>
       </Box>
       <Box sx={{ width: 300, my: 2 }}>
-      <InputLabel id={'vnumber'}>{'Part vNumbers'}</InputLabel>
+      <InputLabel id={'vnumber'}>{'Part Serial Numbers'}</InputLabel>
         <Select
           id={'vnumber'}
           fullWidth

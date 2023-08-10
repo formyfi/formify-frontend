@@ -217,8 +217,8 @@ const onSubmit = ()=>{
               id={partForm.v_numbers}
               multiline
               rows={4}
-              label="Part vnumbers"
-              placeholder="Please enter comma seperated vnumbers of this part"
+              label="Part serial numbers"
+              placeholder="Please enter comma seperated serial numbers of this part"
               value={partForm.v_numbers}
               onChange={(e)=>{
                 let partData = {...partForm}
