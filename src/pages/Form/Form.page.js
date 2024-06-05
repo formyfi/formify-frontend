@@ -481,11 +481,11 @@ const FormPage = (props) => {
           <Button sx={{ mr: 2 }} onClick={() => setImportDialogue(true)}>
             Import Template
           </Button>
-          {form_id == 0 ? (
+         
             <Button sx={{ mr: 2 }} onClick={() => handleClickOpen()}>
               Save as template
             </Button>
-          ) : null}
+         
         </Box>
         {form_id != 0 ? (
           <Box sx={{ display: "flex" }}>
