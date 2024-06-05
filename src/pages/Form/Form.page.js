@@ -235,7 +235,7 @@ const FormPage = (props) => {
           date: ["placeholder"],
           file: ["placeholder", "subtype", "multiple"],
           number: ["placeholder", "step"],
-          "radio-group": ["placeholder", "inline", "other", "step"],
+          "radio-group": ["placeholder"],
           select: ["placeholder", "multiple"],
           text: ["placeholder", "subtype", "maxlength"],
           textarea: ["placeholder", "subtype", "maxlength", "rows"],
