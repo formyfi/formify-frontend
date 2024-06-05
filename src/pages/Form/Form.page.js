@@ -229,6 +229,18 @@ const FormPage = (props) => {
             icon: `<i class="fas fa-cog"></i>`,
           },
         ],
+        typeUserDisabledAttrs: {
+          "checkbox-group": ["inline", "toggle", "other"],
+          autocomplete: ["requireValidOption", "placeholder"],
+          date: ["placeholder"],
+          file: ["placeholder", "subtype", "multiple"],
+          number: ["placeholder", "step"],
+          "radio-group": ["placeholder", "inline", "other", "step"],
+          select: ["placeholder", "multiple"],
+          text: ["placeholder", "subtype", "maxlength"],
+          textarea: ["placeholder", "subtype", "maxlength", "rows"],
+          br: ["class"],
+        },
       });
     }
 
@@ -545,7 +557,7 @@ const FormPage = (props) => {
           <DialogTitle>Template name</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To save this template pleast give it a name to identify.
+              To save this template please give it a name to identify.
             </DialogContentText>
             <TextField
               sx={{ mt: 2 }}
