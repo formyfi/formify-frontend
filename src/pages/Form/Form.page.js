@@ -229,18 +229,6 @@ const FormPage = (props) => {
             icon: `<i class="fas fa-cog"></i>`,
           },
         ],
-        typeUserDisabledAttrs: {
-          "checkbox-group": ["inline", "toggle", "other"],
-          autocomplete: ["requireValidOption", "placeholder"],
-          date: ["placeholder"],
-          file: ["placeholder", "subtype", "multiple"],
-          number: ["placeholder", "step"],
-          "radio-group": ["placeholder"],
-          select: ["placeholder", "multiple"],
-          text: ["placeholder", "subtype", "maxlength"],
-          textarea: ["placeholder", "subtype", "maxlength", "rows"],
-          br: ["class"],
-        },
       });
     }
 
