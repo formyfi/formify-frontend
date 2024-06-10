@@ -27,6 +27,38 @@ function isValidUrl(string) {
   }
 }
 
+const HtmlLabel = ({ htmlContent, ...props }) => {
+  let styledHtmlContent = htmlContent;
+
+  // Regex to identify "/p" followed by optional whitespace, colon, or dash, and then everything after it
+  const slashPRegex = /\/p\s*[:\-]?\s*(.*)/i;
+
+  // Apply description regex styling
+  const match = slashPRegex.exec(styledHtmlContent);
+  if (match) {
+    const prefix = styledHtmlContent.substring(0, match.index);
+    const suffix = match[1]; // Everything after the matched "/p..." pattern
+
+    styledHtmlContent = `
+      <span style="color: #05386B;">${prefix}</span>
+      <div style="color: gray; font-size: 0.9em;">${suffix}</div>
+    `;
+  } else {
+    styledHtmlContent = `
+      <span style="color: #05386B;">${styledHtmlContent}</span>
+    `;
+  }
+
+  // Apply /p regex removal from the final styled content
+  styledHtmlContent = styledHtmlContent.replace(/<span style="color: gray;">\/p\s*[:\-]?\s*/i, '<span style="color: gray;">');
+
+  return (
+    <FormLabel {...props}>
+      <span dangerouslySetInnerHTML={{ __html: styledHtmlContent }} />
+    </FormLabel>
+  );
+};
+
 const PreviewRadio = ({ data }) => {
   const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
@@ -37,7 +69,7 @@ const PreviewRadio = ({ data }) => {
   const selected = data.values.filter((itm) => itm.selected === true);
   return (
     <FormControl>
-      <FormLabel id="demo-radio-buttons-group-label">{trimmedLabel}</FormLabel>
+      <HtmlLabel id="demo-radio-buttons-group-label" htmlContent={trimmedLabel} />
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue={selected.length > 0 ? selected[0].value : ""}
@@ -77,7 +109,7 @@ const PreviewCheckbox = ({ data }) => {
   const trimmedLabel = plainText.replace(/&nbsp;/g, "");
   return (
     <FormControl>
-      <FormLabel id="demo-radio-buttons-group-label">{trimmedLabel}</FormLabel>
+      <HtmlLabel id="demo-radio-buttons-group-label" htmlContent={trimmedLabel} />
       <FormGroup>
         {data.values.map((option) => (
           <FormControlLabel
@@ -276,9 +308,7 @@ const PreviewImage = ({ data }) => {
   if (data.value && data.value?.success) {
     return (
       <FormControl>
-        <FormLabel id="demo-radio-buttons-group-label">
-          {trimmedLabel}
-        </FormLabel>
+        <HtmlLabel id="demo-radio-buttons-group-label" htmlContent={trimmedLabel} />
         <img
           src={data.value?.file_path}
           class="preview-img"
@@ -290,9 +320,7 @@ const PreviewImage = ({ data }) => {
   return (
     data.value && (
       <FormControl>
-        <FormLabel sx={{ py: 1 }} id="demo-radio-buttons-group-label">
-          {trimmedLabel}
-        </FormLabel>
+        <HtmlLabel id="demo-radio-buttons-group-label" htmlContent={trimmedLabel} />
         <Box sx={{ display: "flex", gap: "5px" }}>
           {String(data.value)
             .split(",")

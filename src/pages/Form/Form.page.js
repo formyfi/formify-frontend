@@ -386,18 +386,12 @@ const FormPage = (props) => {
           }
         }
         if (fobject.label !== null) {
-          fobject.label = String(fobject.label)
-            .trim()
-            .replaceAll(/(<([^>]+)>)/gi, "")
-            .replaceAll("&nbsp;", "");
+          fobject.label = String(fobject.label);
         }
         if (typeof fobject.values === "object") {
           fobject.values.forEach((jbVal) => {
             if (jbVal.label) {
-              jbVal.label = String(jbVal.label)
-                .trim()
-                .replaceAll(/(<([^>]+)>)/gi, "")
-                .replaceAll("&nbsp;", "");
+              jbVal.label = String(jbVal.label);
             }
           });
         }
