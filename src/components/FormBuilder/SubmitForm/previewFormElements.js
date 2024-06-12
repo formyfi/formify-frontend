@@ -96,9 +96,9 @@ const PreviewRadio = ({ data, error, field }) => {
                     name={option.name}
                     checked={field.value === option.value}
                     color={
-                      option.value == "pass"
+                      (option.value == "pass" || option.value == "yes")
                         ? "success"
-                        : option.value == "fail"
+                        : (option.value == "fail" || option.value == "no")
                         ? "error"
                         : "primary"
                     }
