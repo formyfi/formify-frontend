@@ -24,6 +24,7 @@
     "echarts-for-react": "^3.0.2",
     "formBuilder": "^3.8.3",
     "formik": "^2.2.9",
+    "jodit-react": "^4.1.2",
     "jquery": "^3.6.4",
     "jquery-ui-sortable": "^1.0.0",
     "localforage": "^1.10.0",

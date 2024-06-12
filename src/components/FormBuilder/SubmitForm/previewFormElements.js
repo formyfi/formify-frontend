@@ -42,6 +42,9 @@ const HtmlLabel = ({ htmlContent, ...props }) => {
     `;
   }
 
+  // Replace new line characters with <br />
+  styledHtmlContent = styledHtmlContent.replace(/\/n/g, '<br />');
+
   // Apply /p regex removal from the final styled content
   styledHtmlContent = styledHtmlContent.replace(/<span style="color: gray;">\/p\s*[:\-]?\s*/i, '<span style="color: gray;">');
 
