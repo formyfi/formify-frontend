@@ -83,13 +83,13 @@ const PreviewRadio = ({ data }) => {
             value={option.value}
             control={
               <Radio
-                color={
-                  option.value === "pass"
-                    ? "success"
-                    : option.value === "fail"
-                    ? "error"
-                    : "primary"
-                }
+              color={
+                (option.value == "pass" || option.value == "yes")
+                  ? "success"
+                  : (option.value == "fail" || option.value == "no")
+                  ? "error"
+                  : "primary"
+              }
                 name={option.name}
                 value={option.value}
               />
