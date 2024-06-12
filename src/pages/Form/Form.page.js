@@ -111,13 +111,7 @@ const FormPage = (props) => {
 
               inputEle.addEventListener("change", (e) => {
                 if (e.target.files && e.target.files.length > 0) {
-                  // const img = document.createElement("img");
-
                   const imgsrc = e.target.files;
-                  // img.src = imgsrc;
-                  // img.id = "img_" + fieldData.name;
-
-                  // img.className = "preview-img";
                   e.currentTarget.style = "display:none;";
 
                   const text = document.createElement("p");
@@ -241,6 +235,54 @@ const FormPage = (props) => {
           textarea: ["placeholder", "subtype", "maxlength", "rows"],
           br: ["class"],
         },
+        typeUserAttrs: {
+          text: {
+            labelDescription: {
+              label: 'Label Description',
+              type: 'textarea',
+              value: '',
+              placeholder: 'Enter a description for the label',
+              className: 'html-editor',
+            },
+          },
+        },
+        onAddField: function(fieldId) {
+          const field = $(`.formbuilder-field[data-id="${fieldId}"]`);
+          const labelDescription = field.find('.html-editor').html();
+          if (labelDescription) {
+            field.find('.fld-label').after(`<div class="label-description">${labelDescription}</div>`);
+          }
+        },
+        onUpdateField: function(fieldId) {
+          const field = $(`.formbuilder-field[data-id="${fieldId}"]`);
+          const labelDescription = field.find('.html-editor').html();
+          if (labelDescription) {
+            const descriptionElement = field.find('.label-description');
+            if (descriptionElement.length) {
+              descriptionElement.html(labelDescription);
+            } else {
+              field.find('.fld-label').after(`<div class="label-description">${labelDescription}</div>`);
+            }
+          } else {
+            field.find('.label-description').remove();
+          }
+        },
+        onOpenFieldEdit: function(fieldId) {
+          const field = $(`.formbuilder-field[data-id="${fieldId}"]`);
+          const editor = field.find('.html-editor');
+          if (!editor.next().hasClass('editor-toolbar')) {
+            const toolbar = $(
+              `<div class="editor-toolbar">
+                <button type="button" onclick="document.execCommand('bold', false, '');"><b>B</b></button>
+                <button type="button" onclick="document.execCommand('italic', false, '');"><i>I</i></button>
+                <button type="button" onclick="document.execCommand('underline', false, '');"><u>U</u></button>
+                <button type="button" onclick="document.execCommand('insertOrderedList', false, '');">1.</button>
+                <button type="button" onclick="document.execCommand('insertUnorderedList', false, '');">&bull;</button>
+              </div>`
+            );
+            editor.after(toolbar);
+          }
+        },
       });
     }
 
@@ -331,7 +373,6 @@ const FormPage = (props) => {
   }, [template]);
 
   const uploadFile = async (urlObject) => {
-    // const file = await getFileFromUrl(url, "test.png");
     const formData = new FormData();
     formData.append("file", urlObject);
 
@@ -543,7 +584,6 @@ const FormPage = (props) => {
               sx={{ maxHeight: "inherit" }}
             />
           </Paper>
-          {/* <FormPreview onSubmit={onSubmit} onCancel={()=>{setOpen(false)}}title="Form Preview" previewData={previewData} /> */}
         </Box>
       </Drawer>
       <Box>
