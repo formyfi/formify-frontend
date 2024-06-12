@@ -84,9 +84,9 @@ const PreviewRadio = ({ data }) => {
             control={
               <Radio
               color={
-                (option.value == "pass" || option.value == "yes")
+                (option.value.toLowerCase() == "pass" || option.value.toLowerCase() == "yes" || option.value.toLowerCase() == "accept")
                   ? "success"
-                  : (option.value == "fail" || option.value == "no")
+                  : (option.value.toLowerCase() == "fail" || option.value.toLowerCase() == "no" || option.value.toLowerCase() == "reject")
                   ? "error"
                   : "primary"
               }

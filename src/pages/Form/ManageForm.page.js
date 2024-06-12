@@ -13,6 +13,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import DialogBox from "../Dialog/DialogBox";
 import { useDispatch, useSelector } from "react-redux";
 import { getStationList } from "redux/slices/stationSlice";
 import 'react-toastify/dist/ReactToastify.css';
@@ -38,6 +39,8 @@ const schema = yup
 const ManageForm = () => {
   const [drawer, setDrawer] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [openDialogue, setOpenDialogue] = React.useState(false);
+  const [deleteRecord, setDeleteRecord] = React.useState('');
   const [partList, setPartList] = React.useState([]);
   const [loading, setLoading] = useState(false)
   const {
@@ -73,6 +76,11 @@ const ManageForm = () => {
         toast.success("Form added successfully.");
         setDrawer(false);
         reset();
+        setLoading(true)
+        const res = dispatch(getCheckLists({ org_id: commonState.org_id }));
+        res.then(()=>setLoading(false))
+        dispatch(getStationList({ org_id: commonState.org_id }));
+        dispatch(getPartList({ org_id: commonState.org_id }));
       } else if(resp && resp.payload && resp.payload.message) {
         toast.error(resp.payload.message);
       }else toast.error("Make sure nothing is empty or reach out to teach team");
@@ -139,8 +147,10 @@ const ManageForm = () => {
               Edit
             </Button>
             <Button
-              
-              onClick={()=>onDelete(record)}
+              onClick={()=>{
+                setOpenDialogue(true)
+                setDeleteRecord(record)
+              }}
               color="error"
               startIcon={<DeleteIcon />}
             >
@@ -169,6 +179,11 @@ const ManageForm = () => {
     res.then((resp) => {
       if(resp && resp.payload && resp.payload.success){
         toast.success("Form deleted successfully.");
+        setLoading(true)
+        const res = dispatch(getCheckLists({ org_id: commonState.org_id }));
+        res.then(()=>setLoading(false))
+        dispatch(getStationList({ org_id: commonState.org_id }));
+        dispatch(getPartList({ org_id: commonState.org_id }));
       } else toast.error("There was error deleting this form please contact your technical team");
     });  
   };
@@ -180,6 +195,7 @@ const ManageForm = () => {
   return (
     <Box>
       <ToastContainer />
+      <DialogBox openDialogueBox={openDialogue} confirmRecord={deleteRecord} handleCloseBox = {()=>setOpenDialogue(false)} onConfrim={(r)=>onDelete(r)} />
       <Box
         display={"flex"}
         justifyContent="space-between"
