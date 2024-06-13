@@ -13,7 +13,6 @@ request.interceptors.response.use(
   (res) => {
     let response = res.response;
     if (response.config.url !== "/api/auth/login" && response.status === 401) {
-      debugger;
       // refresh page
       localStorage.clear();
       window.location.reload();
@@ -27,6 +26,10 @@ const getToken = () => {
 
   return token;
 };
+
+const super_user_ind = localStorage.getItem("super_user_ind");
+const user_id = localStorage.getItem("user_id");
+
 
 const apis = {
   socialLogin: (values)=>{
@@ -58,17 +61,19 @@ const apis = {
 
   //Stations
   stationList: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/stations/get_station_list", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   upsertStation: (values) => {
-    return request.post("/api/stations/upsert_station", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/stations/upsert_station", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -77,7 +82,8 @@ const apis = {
   },
 
   deleteStation: (values) => {
-    return request.post("/api/stations/delete_station", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/stations/delete_station", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -87,17 +93,19 @@ const apis = {
 
   //Users APIs
   getUsers: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/users/get_users", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   updateUser: (values) => {
-    return request.post("/api/users/update_user", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/users/update_user", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -106,7 +114,8 @@ const apis = {
   },
 
   updatePassword: (values) => {
-    return request.post("/api/users/update_password", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/users/update_password", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -115,7 +124,8 @@ const apis = {
   },
 
   createUser: (values) => {
-    return request.post("/api/users/create_user", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/users/create_user", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -123,7 +133,8 @@ const apis = {
     });
   },
   deleteUser: (values) => {
-    return request.post("/api/users/delete_user", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/users/delete_user", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -133,37 +144,41 @@ const apis = {
 
   //Parts
   partList: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/parts/get_part_list", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   getPartsByStation: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/parts/get_parts_by_station", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   getPartVnumbers: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/parts/get_part_vnumbers", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   upsertPart: (values) => {
-    return request.post("/api/parts/upsert_part", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/parts/upsert_part", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -172,7 +187,8 @@ const apis = {
   },
 
   deletePart: (values) => {
-    return request.post("/api/parts/delete_part", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/parts/delete_part", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -181,75 +197,83 @@ const apis = {
   },
   //  forms
   getCheckLists: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/checklist/get_checklists", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   getTemplates: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/checklist/get_templates", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   getTaskLists: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/tasks/get_tasklists", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   getFullInseoctionsData: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/tasks/get_full_tasklist_data", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   getStationInseoctionsData: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/tasks/get_station_tasklist_data", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
   getTotalStationsInspections: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/tasks/get_total_stations_inspections", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
   getTaskForm: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/tasks/get_task_form", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
 
   upsertCheckLists: (values) => {
-    return request.post("/api/checklist/upsert_checklist", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/checklist/upsert_checklist", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -258,7 +282,8 @@ const apis = {
   },
 
   upsertCheckListForm: (values) => {
-    return request.post("/api/checklist/upsert_checklist_form", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/checklist/upsert_checklist_form", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -267,7 +292,8 @@ const apis = {
   },
 
   updateTaskForm: (values) => {
-    return request.post("/api/tasks/update_task_form", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/tasks/update_task_form", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -276,9 +302,10 @@ const apis = {
   },
 
   updateCheckListFormAsTemplate: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.post(
       "/api/checklist/upsert_checklist_form_template",
-      values,
+      v,
       {
         headers: {
           Accept: "application/json",
@@ -289,7 +316,8 @@ const apis = {
   },
 
   deleteCheckLists: (values) => {
-    return request.post("/api/checklist/delete_checklist", values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/checklist/delete_checklist", v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
@@ -297,16 +325,18 @@ const apis = {
     });
   },
   getAllTimelines: (values) => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.get("/api/timelines/get_vnum_timline", {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-      params: values,
+      params: v,
     });
   },
   setFormTimeLine: (values) => {
-    return request.post("/api/timelines/upload",values, {
+    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    return request.post("/api/timelines/upload",v, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${getToken()}`,

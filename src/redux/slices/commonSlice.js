@@ -99,6 +99,7 @@ const commonSlice = createSlice({
           state.isLogged = true;
           state.token = payload.token;
           state.user_id = payload.user_id;
+          state.super_user_ind = payload.super_user_ind;
           state.org_id = payload.org_id;
           state.org_name = payload.org_name;
           state.user_type_id = payload.user_type_id;
@@ -109,6 +110,8 @@ const commonSlice = createSlice({
           state.user_areas = payload.areas?.areas;
           state.error = "";
           localStorage.setItem("app_token", payload.token);
+          localStorage.setItem("super_user_ind", payload.super_user_ind);
+          localStorage.setItem("user_id", payload.user_id);
         } else {
           state.error = payload?.message
             ? payload.message
@@ -130,6 +133,7 @@ const commonSlice = createSlice({
           state.isLogged = true
           state.token = payload.token
           state.user_id = payload.user_id
+          state.super_user_ind = payload.super_user_ind
           state.org_id = payload.org_id
           state.org_name = payload.org_name
           state.user_type_id = payload.user_type_id
@@ -140,6 +144,8 @@ const commonSlice = createSlice({
           state.user_areas = payload.areas?.areas
           state.error = ""
           localStorage.setItem('app_token', payload.token)
+          localStorage.setItem("super_user_ind", payload.super_user_ind);
+          localStorage.setItem("user_id", payload.user_id);
         } else {
           state.error = "Contact your admin to activate your account"
           state.isLogged = false

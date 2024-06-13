@@ -26,10 +26,9 @@ import ChangePasswordForm from "pages/Dashboard/ChangePasswordForm";
 import { createClient } from "@supabase/supabase-js";
 import navigationList from "config/navigation";
 
-const supabaseUrl = "https://xulrhkdfzsueagghuwxr.supabase.co";
-const supabaseAnonKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1bHJoa2RmenN1ZWFnZ2h1d3hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODE1ODc5NzIsImV4cCI6MTk5NzE2Mzk3Mn0.8isSZKd__PnoGmjQynQHvEpa94ERxv8fzUyJkMlifhc";
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabaseUrl = "https://cjpgwagvklpnncigqfrj.supabase.co";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqcGd3YWd2a2xwbm5jaWdxZnJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgyNDg1NTQsImV4cCI6MjAzMzgyNDU1NH0.uacSNc493TV9joYcEYh4gZYHWRul5aBBOCJTf5RLuKs"
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export { supabase };
 
