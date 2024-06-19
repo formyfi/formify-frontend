@@ -40,7 +40,7 @@ const FormSubmission = ({
           resp.payload.form_data.form_json
         ) {
           setFormData(JSON.parse(resp.payload.form_data.form_json));
-          setFormID(resp.payload.form_data.form_id);
+          setFormID(resp.payload.form_data.form_name);
           if (
             resp &&
             resp.payload.form_data &&
@@ -121,7 +121,7 @@ const FormSubmission = ({
                 </Typography>
               </Typography>
               <Typography component="h2" variant="h6" color="primary">
-                Form number:&nbsp;
+                Form name:&nbsp;
                 <Typography color="black" sx={{ display: "inline-block" }}>
                   {formID}
                 </Typography>

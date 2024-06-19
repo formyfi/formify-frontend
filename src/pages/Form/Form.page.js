@@ -478,10 +478,30 @@ const FormPage = (props) => {
       for (let i = 0; i < formData.length; i++) {
         const fobject = formData[i];
 
+        // if (fobject.type === "uploadImage") {
+        //   fobject.value = await uploadFile(
+        //     window.previewImagesObjects[fobject.name + "-preview"]
+        //   );
+        // }
         if (fobject.type === "uploadImage") {
-          fobject.value = await uploadFile(
-            window.previewImagesObjects[fobject.name + "-preview"]
-          );
+          let tmp = [];
+          if (window.previewImagesObjects[fobject.name + "-preview"]) {
+            for (
+              let u = 0;
+              u < window.previewImagesObjects[fobject.name + "-preview"].length;
+              u++
+            ) {
+              let val = await uploadFile(
+                window.previewImagesObjects[fobject.name + "-preview"][u]
+              );
+              if (val.success === true) {
+                tmp.push(val.file_path);
+              }
+            }
+            fobject.value = tmp.join(",");
+          } else {
+            fobject.value = window.previewImages[fobject.name + "-preview"];
+          }
         }
       }
 

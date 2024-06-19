@@ -82,7 +82,6 @@ const ManageTask = () => {
       })
     );
     if (res && res?.payload) {
-      debugger;
       const apiRes = res?.payload;
       if (apiRes?.total_records) {
         let totalPage = Math.ceil(apiRes?.total_records / 1000);
@@ -117,9 +116,9 @@ const ManageTask = () => {
       label: "Operation",
     },
     {
-      id: "form_id",
+      id: "form_name",
       numeric: false,
-      label: "Form ID",
+      label: "Form Name",
     },
     {
       id: "compliance_ind",
@@ -201,7 +200,7 @@ const ManageTask = () => {
   //   const data = checkListState.taskLists.filter(row =>
   //     row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
   //     row.station_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-  //     row.form_id.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
+  //     row.form_name.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
   //     row.vnum_id.toString().toLowerCase().includes(searchValue.toLowerCase())
   //   );
 
@@ -245,10 +244,10 @@ const ManageTask = () => {
     const worksheet = XLSX.utils.aoa_to_sheet([main_headers, ...main_rows]);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Completed Inspections");
 
-    // Create a sheet for each unique form_id
-    const formIds = [...new Set(data.map((row) => row.form_id))];
+    // Create a sheet for each unique form_name
+    const formIds = [...new Set(data.map((row) => row.form_name))];
     formIds.forEach((formId) => {
-      let sheetData = data.filter((row) => row.form_id === formId);
+      let sheetData = data.filter((row) => row.form_name === formId);
       const form_json = sheetData[0].form_json;
       if (form_json && form_json.length) {
         const headers = [];

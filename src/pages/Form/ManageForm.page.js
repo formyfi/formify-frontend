@@ -94,6 +94,11 @@ const ManageForm = () => {
       label: "ID",
     },
     {
+      id: "name",
+      numeric: false,
+      label: "Name",
+    },
+    {
       id: "title",
       numeric: false,
       label: "Title",
@@ -167,6 +172,7 @@ const ManageForm = () => {
       setIsEdit(true);
       setValue('title',record?.title);
       setValue('id',record?.id);
+      setValue('name',record?.name);
       setValue('station',record?.station_id);
       setValue('part',record?.part_id);
       setValue('station_name',record?.station_name);
@@ -257,8 +263,8 @@ const ManageForm = () => {
               margin="normal"
               required
               fullWidth
-              {...register("id")}
-              label="ID"
+              {...register("name")}
+              label="Name"
               error={errors.title?.message}
               helperText={errors.title?.message}
               autoFocus
