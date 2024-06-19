@@ -167,7 +167,7 @@ const ManageTask = () => {
       if (value && String(value).trim() != "")
         fetchRecords({
           optionlimit: limit,
-          optionPage: 1,
+          optionPage: page,
           searchValue: value,
         });
     };
