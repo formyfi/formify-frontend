@@ -348,9 +348,11 @@ const ManageTask = () => {
         page={page}
         onPageChange={(_, cpage) => {
           setPage(cpage);
+          debugger
           fetchRecords({
             optionlimit: limit,
             optionPage: cpage,
+            searchText: searchValue,
           });
         }}
         onRowsPerPageChange={(_) => {
@@ -359,6 +361,7 @@ const ManageTask = () => {
           fetchRecords({
             optionlimit: _?.target?.value,
             optionPage: page,
+            searchText: searchValue,
           });
         }}
       />

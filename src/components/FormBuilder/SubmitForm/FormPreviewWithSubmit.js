@@ -84,7 +84,7 @@ const FormPreviewWithSubmit = ({
               data: previewObj,
               value: formValues[previewObj.name],
               onChange: (e) =>{
-                handleChange(previewObj.name, e.target.value)},
+                handleChange(previewObj.name, e)},
               error: formErrors[previewObj.name],
             };
 

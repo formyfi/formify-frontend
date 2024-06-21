@@ -64,7 +64,7 @@ const PreviewRadio = ({ data, value, onChange, error }) => {
         defaultValue={selected.length > 0 ? selected[0]?.value : ""}
         name={data.name}
         value={value}
-        onChange={onChange}
+        onChange={(e) => onChange(e.target.value)}
         row
       >
         {data.values.map((option) => (
@@ -115,7 +115,7 @@ const PreviewCheckbox = ({ data, value, onChange, error }) => {
                   const newValue = e.target.checked
                     ? [...value, option.value]
                     : value.filter((val) => val !== option.value);
-                  onChange(data.name, newValue);
+                  onChange(newValue);
                 }}
               />
             }
@@ -143,7 +143,7 @@ const PreviewSelect = ({ data, value, onChange, error }) => {
         fullWidth
         label={trimmedLabel}
         value={value}
-        onChange={(e) => onChange(data.name, e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
       >
         {data.values.map((option) => (
           <MenuItem key={option.value} value={option.value}>
@@ -170,7 +170,7 @@ const PreviewTextField = ({ data, value, onChange, error }) => {
         variant="outlined"
         fullWidth
         value={value}
-        onChange={(e) => onChange(e)}
+        onChange={(e) => onChange(e.target.value)}
         error={!!error}
       />
       <FormHelperText>{data?.description}</FormHelperText>
@@ -195,7 +195,7 @@ const PreviewTextAreaField = ({ data, value, onChange, error }) => {
         fullWidth
         minRows={3}
         value={value}
-        onChange={(e) => onChange(data.name, e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         error={!!error}
       />
       <FormHelperText>{data?.description}</FormHelperText>
@@ -217,7 +217,7 @@ const PreviewNumberField = ({ data, value, onChange, error }) => {
         id={trimmedLabel}
         label={trimmedLabel}
         value={value}
-        onChange={(e) => onChange(e)}
+        onChange={(e) => onChange(e.target.value)}
         error={!!error}
       />
       <FormHelperText>{data?.description}</FormHelperText>
@@ -241,7 +241,7 @@ const PreviewAutoCompleteField = ({ data, value, onChange, error }) => {
         freeSolo={!data.requireValidOption}
         sx={{ width: 300 }}
         value={value}
-        onChange={(e, newValue) => onChange(data.name, newValue)}
+        onChange={(e, newValue) => onChange(newValue.value)}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -272,7 +272,7 @@ const PreviewDateField = ({ data, value, onChange, error }) => {
         label={trimmedLabel}
         focused
         value={value}
-        onChange={(e) => onChange(e)}
+        onChange={(e) => onChange(e.target.value)}
         error={!!error}
       />
       <FormHelperText>{data?.description}</FormHelperText>
