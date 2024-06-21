@@ -52,7 +52,6 @@ const ManageTask = () => {
   };
 
   const fetchRecords = ({ optionlimit, optionPage, searchValue }) => {
-    debugger
     setLoading(true);
     const res = dispatch(
       getTaskLists({
@@ -378,6 +377,7 @@ const ManageTask = () => {
           vnumberValue={currentRecord.vnum_id}
           form_json={formJson}
           form_value={formValue}
+          view={'completed_inspections'}
           handleBack={() => {
             setDrawer(false);
             setRecord([]);

@@ -16,21 +16,17 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import { Field } from "formik";
 import React from "react";
-
 
 const HtmlLabel = ({ htmlContent, ...props }) => {
   let styledHtmlContent = htmlContent;
 
-  // Regex to identify "/p" followed by optional whitespace, colon, or dash, and then everything after it
   const slashPRegex = /\/p\s*[:\-]?\s*(.*)/i;
 
-  // Apply description regex styling
   const match = slashPRegex.exec(styledHtmlContent);
   if (match) {
     const prefix = styledHtmlContent.substring(0, match.index);
-    const suffix = match[1]; // Everything after the matched "/p..." pattern
+    const suffix = match[1];
 
     styledHtmlContent = `
       <span style="color: #05386B;">${prefix}</span>
@@ -42,10 +38,8 @@ const HtmlLabel = ({ htmlContent, ...props }) => {
     `;
   }
 
-  // Replace new line characters with <br />
   styledHtmlContent = styledHtmlContent.replace(/\/n/g, '<br />');
 
-  // Apply /p regex removal from the final styled content
   styledHtmlContent = styledHtmlContent.replace(/<span style="color: gray;">\/p\s*[:\-]?\s*/i, '<span style="color: gray;">');
 
   return (
@@ -55,364 +49,244 @@ const HtmlLabel = ({ htmlContent, ...props }) => {
   );
 };
 
-
-
-
-const PreviewRadio = ({ data, error, field }) => {
+const PreviewRadio = ({ data, value, onChange, error }) => {
   const selected = data.values.filter((itm) => itm.selected === true);
-  // Create a temporary element to parse the HTML string
   const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
-
-  // Get the text content from the temporary element
   const plainText = tempElement.textContent;
-
-  // Replace all occurrences of '&nbsp;' with an empty string
   const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
   return (
-    <Field name={data.name}>
-      {({
-        field, // { name, value, onChange, onBlur }
-        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        meta,
-      }) => (
-        <FormControl
-          error={meta.touched && meta.error}
-          sx={{ width: "100%", maxWidth: 600 }}
-        >
-          <HtmlLabel id="demo-radio-buttons-group-label" htmlContent={trimmedLabel} />
-          <RadioGroup
-            aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue={selected.length > 0 ? selected[0]?.value : ""}
-            name={data.name}
-            {...field}
-            row
-          >
-            {data.values.map((option) => (
-              <FormControlLabel
-                value={option.value}
-                control={
-                  <Radio
-                    name={option.name}
-                    checked={field.value === option.value}
-                    color={
-                      (option.value.toLowerCase() == "pass" || option.value.toLowerCase() == "yes" || option.value.toLowerCase() == "accept")
-                        ? "success"
-                        : (option.value.toLowerCase() == "fail" || option.value.toLowerCase() == "no" || option.value.toLowerCase() == "reject")
-                        ? "error"
-                        : "primary"
-                    }
-                    value={option.value}
-                  />
-                }
-                label={option.label}
-              />
-            ))}
-          </RadioGroup>
-          {meta.touched && meta.error && (
-            <FormHelperText>{meta.error}</FormHelperText>
-          )}
-        </FormControl>
-      )}
-    </Field>
-  );
-};
-
-const PreviewCheckbox = ({ data, filledFormValue }) => {
-  const tempElement = document.createElement("div");
-  tempElement.innerHTML = data.label;
-
-  const plainText = tempElement.textContent;
-
-  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
-  return (
-    <Field name={data.name}>
-      {({
-        field, // { name, value, onChange, onBlur }
-        form: { touched, values, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        meta,
-      }) => (
-        <FormControl
-          error={meta.touched && meta.error}
-          sx={{ width: "100%", maxWidth: 600 }}
-        >
-          <HtmlLabel id="demo-radio-buttons-group-label" htmlContent={trimmedLabel} />
-          <FormGroup>
-            {data.values.map((option) => (
-              <FormControlLabel
-                key={option.name}
-                control={
-                  <Checkbox
-                    name={option.name}
-                    value={option.value}
-                    row
-                    checked={
-                      Array.isArray(values[data.name]) &&
-                      values[data.name].includes(option.value)
-                    }
-                  />
-                }
-                {...field}
-                label={option.label}
-              />
-            ))}
-          </FormGroup>
-          {meta.touched && meta.error && (
-            <FormHelperText>{meta.error}</FormHelperText>
-          )}
-        </FormControl>
-      )}
-    </Field>
-  );
-};
-
-const PreviewSelect = ({ data }) => {
-  const tempElement = document.createElement("div");
-  tempElement.innerHTML = data.label;
-
-  const plainText = tempElement.textContent;
-
-  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
-  return (
-    <Field name={data.name}>
-      {({
-        field, // { name, value, onChange, onBlur }
-        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        meta,
-      }) => (
-        <FormControl
-          error={meta.touched && meta.error}
-          sx={{ width: "100%", maxWidth: 600 }}
-        >
-          <InputLabel id="demo-simple-select-label">{trimmedLabel}</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            fullWidth
-            label={trimmedLabel}
-            {...field}
-          >
-            {data.values.map((option) => (
-              <MenuItem
-                value={option.value}
-                selected={option.selected === true}
-              >
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-          {meta.touched && meta.error && (
-            <FormHelperText>{meta.error}</FormHelperText>
-          )}
-        </FormControl>
-      )}
-    </Field>
-  );
-};
-
-const PreviewTextField = ({ data }) => {
-  const tempElement = document.createElement("div");
-  tempElement.innerHTML = data.label;
-
-  const plainText = tempElement.textContent;
-
-  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
-  return (
-    <Field name={data.name}>
-      {({
-        field, // { name, value, onChange, onBlur }
-        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        meta,
-      }) => (
-        <FormControl
-          error={meta.touched && meta.error}
-          sx={{ width: "100%", maxWidth: 600 }}
-        >
-          <TextField
-            id={trimmedLabel}
-            label={trimmedLabel}
-            variant="outlined"
-            fullWidth
-            error={meta.touched && !!meta.error}
-            {...field}
-          />
-          <FormHelperText>{data?.description}</FormHelperText>
-          {meta.touched && meta.error && (
-            <FormHelperText>{meta.error}</FormHelperText>
-          )}
-        </FormControl>
-      )}
-    </Field>
-  );
-};
-
-const PreviewTextAreaField = ({ data }) => {
-  const tempElement = document.createElement("div");
-  tempElement.innerHTML = data.label;
-
-  const plainText = tempElement.textContent;
-
-  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
-  return (
-    <Field name={data.name}>
-      {({
-        field, // { name, value, onChange, onBlur }
-        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        meta,
-      }) => (
-        <FormControl
-          error={meta.touched && meta.error}
-          sx={{ width: "100%", maxWidth: 600 }}
-        >
-          <TextField
-            id={trimmedLabel}
-            label={trimmedLabel}
-            variant="outlined"
-            multiline
-            fullWidth
-            name={data.name}
-            minRows={3}
-            error={meta.touched && !!meta.error}
-            {...field}
-          />
-          <FormHelperText>{data?.description}</FormHelperText>
-          {meta.touched && meta.error && (
-            <FormHelperText>{meta.error}</FormHelperText>
-          )}
-        </FormControl>
-      )}
-    </Field>
-  );
-};
-
-const PreviewNumberField = ({ data }) => {
-  const tempElement = document.createElement("div");
-  tempElement.innerHTML = data.label;
-
-  const plainText = tempElement.textContent;
-
-  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
-  return (
-    <Field name={data.name}>
-      {({
-        field, // { name, value, onChange, onBlur }
-        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        meta,
-      }) => (
-        <FormControl
-          error={meta.touched && meta.error}
-          sx={{ width: "100%", maxWidth: 600 }}
-        >
-          <TextField
-            type={"number"}
-            id={trimmedLabel}
-            label={trimmedLabel}
-            name={data.name}
-            variant="outlined"
-            error={meta.touched && meta.error}
-            {...field}
-          />
-          <FormHelperText>{data?.description}</FormHelperText>
-          {meta.touched && meta.error && (
-            <FormHelperText>{meta.error}</FormHelperText>
-          )}
-        </FormControl>
-      )}
-    </Field>
-  );
-};
-
-const PreviewAutoCompleteField = ({ data }) => {
-  const tempElement = document.createElement("div");
-  tempElement.innerHTML = data.label;
-
-  const plainText = tempElement.textContent;
-
-  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
-  return (
-    <Field name={data.name}>
-      {({
-        field, // { name, value, onChange, onBlur }
-        form: { touched, errors, values }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        meta,
-      }) => (
-        <FormControl
-          error={meta.touched && meta.error}
-          sx={{ width: "100%", maxWidth: 600 }}
-        >
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={data.values}
-            freeSolo={!data.requireValidOption}
-            sx={{ width: 300 }}
-            value={values[data.name]}
-            onSelect={field.onChange}
-            renderInput={(params) => (
-              <TextField
-                {...params}
+    <FormControl error={!!error} sx={{ width: "100%", maxWidth: 600 }}>
+      <HtmlLabel id="demo-radio-buttons-group-label" htmlContent={trimmedLabel} />
+      <RadioGroup
+        aria-labelledby="demo-radio-buttons-group-label"
+        defaultValue={selected.length > 0 ? selected[0]?.value : ""}
+        name={data.name}
+        value={value}
+        onChange={onChange}
+        row
+      >
+        {data.values.map((option) => (
+          <FormControlLabel
+            key={option.value}
+            value={option.value}
+            control={
+              <Radio
                 name={data.name}
-                type="text"
-                error={meta.touched && meta.error}
-                label={trimmedLabel}
-                {...field}
+                checked={value === option.value}
+                color={
+                  ["pass", "yes", "accept"].includes(option.value.toLowerCase())
+                    ? "success"
+                    : ["fail", "no", "reject"].includes(option.value.toLowerCase())
+                    ? "error"
+                    : "primary"
+                }
               />
-            )}
+            }
+            label={option.label}
           />
-          <FormHelperText>{data?.description}</FormHelperText>
-          {meta.touched && meta.error && (
-            <FormHelperText>{meta.error}</FormHelperText>
-          )}
-        </FormControl>
-      )}
-    </Field>
+        ))}
+      </RadioGroup>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
   );
 };
 
-const PreviewDateField = ({ data }) => {
+const PreviewCheckbox = ({ data, value, onChange, error }) => {
   const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
-
   const plainText = tempElement.textContent;
-
   const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
   return (
-    <Field name={data.name}>
-      {({
-        field, // { name, value, onChange, onBlur }
-        form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-        meta,
-      }) => (
-        <FormControl
-          error={meta.touched && meta.error}
-          sx={{ width: "100%", maxWidth: 600 }}
-        >
-          <TextField
-            type={"date"}
-            name={data.name}
-            id={trimmedLabel}
-            label={trimmedLabel}
-            focused
-            error={meta.touched && meta.error}
-            {...field}
+    <FormControl error={!!error} sx={{ width: "100%", maxWidth: 600 }}>
+      <HtmlLabel id="demo-radio-buttons-group-label" htmlContent={trimmedLabel} />
+      <FormGroup>
+        {data.values.map((option) => (
+          <FormControlLabel
+            key={option.value}
+            control={
+              <Checkbox
+                name={data.name}
+                value={option.value}
+                checked={Array.isArray(value) && value.includes(option.value)}
+                onChange={(e) => {
+                  const newValue = e.target.checked
+                    ? [...value, option.value]
+                    : value.filter((val) => val !== option.value);
+                  onChange(data.name, newValue);
+                }}
+              />
+            }
+            label={option.label}
           />
-          <FormHelperText>{data?.description}</FormHelperText>
-          {meta.touched && meta.error && (
-            <FormHelperText>{meta.error}</FormHelperText>
-          )}
-        </FormControl>
-      )}
-    </Field>
+        ))}
+      </FormGroup>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
+  );
+};
+
+const PreviewSelect = ({ data, value, onChange, error }) => {
+  const tempElement = document.createElement("div");
+  tempElement.innerHTML = data.label;
+  const plainText = tempElement.textContent;
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
+  return (
+    <FormControl error={!!error} sx={{ width: "100%", maxWidth: 600 }}>
+      <InputLabel id="demo-simple-select-label">{trimmedLabel}</InputLabel>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        fullWidth
+        label={trimmedLabel}
+        value={value}
+        onChange={(e) => onChange(data.name, e.target.value)}
+      >
+        {data.values.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </Select>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
+  );
+};
+
+const PreviewTextField = ({ data, value, onChange, error }) => {
+  const tempElement = document.createElement("div");
+  tempElement.innerHTML = data.label;
+  const plainText = tempElement.textContent;
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
+  return (
+    <FormControl error={!!error} sx={{ width: "100%", maxWidth: 600 }}>
+      <TextField
+        id={trimmedLabel}
+        label={trimmedLabel}
+        variant="outlined"
+        fullWidth
+        value={value}
+        onChange={(e) => onChange(e)}
+        error={!!error}
+      />
+      <FormHelperText>{data?.description}</FormHelperText>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
+  );
+};
+
+const PreviewTextAreaField = ({ data, value, onChange, error }) => {
+  const tempElement = document.createElement("div");
+  tempElement.innerHTML = data.label;
+  const plainText = tempElement.textContent;
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
+  return (
+    <FormControl error={!!error} sx={{ width: "100%", maxWidth: 600 }}>
+      <TextField
+        id={trimmedLabel}
+        label={trimmedLabel}
+        variant="outlined"
+        multiline
+        fullWidth
+        minRows={3}
+        value={value}
+        onChange={(e) => onChange(data.name, e.target.value)}
+        error={!!error}
+      />
+      <FormHelperText>{data?.description}</FormHelperText>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
+  );
+};
+
+const PreviewNumberField = ({ data, value, onChange, error }) => {
+  const tempElement = document.createElement("div");
+  tempElement.innerHTML = data.label;
+  const plainText = tempElement.textContent;
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
+  return (
+    <FormControl error={!!error} sx={{ width: "100%", maxWidth: 600 }}>
+      <TextField
+        type="number"
+        id={trimmedLabel}
+        label={trimmedLabel}
+        value={value}
+        onChange={(e) => onChange(e)}
+        error={!!error}
+      />
+      <FormHelperText>{data?.description}</FormHelperText>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
+  );
+};
+
+const PreviewAutoCompleteField = ({ data, value, onChange, error }) => {
+  const tempElement = document.createElement("div");
+  tempElement.innerHTML = data.label;
+  const plainText = tempElement.textContent;
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
+  return (
+    <FormControl error={!!error} sx={{ width: "100%", maxWidth: 600 }}>
+      <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={data.values}
+        freeSolo={!data.requireValidOption}
+        sx={{ width: 300 }}
+        value={value}
+        onChange={(e, newValue) => onChange(data.name, newValue)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            name={data.name}
+            type="text"
+            error={!!error}
+            label={trimmedLabel}
+          />
+        )}
+      />
+      <FormHelperText>{data?.description}</FormHelperText>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
+  );
+};
+
+const PreviewDateField = ({ data, value, onChange, error }) => {
+  const tempElement = document.createElement("div");
+  tempElement.innerHTML = data.label;
+  const plainText = tempElement.textContent;
+  const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
+  return (
+    <FormControl error={!!error} sx={{ width: "100%", maxWidth: 600 }}>
+      <TextField
+        type="date"
+        id={trimmedLabel}
+        label={trimmedLabel}
+        focused
+        value={value}
+        onChange={(e) => onChange(e)}
+        error={!!error}
+      />
+      <FormHelperText>{data?.description}</FormHelperText>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
   );
 };
 
 const PreviewTypography = ({ data }) => {
   const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
-
   const plainText = tempElement.textContent;
-
   const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
   return (
     <Box my={1} className="preview-typo" sx={{ width: "100%", maxWidth: 600 }}>
       <Typography variant={data.subtype} component={data.subtype}>
@@ -432,22 +306,21 @@ const PreviewUploadField = ({ data }) => {
   );
 };
 
-function isValidUrl(string) {
+const isValidUrl = (string) => {
   try {
     new URL(string);
     return true;
   } catch (err) {
     return false;
   }
-}
+};
 
 const PreviewImage = ({ data }) => {
   const tempElement = document.createElement("div");
   tempElement.innerHTML = data.label;
-
   const plainText = tempElement.textContent;
-
   const trimmedLabel = plainText.replace(/&nbsp;/g, "");
+
   return (
     data.value && (
       <FormControl>
@@ -455,32 +328,19 @@ const PreviewImage = ({ data }) => {
         <Box sx={{ display: "flex", gap: "5px" }}>
           {String(data.value)
             .split(",")
-            .map((prev) => {
-              if (typeof prev === "object") {
-                return (
-                  <Box>
-                    <img
-                      src={URL.createObjectURL(prev)}
-                      class="preview-img"
-                      alt="preview-details"
-                    />
-                  </Box>
-                );
-              }
-              return (
-                <Box>
-                  <img
-                    src={
-                      isValidUrl(prev)
-                        ? prev
-                        : process.env.REACT_APP_API_BASE + "/" + prev
-                    }
-                    class="preview-img"
-                    alt="preview-details"
-                  />
-                </Box>
-              );
-            })}
+            .map((prev, index) => (
+              <Box key={index}>
+                <img
+                  src={
+                    isValidUrl(prev)
+                      ? prev
+                      : `${process.env.REACT_APP_API_BASE}/${prev}`
+                  }
+                  className="preview-img"
+                  alt="preview-details"
+                />
+              </Box>
+            ))}
         </Box>
       </FormControl>
     )

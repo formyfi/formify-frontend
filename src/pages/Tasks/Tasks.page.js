@@ -42,6 +42,7 @@ const TasksPage = () => {
     if(activeStep > 0){
       setActiveStep(activeStep - 1);
     }
+    
   };
 
   return (

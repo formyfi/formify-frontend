@@ -301,6 +301,16 @@ const apis = {
     });
   },
 
+  unlockForm: () => {
+    let v = {super_user_ind: super_user_ind, user_id: user_id}
+    return request.post("/api/tasks/unlock_form", v, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+  },
+
   updateCheckListFormAsTemplate: (values) => {
     let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
     return request.post(
