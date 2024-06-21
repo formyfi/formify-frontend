@@ -20,7 +20,8 @@ const FormSubmission = ({
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(form_json ? form_json : []);
   const [formValue, setFormValue] = useState(form_value ? form_value : []);
-  const [formID, setFormID] = useState(form_id ? form_id : "");
+  const [formName, setFormName] = useState("");
+  const [formID, setFormId] = useState(form_id ? form_id : "");
   const [loading, setLoading] = React.useState(false);
   const commonState = useSelector((state) => state.common);
   React.useEffect(() => {
@@ -40,7 +41,8 @@ const FormSubmission = ({
           resp.payload.form_data.form_json
         ) {
           setFormData(JSON.parse(resp.payload.form_data.form_json));
-          setFormID(resp.payload.form_data.form_name);
+          setFormName(resp.payload.form_data.form_name);
+          setFormId(resp.payload.form_data.form_id);
           if (
             resp &&
             resp.payload.form_data &&
@@ -123,7 +125,7 @@ const FormSubmission = ({
               <Typography component="h2" variant="h6" color="primary">
                 Form name:&nbsp;
                 <Typography color="black" sx={{ display: "inline-block" }}>
-                  {formID}
+                  {formName}
                 </Typography>
               </Typography>
             </Box>

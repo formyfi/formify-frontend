@@ -52,6 +52,7 @@ const ManageTask = () => {
   };
 
   const fetchRecords = ({ optionlimit, optionPage, searchValue }) => {
+    debugger
     setLoading(true);
     const res = dispatch(
       getTaskLists({
