@@ -348,7 +348,6 @@ const ManageTask = () => {
         page={page}
         onPageChange={(_, cpage) => {
           setPage(cpage);
-          debugger
           fetchRecords({
             optionlimit: limit,
             optionPage: cpage,
