@@ -16,7 +16,7 @@ import { ToastContainer } from "react-toastify";
 import FormatAlignCenter from "@mui/icons-material/FormatAlignCenter";
 import AdvanceTable from "components/AdvanceTable";
 import FormSubmission from "./components/FormSubmission";
-import { getAllTaskLists, getTaskLists } from "redux/slices/formSlice";
+import { getAllTaskLists, getTaskLists, unlockForm } from "redux/slices/formSlice";
 import { saveAs } from "file-saver";
 
 const ManageTask = () => {
@@ -370,6 +370,7 @@ const ManageTask = () => {
         PaperProps={{ sx: { width: "700px" } }}
         onClose={() => {
           setDrawer(false);
+          dispatch(unlockForm());
         }}
         variant={"temporary"}
       >
@@ -382,6 +383,7 @@ const ManageTask = () => {
           view={'completed_inspections'}
           handleBack={() => {
             setDrawer(false);
+            dispatch(unlockForm());
             setRecord([]);
           }}
         />

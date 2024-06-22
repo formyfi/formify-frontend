@@ -61,7 +61,7 @@ const apis = {
 
   //Stations
   stationList: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/stations/get_station_list", {
       headers: {
         Accept: "application/json",
@@ -72,7 +72,7 @@ const apis = {
   },
 
   upsertStation: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/stations/upsert_station", v, {
       headers: {
         Accept: "application/json",
@@ -82,7 +82,7 @@ const apis = {
   },
 
   deleteStation: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/stations/delete_station", v, {
       headers: {
         Accept: "application/json",
@@ -93,7 +93,7 @@ const apis = {
 
   //Users APIs
   getUsers: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/users/get_users", {
       headers: {
         Accept: "application/json",
@@ -104,7 +104,7 @@ const apis = {
   },
 
   updateUser: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/users/update_user", v, {
       headers: {
         Accept: "application/json",
@@ -114,7 +114,7 @@ const apis = {
   },
 
   updatePassword: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/users/update_password", v, {
       headers: {
         Accept: "application/json",
@@ -124,7 +124,7 @@ const apis = {
   },
 
   createUser: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/users/create_user", v, {
       headers: {
         Accept: "application/json",
@@ -133,7 +133,7 @@ const apis = {
     });
   },
   deleteUser: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/users/delete_user", v, {
       headers: {
         Accept: "application/json",
@@ -144,7 +144,7 @@ const apis = {
 
   //Parts
   partList: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/parts/get_part_list", {
       headers: {
         Accept: "application/json",
@@ -155,7 +155,7 @@ const apis = {
   },
 
   getPartsByStation: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/parts/get_parts_by_station", {
       headers: {
         Accept: "application/json",
@@ -166,7 +166,7 @@ const apis = {
   },
 
   getPartVnumbers: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/parts/get_part_vnumbers", {
       headers: {
         Accept: "application/json",
@@ -177,7 +177,7 @@ const apis = {
   },
 
   upsertPart: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/parts/upsert_part", v, {
       headers: {
         Accept: "application/json",
@@ -187,7 +187,7 @@ const apis = {
   },
 
   deletePart: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/parts/delete_part", v, {
       headers: {
         Accept: "application/json",
@@ -197,7 +197,7 @@ const apis = {
   },
   //  forms
   getCheckLists: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/checklist/get_checklists", {
       headers: {
         Accept: "application/json",
@@ -208,7 +208,7 @@ const apis = {
   },
 
   getTemplates: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/checklist/get_templates", {
       headers: {
         Accept: "application/json",
@@ -219,7 +219,7 @@ const apis = {
   },
 
   getTaskLists: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/tasks/get_tasklists", {
       headers: {
         Accept: "application/json",
@@ -230,7 +230,7 @@ const apis = {
   },
 
   getFullInseoctionsData: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/tasks/get_full_tasklist_data", {
       headers: {
         Accept: "application/json",
@@ -241,7 +241,7 @@ const apis = {
   },
 
   getStationInseoctionsData: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/tasks/get_station_tasklist_data", {
       headers: {
         Accept: "application/json",
@@ -251,7 +251,7 @@ const apis = {
     });
   },
   getTotalStationsInspections: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/tasks/get_total_stations_inspections", {
       headers: {
         Accept: "application/json",
@@ -261,7 +261,7 @@ const apis = {
     });
   },
   getTaskForm: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/tasks/get_task_form", {
       headers: {
         Accept: "application/json",
@@ -272,7 +272,7 @@ const apis = {
   },
 
   upsertCheckLists: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/checklist/upsert_checklist", v, {
       headers: {
         Accept: "application/json",
@@ -282,7 +282,7 @@ const apis = {
   },
 
   upsertCheckListForm: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/checklist/upsert_checklist_form", v, {
       headers: {
         Accept: "application/json",
@@ -292,7 +292,7 @@ const apis = {
   },
 
   updateTaskForm: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/tasks/update_task_form", v, {
       headers: {
         Accept: "application/json",
@@ -302,7 +302,7 @@ const apis = {
   },
 
   unlockForm: () => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id")}
     return request.post("/api/tasks/unlock_form", v, {
       headers: {
         Accept: "application/json",
@@ -312,7 +312,7 @@ const apis = {
   },
 
   updateCheckListFormAsTemplate: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post(
       "/api/checklist/upsert_checklist_form_template",
       v,
@@ -326,7 +326,7 @@ const apis = {
   },
 
   deleteCheckLists: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/checklist/delete_checklist", v, {
       headers: {
         Accept: "application/json",
@@ -335,7 +335,7 @@ const apis = {
     });
   },
   getAllTimelines: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/timelines/get_vnum_timline", {
       headers: {
         Accept: "application/json",
@@ -345,7 +345,7 @@ const apis = {
     });
   },
   setFormTimeLine: (values) => {
-    let v = {super_user_ind: super_user_ind, user_id: user_id, ...values}
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.post("/api/timelines/upload",v, {
       headers: {
         Accept: "application/json",
