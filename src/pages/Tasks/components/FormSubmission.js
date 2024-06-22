@@ -38,6 +38,7 @@ const FormSubmission = ({
           station_value: stationValue,
           part_value: partValue,
           v_number: vnumberValue,
+          user_id: commonState.user_id,
         })
       );
       res.then((resp) => {

@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, FormControlLabel, Grid, TextField, Typography, Autocomplete} from "@mui/material";
+import { Box, Button, Drawer, Checkbox, FormControlLabel, Grid, TextField, Typography, Autocomplete} from "@mui/material";
 import EnhancedTable from "components/Table";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -129,6 +129,8 @@ const onSubmit = ()=>{
           partData['name'] = row.name;
           partData['description'] = row.description;
           partData['v_numbers'] = row.v_numbers;
+          partData['station_order'] = row.station_order ? true : false;
+          debugger
           if(stationState.station_list && stationState.station_list.length && row.station_id){
              partData['station_value'] = stationState.station_list.filter((st)=>{
               let temp = row.station_id.split(',').map((t)=>parseInt(t));
@@ -243,7 +245,13 @@ const onSubmit = ()=>{
               options={stationState.station_list}
               textLabel={"Operations"}
             />
-
+            <div><Checkbox
+                id={'station_order'}
+                value={partForm?.station_order}
+                onChange={(e) => {let partData = {...partForm}
+                partData['station_order'] = e.target.checked;
+                setPartForm(partData)}}
+            /> Part must be inspected in order of operations</div>
 
             {/* {selectedImage ? (
               <div style={{ marginTop: '10' }}>
