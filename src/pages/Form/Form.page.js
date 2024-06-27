@@ -61,7 +61,7 @@ const FormPage = (props) => {
     if (formBuilder === null) {
       let fields = [
         {
-          label: "Upload Image",
+          label: "Reference Image",
           attrs: {
             type: "uploadImage",
             onclick: () => {
@@ -192,7 +192,7 @@ const FormPage = (props) => {
         },
         fields,
         templates,
-        disableFields: ["button"],
+        disableFields: ["button", "file"],
         scrollToFieldOnAdd: true,
         editOnAdd: true,
         showActionButtons: true,
@@ -234,6 +234,7 @@ const FormPage = (props) => {
           text: ["placeholder", "subtype", "maxlength"],
           textarea: ["placeholder", "subtype", "maxlength", "rows"],
           br: ["class"],
+          uploadImage:["placeholder", "required", "helptext"]
         },
         typeUserAttrs: {
           text: {
