@@ -5,7 +5,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Box, Button, Typography, Select} from "@mui/material";
 
-const SelectInfo = ({ handleNext, stationValue,  partValue, setPartList, partList, partVnum, setPartVnum, vnumberValue, handleChange, setFetchVnumbers, fetchVnumbers}) => {
+const SelectInfo = ({ handleNext, stationValue, setPartValue, setVnumberValue, partValue, setPartList, partList, partVnum, setPartVnum, vnumberValue, handleChange, setFetchVnumbers, fetchVnumbers}) => {
   const dispatch = useDispatch();
   const commonState = useSelector((state) => state.common);
   React.useEffect(() => {
@@ -36,6 +36,10 @@ const SelectInfo = ({ handleNext, stationValue,  partValue, setPartList, partLis
               target: { value },
             } = e;
             handleChange('station', value);
+            setPartValue('');
+            setVnumberValue('');
+            setPartList([]);
+            setPartVnum([]);
             const res = dispatch(getPartsByStation(
               {station_id: value}))
               res.then((resp)=>{
@@ -68,6 +72,8 @@ const SelectInfo = ({ handleNext, stationValue,  partValue, setPartList, partLis
               target: { value },
             } = e;
             handleChange('part', value);
+            setVnumberValue('');
+            setPartVnum([]);
             const res = dispatch(getPartVnumbers(
               {part_id: value, station_id: stationValue, org_id: commonState.org_id}))
               res.then((resp)=>{

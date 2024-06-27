@@ -33,7 +33,8 @@ const TasksPage = () => {
 
 
   const handleNext = () => {
-    if((activeStep +  1 )< steps.length){
+    if((activeStep +  1) < steps.length){
+      setFetchVnumbers(false);
       setActiveStep(activeStep + 1);
     }
   };
@@ -60,11 +61,11 @@ const TasksPage = () => {
       </Stepper>
       {/* step 1- Select  */}
       {activeStep === 0 && (
-        <SelectInfo stationValue={stationValue}  partValue={partValue}  fetchVnumbers={fetchVnumbers} setFetchVnumbers={(value)=>setFetchVnumbers(value)} vnumberValue={vnumberValue} partList={partList} partVnum={partVnum} setPartList={setPartList} setPartVnum={setPartVnum} handleChange={handleChange} handleNext={handleNext} handleBack={handleBack} />
+        <SelectInfo stationValue={stationValue} setPartValue={setPartValue} setVnumberValue={setVnumberValue}  partValue={partValue}  fetchVnumbers={fetchVnumbers} setFetchVnumbers={(value)=>setFetchVnumbers(value)} vnumberValue={vnumberValue} partList={partList} partVnum={partVnum} setPartList={setPartList} setPartVnum={setPartVnum} handleChange={handleChange} handleNext={handleNext} handleBack={handleBack} />
       )}
 
       {/* step 2- form  */}
-      {activeStep === 1 && <FormSubmission stationValue={stationValue} partValue={partValue} vnumberValue={vnumberValue} handleNext={handleNext} handleBack={handleBack} setFetchVnumbers={(value)=>setFetchVnumbers(value)} />}
+      {activeStep === 1 && <FormSubmission stationValue={stationValue} partValue={partValue} vnumberValue={vnumberValue} handleNext={handleNext} handleBack={handleBack} setFetchVnumbers={()=>{setFetchVnumbers(true)}} />}
 
       {/* step 3- submit form  */}
       {activeStep === 2 && <FormPreview  handleNext={handleNext} handleBack={handleBack}  />}
