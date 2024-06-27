@@ -60,11 +60,13 @@ const FormSubmission = ({
           ) {
             setFormValue(JSON.parse(resp.payload.form_data.form_value));
           }
-        } else
+        } else{
+          dispatch(unlockForm());
+          handleBack();
           toast.info(
             "Form has not been published for this part - station. Please contact your manager"
           );
-
+        }
         setLoading(false);
       });
     }
