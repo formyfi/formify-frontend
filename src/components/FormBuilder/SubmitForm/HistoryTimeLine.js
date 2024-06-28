@@ -56,8 +56,8 @@ const TimeLineItem = ({ record }) => {
         variant="body2"
         color="text.secondary"
       >
-        {moment(record.created_at, "YYYY-MM-DD hh:mm:ss").format("ll")} <br />
-        {moment(record.created_at, "YYYY-MM-DD hh:mm:ss").format("LT")}
+        {moment(record.updated_at, "YYYY-MM-DD hh:mm:ss").format("ll")} <br />
+        {moment(record.updated_at, "YYYY-MM-DD hh:mm:ss").format("LT")}
       </TimelineOppositeContent>
       <TimelineSeparator>
         <TimelineConnector />
