@@ -143,7 +143,7 @@ const ChatInput = ({ vnumberValue, closeAddNew, stationValue }) => {
         />
       </Box>
       <Button variant="contained" onClick={handleSendMessage}>
-        Add New One
+        Submit
       </Button>
     </Box>
   );
