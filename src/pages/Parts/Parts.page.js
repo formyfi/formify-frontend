@@ -130,7 +130,6 @@ const onSubmit = ()=>{
           partData['description'] = row.description;
           partData['v_numbers'] = row.v_numbers;
           partData['station_order'] = row.station_order ? true : false;
-          debugger
           if(stationState.station_list && stationState.station_list.length && row.station_id){
              partData['station_value'] = stationState.station_list.filter((st)=>{
               let temp = row.station_id.split(',').map((t)=>parseInt(t));

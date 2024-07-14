@@ -5,18 +5,23 @@ import {
   Typography,
   TableCell,
   Chip,
-  TextField,
+  Divider,
   TablePagination,
+  Collapse,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import * as XLSX from "xlsx";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import FormatAlignCenter from "@mui/icons-material/FormatAlignCenter";
 import AdvanceTable from "components/AdvanceTable";
 import FormSubmission from "./components/FormSubmission";
-import { getAllTaskLists, getTaskLists, unlockForm } from "redux/slices/formSlice";
+import { getAllTaskLists, getTaskLists, getTaskListsToDownload, unlockForm } from "redux/slices/formSlice";
 import { saveAs } from "file-saver";
 
 const ManageTask = () => {
@@ -30,6 +35,18 @@ const ManageTask = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [total, setTotal] = useState(0);
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [exportCollapse, setExportCollapse] = useState(false);
+  const [filters, setFilters] = useState({
+      part_name: "",
+      station_name: "",
+      form_name: "",
+      compliance_ind: "",
+  });
+  const [exportFilters, setExportFilters] = useState({
+    part_name: "",
+    station_name: "",
+  })
 
   const dispatch = useDispatch();
 
@@ -43,12 +60,58 @@ const ManageTask = () => {
     });
   }, []);
 
-  const handleClickOpen = () => {
-    setOpenDialogue(true);
+  const handleFilterToggle = () => {
+    setFilterVisible(!filterVisible);
+    setExportCollapse(false);
   };
 
-  const handleClose = () => {
-    setOpenDialogue(false);
+  const handleExportToggle = () => {
+    setExportCollapse(!exportCollapse);
+    setFilterVisible(false);
+  };
+
+  const handleExportFilterChange = (event) => {
+    const { name, value } = event.target;
+    setExportFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
+
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
+
+  const fetchFilteredRecords = () => {
+    console.log('Fetching records with filters:', filters);
+    setLoading(true);
+    const res = dispatch(
+      getTaskLists({
+        org_id: commonState.org_id,
+        user_id: commonState.user_id,
+        perPage: limit,
+        page: page + 1,
+        searchText: searchValue,
+        filters: filters
+      })
+    );
+    res.then((res) => {
+      setLoading(false);
+      setFilterVisible(false);
+      const apiRes = res?.payload;
+      if (apiRes?.total_records) {
+        setTotal(apiRes?.total_records);
+      }
+    });
+  };
+
+  const uniqueValues = (key) => {
+    const items = checkListState.taskLists.map(item => item[key]);
+    return [...new Set(items)].filter(Boolean); // This will remove any undefined or null values
   };
 
   const fetchRecords = ({ optionlimit, optionPage, searchValue }) => {
@@ -196,54 +259,57 @@ const ManageTask = () => {
     };
   }, [searchValue]);
 
-  // const handleDownload = () => {
-  //   const data = checkListState.taskLists.filter(row =>
-  //     row.part_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-  //     row.station_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-  //     row.form_name.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
-  //     row.vnum_id.toString().toLowerCase().includes(searchValue.toLowerCase())
-  //   );
+  // Strip HTML function
+  const stripHtml = (htmlString) => {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = htmlString;
+    return tmp.textContent || tmp.innerText || "";
+  }
 
-  //   // Get the headers of the CSV
-  //   const headers = Object.keys(data[0]).filter(header => header !== 'form_data' && header !== 'form_json');
+  const handleDownload = async (type) => {
+    let f = {
+      part_name: exportFilters.part_name,
+      station_name: exportFilters.station_name
+    }
+    const res = await dispatch(getTaskListsToDownload({
+      org_id: commonState.org_id,
+      user_id: commonState.user_id,
+      perPage: 10000, // Assume you want to fetch all or a large number of records
+      page: 1,
+      filters: type === 'full' ? null : f
+    }));
 
-  //   // Create an array of the CSV rows
-  //   const rows = data.map(obj => {
-  //     return headers.map(header => {
-  //     return obj[header];
-  //     }).join(",");
-  //     });
+    if (res.payload && res.payload.task_lists) {
+        const filteredData = res.payload.task_lists;
+        exportToExcel(filteredData);
+        const data = filteredData.filter((item) =>
+        (exportFilters.part_name === "" || item.part_name === exportFilters.part_name) &&
+        (exportFilters.station_name === "" || item.station_name === exportFilters.station_name)
+      );
+      exportToExcel(data);
+    } else {
+        // Handle the case where no data is returned or there are errors
+        toast.error("There is no data to download.");
+    }
+     // Close the export collapse after download
+  };
 
-  //   // Join the header row and the CSV rows
-  //   const csvData = headers.join(",") + "\n" + rows.join("\n");
+  const exportToExcel = (data) => {
 
-  //   // Convert CSV string to Blob
-  //   const blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
-
-  //   // Save Blob as CSV file
-  //   saveAs(blob, "checklist_data.csv");
-  // };
-
-  const handleDownload = async () => {
-    const allValues = await fetchAllValues({
-      optionPage: 1,
-      records: [],
-    });
-    const data = allValues;
-
-    const workbook = XLSX.utils.book_new();
-
+    const workbook = XLSX.utils.book_new();  
     const main_headers = Object.keys(data[0]).filter(
       (header) => header !== "form_data" && header !== "form_json"
     );
+  
     const main_rows = data.map((obj) => {
       return main_headers.map((header) => {
         return obj[header];
       });
     });
+  
     const worksheet = XLSX.utils.aoa_to_sheet([main_headers, ...main_rows]);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Completed Inspections");
-
+  
     // Create a sheet for each unique form_name
     const formIds = [...new Set(data.map((row) => row.form_name))];
     formIds.forEach((formId) => {
@@ -252,35 +318,36 @@ const ManageTask = () => {
       if (form_json && form_json.length) {
         const headers = [];
         const rows = [];
-
         form_json.forEach((item) => {
-          if (item.type !== "header") {
-            headers.push(item.label);
+          if (item.type !== "header" && item.type !== "br") {
+            headers.push(stripHtml(item.label));
           }
         });
+  
         sheetData.forEach((obj) => {
           const row = [];
           obj.form_json.forEach((value) => {
             if (value.type !== "header") {
-              row.push(value.field_value);
+              row.push(stripHtml(value.field_value));
             }
           });
           rows.push(row);
         });
-
+  
         const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
         const name = "Form: " + formId;
         XLSX.utils.book_append_sheet(workbook, worksheet, name);
       }
     });
-
+  
     // Convert workbook to Excel file
     const excelData = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-
+  
     // Save Excel file
     const date = new Date().toJSON();
     const file_name = "checklist_data_" + date + ".xlsx";
     saveAs(new Blob([excelData]), file_name);
+    setExportCollapse(false);
   };
 
   const onGenerate = (record) => {
@@ -289,7 +356,35 @@ const ManageTask = () => {
     setFormValue(record.form_data);
     setDrawer(true);
   };
+  
+  const handleResetFilters = () => {
+    setFilters({
+      part_name: "",
+      station_name: "",
+      form_name: "",
+      compliance_ind: "",
+    });
+    setLoading(true);
+    const res = dispatch(
+      getTaskLists({
+        org_id: commonState.org_id,
+        user_id: commonState.user_id,
+        perPage: limit,
+        page: page + 1,
+        searchText: searchValue,
+      })
+    );
+    res.then((res) => {
+      setLoading(false);
+      setFilterVisible(false);
+      const apiRes = res?.payload;
+      if (apiRes?.total_records) {
+        setTotal(apiRes?.total_records);
+      }
+    });
+  }
 
+  
   return (
     <Box>
       <ToastContainer />
@@ -306,17 +401,20 @@ const ManageTask = () => {
           display="flex"
           justifyContent="flex-end"
           alignItems="center"
-          mb={2}
+          mb={3}
           sx={{ width: "400px" }}
         >
           <Button
             color="primary"
-            onClick={() => handleDownload()}
-            sx={{ width: "400px" }}
+            onClick={handleExportToggle}
+            sx={{ width: "100px" }}
           >
-            Export Inspections
+            Export
           </Button>
-          <TextField
+          <Button sx={{ width: "100px" }} color="primary" onClick={handleFilterToggle}>
+            Filter
+          </Button>
+          {/* <TextField
             id="search"
             label="Search"
             name="name"
@@ -326,20 +424,98 @@ const ManageTask = () => {
             InputProps={{ disableUnderline: true }}
             autoFocus
             fullWidth
-          />
+          /> */}
         </Box>
       </Box>
-      <AdvanceTable
-        headCells={headCells}
-        pagination={false}
-        user={true}
-        data={checkListState.taskLists}
-        loading={loading}
-        limit={limit}
-        handleTableChange={(tableProps) => {
-          console.log(tableProps);
-        }}
-      />
+      <Collapse in={filterVisible} sx={{ mt: 2 }}>
+        <Box display="flex" gap={2} mb={2}>
+          {['part_name', 'station_name', 'form_name', 'compliance_ind'].map((key) => {
+            let label;
+            if (key === 'part_name') label = 'Part';
+            else if (key === 'station_name') label = 'Operation';
+            else if (key === 'form_name') label = 'Form';
+            else if (key === 'compliance_ind') label = 'Compliance';
+
+            return (
+              <Box key={key} sx={{ width: "300px" }}>
+                <FormControl fullWidth>
+                  <InputLabel>{label}</InputLabel>
+                  <Select
+                    value={filters[key]}
+                    name={key}
+                    onChange={handleFilterChange}
+                    label={label}
+                    variant={'standard'}
+                  >
+                    <MenuItem value="">None</MenuItem>  {/* Option to clear the select */}
+                    {uniqueValues(key).map((value) => (
+                      <MenuItem value={value} key={value}>
+                        {value}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                {/* <Button 
+                  variant="outlined" 
+                  onClick={() => handleClear(key)}
+                  sx={{ ml: 1, mt: 1 }}
+                >
+                  Clear
+                </Button> */}
+              </Box>
+            );
+          })}
+          <Button variant="text" onClick={fetchFilteredRecords} sx={{ height: '56px' }}>
+            Apply
+          </Button>
+          <Button variant="text" onClick={handleResetFilters} sx={{ height: '56px' }}>
+            Reset
+          </Button>
+        </Box>
+      </Collapse>
+
+      <Collapse in={exportCollapse}>
+        <Box display="flex" gap={2} mb={2} >
+          {['part_name', 'station_name'].map((key) => {
+            let label = key === 'part_name' ? 'Part' : 'Operation';
+            return (
+              <FormControl fullWidth key={key} sx={{ width: "400px" }}>
+                <InputLabel>{label}</InputLabel>
+                <Select
+                  value={exportFilters[key]}
+                  name={key}
+                  onChange={handleExportFilterChange}
+                  label={label}
+                >
+                  <MenuItem value="">None</MenuItem>
+                  {uniqueValues(key).map((value) => (
+                    <MenuItem value={value} key={value}>{value}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            );
+          })}
+          <Button variant="text" onClick={handleDownload} sx={{ width: '100px' }}>
+            Download
+          </Button>
+          <Button variant="text" onClick={()=>handleDownload('all')} sx={{ width: '150px' }}>
+            Download All
+          </Button>
+        </Box>
+      </Collapse>
+      <Box mt={2}>
+        <AdvanceTable
+          headCells={headCells}
+          pagination={false}
+          user={true}
+          data={checkListState.taskLists}
+          loading={loading}
+          limit={limit}
+          handleTableChange={(tableProps) => {
+            console.log(tableProps);
+          }}
+        />
+      </Box>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"

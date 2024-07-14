@@ -25,6 +25,29 @@ const getCheckLists = createAsyncThunk(
   }
 )
 
+const getTaskListsToDownload = createAsyncThunk(
+  'get_tasklists_download',
+  async (values) => {
+    const response = await apis.getTaskListsToDownload(values).then((response)=>{
+        if(response.status === 200){
+            return response.data
+          }
+        }).catch((err)=>{
+          if(err.response && err.response.status === 401 && err.response.data){
+            return {
+              success: false,
+              message : err.response.data.message
+            }
+          }
+          return {
+            success: false,
+            message : "Something went wrong"
+          }
+    })
+    return response
+  }
+)
+
 const getTaskLists = createAsyncThunk(
   'get_tasklists',
   async (values) => {
@@ -582,6 +605,7 @@ export {
   updateTaskForm,
   unlockForm,
   getTaskLists,
+  getTaskListsToDownload,
   getFullInseoctionsData,
   getStationInseoctionsData,
   getTotalStationsInspections,

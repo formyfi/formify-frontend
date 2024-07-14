@@ -229,6 +229,17 @@ const apis = {
     });
   },
 
+  getTaskListsToDownload: (values) => {
+    let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
+    return request.get("/api/tasks/get_tasklists", {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getToken()}`,
+      },
+      params: v,
+    });
+  },
+
   getFullInseoctionsData: (values) => {
     let v = {super_user_ind: localStorage.getItem("super_user_ind"), user_id: localStorage.getItem("user_id"), ...values}
     return request.get("/api/tasks/get_full_tasklist_data", {
